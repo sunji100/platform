@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>platform-web</display-name>
+	
+	<!-- Spring Listener -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:META-INF/spring/root.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>com.dayatang.spring.webapp.DayatangContextLoaderListener</listener-class>
+	</listener>
+
+	<session-config>
+		<session-timeout>120</session-timeout>
+	</session-config>
+	
+	<!-- Character Filter -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	
+	<filter>    
+        <filter-name>Spring OpenEntityManagerInViewFilter</filter-name>    
+        <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>    
+        <init-param>    
+        <!-- 指定org.springframework.orm.jpa.LocalEntityManagerFactoryBean在spring配置文件中的名称,默认值为entityManagerFactory    
+        如果LocalEntityManagerFactoryBean在spring中的名称不是entityManagerFactory,该参数一定要指定,否则会出现找不到entityManagerFactory的例外 -->    
+            <param-name>entityManagerFactoryBeanName</param-name>    
+            <param-value>entityManagerFactory</param-value>    
+        </init-param>     
+    </filter>    
+    <filter-mapping>    
+        <filter-name>Spring OpenEntityManagerInViewFilter</filter-name>    
+        <url-pattern>/*</url-pattern>    
+    </filter-mapping>  
+	   
+	<!-- ss3过滤器链 -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	
+	<!-- 验证码 -->
+     <servlet>
+		<servlet-name>jcaptcha</servlet-name>
+		<servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>jcaptcha</servlet-name>
+		<url-pattern>/jcaptcha.jpg</url-pattern>
+	</servlet-mapping>  
+     <!-- 加入SpringMVC -->
+	 <servlet>
+		<servlet-name>spring</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+  
+	  <servlet-mapping>
+	  	<servlet-name>spring</servlet-name>
+	  	<url-pattern>*.do</url-pattern>
+	  </servlet-mapping>
+        
+   
+    <servlet>
+		<servlet-name>koalaUISurpport</servlet-name>
+		<servlet-class>org.openkoala.ui.base.KoalaUISurpport</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>koalaUISurpport</servlet-name>
+		<url-pattern>/koalaUISurpport</url-pattern>
+	</servlet-mapping>
+	
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error/404.html</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error/500.html</location>
+	</error-page>
+	
+	<welcome-file-list>
+		<welcome-file>/security.jsp</welcome-file>
+		<welcome-file>/index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<distributable />
+</web-app>

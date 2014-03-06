@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_1_0.xsd"
+	version="1.0">
+	
+	<named-query name="findTopLevelResourceByUser">
+		<query>
+			select _resource from Resource _resource inner join _resource.roles _role inner join _role.identities _identity 
+			where _resource.level=1 and _identity.userAccount = ? order by _resource.sortOrder asc,_resource.name asc
+		</query>
+	</named-query>
+	<named-query name="findResourceByParentId">
+		<query>
+			select _resource from Resource _resource inner join _resource.parents _parent 
+			where _parent.id = ? order by _resource.sortOrder asc
+		</query>
+	</named-query>
+</entity-mappings>

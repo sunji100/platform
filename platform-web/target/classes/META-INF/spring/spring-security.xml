@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:s="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+	
+		
+	<bean id="userDetailService" class="org.yixun.platform.web.auth.UserDetailsServiceImpl" />
+	
+	<bean id="securityMetadataSource" class="org.yixun.platform.web.auth.SecurityMetadataSource" />
+	
+	<bean id="accessDecisionManager" class="org.yixun.platform.web.auth.AccessDecisionManager" />
+	
+	<!-- 一个自定义的filter，必须包含authenticationManager,accessDecisionManager,securityMetadataSource三个属性。 -->
+	<bean id="securityFilter" class="org.yixun.platform.web.auth.SecurityInterceptor">
+		<!-- 用户拥有的权限 -->
+		<property name="authenticationManager" ref="authenticationManager" /> 
+		<!-- 匹配请求的权限与拥有的权限 -->
+		<property name="accessDecisionManager" ref="accessDecisionManager" />
+		<!-- 资源与权限的对应关系 -->
+		<property name="securityMetadataSource" ref="securityMetadataSource" />
+	</bean>
+
+	<!-- 认证md5加密密码(原密码加盐值进行加密) -->
+	<s:authentication-manager alias="authenticationManager">
+		<s:authentication-provider user-service-ref="userDetailService">
+		</s:authentication-provider>
+	</s:authentication-manager>
+
+
+</beans>
