@@ -2906,6 +2906,7 @@
         selectValueByTree: function (value)
         {
             var g = this, p = this.options;
+            console.info(value);
             if (value != null)
             {
                 var text = "";
@@ -2913,7 +2914,9 @@
                 $(valuelist).each(function (i, item)
                 {
                     g.treeManager.selectNode(item.toString());
+                    console.info(value);
                     text += g.treeManager.getTextByID(item);
+                    console.info(text);
                     if (i < valuelist.length - 1) text += p.split;
                 });
                 g._changeValue(value, text);
@@ -3089,6 +3092,7 @@
         },
         _dataInit: function ()
         {
+        	console.info("aaa");
             var g = this, p = this.options;
             var value = null; 
             if (p.initValue != null && p.initText != null)
@@ -3098,6 +3102,7 @@
             //根据值来初始化
             if (p.initValue != null)
             {
+            	console.info(p.initValue);
                 value = p.initValue;
                 if (p.tree)
                 {
@@ -16635,7 +16640,7 @@
             var parentTreeNode = g.getParentTreeItem(treenode, level);
             if (!parentTreeNode) return null;
             var parentIndex = $(parentTreeNode).attr("treedataindex");
-            return g._getDataNodeByTreeDataIndex(parentIndex);
+            return g._getDataNodeByTreeDataIndex(g.data,parentIndex);
         },
         //获取父节点
         getParentTreeItem: function (treenode, level)

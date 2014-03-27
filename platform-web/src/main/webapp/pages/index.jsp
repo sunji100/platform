@@ -12,6 +12,7 @@
 <script type="text/javascript">
 	var accordion = null;
 	var tab = null;
+	var tabidcounter = 0;
 	$(function(){
 		// 布局
 		$("#main-content").ligerLayout({
@@ -29,7 +30,7 @@
 		
 		tab = $("#framecenter").ligerGetTabManager();
 		
-		$.getJSON("/resource/findMenuByUser.do",function(menu){
+		$.getJSON("${pageContext.request.contextPath}/menu/findMenuByUser.do",function(menu){
 			
 			$(menu.data).each(function(i,menu){
 				$("#leftmenu").append('<div id="main_'+menu.id+'" title="' + menu.text + '" class="l-scroll"><ul id="sub_'+menu.id+'"></ul></div>');
@@ -41,26 +42,32 @@
 				tree.bind("select", function(node) {
              		var url = node.data.identifier;
              		var text = node.data.text;
-             		
+             		var tabid = $(node.target).attr("tabid");
              		if (!url) {
              			return;
              		}
              		if (node.data.menuType == "DIRETORY") {
              			return;
              		}
-             		addTabEvent(text,url);
+             		if (!tabid) {
+                        tabidcounter++;
+                        tabid = "tabid" + tabidcounter;
+                        $(node.target).attr("tabid", tabid);
+                    }
+             		addTabEvent(tabid,text,url);
              	});
 			});
 			//Accordion
-	         accordion = $("#leftmenu").ligerAccordion({ height: $(".l-layout-center").height() - 24, speed: null });
+	         accordion = $("#leftmenu").ligerAccordion({ height: $(".l-layout-center").height() - 40, speed: null });
 		});
 		window['f_addTab'] = addTabEvent;
 	});
 	
-	function addTabEvent(text,url){
+	function addTabEvent(tabid,text,url){
 		tab.addTabItem({
+			tabid :tabid,
 			text : text,
-			url : url
+			url : "${pageContext.request.contextPath}" + url
 		});
 	}
 </script>
@@ -68,7 +75,7 @@
 <body style="padding:0px;background:#EAEEF5;">
 	<div id="pageloading"></div>  
 	<div id="topmenu" class="l-topmenu">
-        <div class="l-topmenu-logo">xxx</div>
+        <div class="l-topmenu-logo">yixun</div>
         <div class="l-topmenu-welcome"> 
             <span class="l-topmenu-username">[<ss3:authentication property="principal.username" />]</span>欢迎您  &nbsp; 
             [<a href="javascript:Koala.changepassword()">修改密码</a>] &nbsp; 

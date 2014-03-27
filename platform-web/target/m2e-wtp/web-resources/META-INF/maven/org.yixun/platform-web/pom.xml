@@ -1,98 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">  
-    <modelVersion>4.0.0</modelVersion>  
-    <parent> 
-        <groupId>org.yixun</groupId>  
-        <artifactId>platform</artifactId>  
-        <version>1.0.0-SNAPSHOT</version> 
-    </parent>  
-    <artifactId>platform-web</artifactId>  
-    <name>platform-web</name>  
-    <packaging>war</packaging>  
-    <url>http://maven.apache.org</url>  
-    <properties> 
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
-        <project.type>war</project.type>  
-        <base.package>org.yixun.platform.web</base.package> 
-    </properties>  
-    <dependencies> 
-        <dependency> 
-            <groupId>junit</groupId>  
-            <artifactId>junit</artifactId> 
-        </dependency>  
-        <dependency> 
-            <groupId>org.yixun</groupId>  
-            <artifactId>platform-support</artifactId>  
-            <version>1.0.0-SNAPSHOT</version> 
-        </dependency> 
-        <dependency> 
-            <groupId>org.yixun</groupId>  
-            <artifactId>platform-infra</artifactId>  
-            <version>1.0.0-SNAPSHOT</version> 
-        </dependency>  
-        <dependency> 
-            <groupId>org.yixun</groupId>  
-            <artifactId>platform-application</artifactId>  
-            <version>1.0.0-SNAPSHOT</version> 
-        </dependency>  
-        <dependency> 
-            <groupId>org.yixun</groupId>  
-            <artifactId>platform-applicationImpl</artifactId>  
-            <version>1.0.0-SNAPSHOT</version> 
-        </dependency>  
-        <dependency> 
-            <groupId>jstl</groupId>  
-            <artifactId>jstl</artifactId>  
-            <version>1.1.2</version> 
-        </dependency>  
-        <dependency> 
-            <groupId>taglibs</groupId>  
-            <artifactId>standard</artifactId>  
-            <version>1.1.2</version> 
-        </dependency>  
-        <dependency> 
-            <groupId>org.yixun</groupId>  
-            <artifactId>platform-conf</artifactId>  
-            <version>1.0.0-SNAPSHOT</version> 
-        </dependency>  
-        <!-- 加入对dayatang的spring的实现 -->  
-        <dependency> 
-            <groupId>com.dayatang.commons</groupId>  
-            <artifactId>dayatang-commons-spring</artifactId> 
-        </dependency>  
-        <dependency> 
-            <groupId>org.openkoala.koalacommons</groupId>  
-            <artifactId>koala-commons-ui-surpport</artifactId> 
-        </dependency>  
-        <dependency> 
-            <groupId>javax.servlet</groupId>  
-            <artifactId>servlet-api</artifactId> 
-        </dependency>  
-        <dependency> 
-            <groupId>javax.servlet.jsp</groupId>  
-            <artifactId>jsp-api</artifactId>  
-            <version>2.1</version>  
-            <scope>provided</scope> 
-        </dependency>  
-        <dependency> 
-            <groupId>org.openkoala.security</groupId>  
-            <artifactId>koala-security-core</artifactId> 
-        </dependency>  
-        <dependency> 
-            <groupId>org.hibernate</groupId>  
-            <artifactId>hibernate-validator</artifactId> 
-        </dependency>  
-        <dependency> 
-            <groupId>com.cloudhopper.proxool</groupId>  
-            <artifactId>proxool</artifactId> 
-        </dependency>  
-        <dependency> 
-            <groupId>org.springframework</groupId>  
-            <artifactId>spring-webmvc</artifactId> 
-        </dependency> 
-        
-        <dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.yixun</groupId>
+		<artifactId>platform</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>platform-web</artifactId>
+	<name>platform-web</name>
+	<packaging>war</packaging>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.type>war</project.type>
+		<base.package>org.yixun.platform.web</base.package>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.yixun</groupId>
+			<artifactId>platform-support</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.yixun</groupId>
+			<artifactId>platform-infra</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.yixun</groupId>
+			<artifactId>platform-application</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.yixun</groupId>
+			<artifactId>platform-applicationImpl</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.yixun</groupId>
+			<artifactId>platform-workflow</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.yixun</groupId>
+			<artifactId>platform-conf</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<!-- 加入对dayatang的spring的实现 -->
+		<dependency>
+			<groupId>com.dayatang.commons</groupId>
+			<artifactId>dayatang-commons-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.koalacommons</groupId>
+			<artifactId>koala-commons-ui-surpport</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openkoala.security</groupId>
+			<artifactId>koala-security-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.cloudhopper.proxool</groupId>
+			<artifactId>proxool</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 		</dependency>
@@ -114,33 +120,50 @@
 			<artifactId>spring-security-acl</artifactId>
 		</dependency>
 		<dependency>
-        <groupId>com.octo.captcha</groupId>
-        <artifactId>jcaptcha</artifactId>
-        <version>2.0-alpha-1</version>
-      </dependency>
+			<groupId>com.octo.captcha</groupId>
+			<artifactId>jcaptcha</artifactId>
+			<version>2.0-alpha-1</version>
+		</dependency>
 		<dependency>
-        <groupId>com.octo.captcha</groupId>
-        <artifactId>jcaptcha-api</artifactId>
-        <version>2.0-alpha-1</version>
-      </dependency>
+			<groupId>com.octo.captcha</groupId>
+			<artifactId>jcaptcha-api</artifactId>
+			<version>2.0-alpha-1</version>
+		</dependency>
 		<dependency>
-        <groupId>com.octo.captcha</groupId>
-        <artifactId>jcaptcha-integration-simple-servlet</artifactId>
-        <version>2.0-alpha-1</version>
-      </dependency>
-      	<dependency>
-      		<groupId>com.jhlabs</groupId>
-      		<artifactId>filters</artifactId>
-      		<version>2.0.235-1</version>
-      	</dependency>
-    </dependencies>  
-    <build> 
-        <plugins> 
-            <!-- 配置加入jetty服务器，开发时我们一般使用jetty服务器 -->  
-            <plugin> 
-                <groupId>org.mortbay.jetty</groupId>  
-                <artifactId>jetty-maven-plugin</artifactId>  
-                <configuration>
+			<groupId>com.octo.captcha</groupId>
+			<artifactId>jcaptcha-integration-simple-servlet</artifactId>
+			<version>2.0-alpha-1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jhlabs</groupId>
+			<artifactId>filters</artifactId>
+			<version>2.0.235-1</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+		</dependency>
+		<!-- activiti -->
+		<dependency>
+			<groupId>org.yixun</groupId>
+			<artifactId>activiti-engine</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<!-- 配置加入jetty服务器，开发时我们一般使用jetty服务器 -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<configuration>
 					<scanIntervalSeconds>5</scanIntervalSeconds>
 					<scanTargets>
 						<scanTarget>E:\framework\workspace\platform\platform-support\target\classes</scanTarget>
@@ -157,7 +180,7 @@
 						<defaultsDescriptor>src/main/resources/webdefault.xml</defaultsDescriptor>
 					</webApp>
 				</configuration>
-            </plugin> 
-        </plugins> 
-    </build> 
+			</plugin>
+		</plugins>
+	</build>
 </project>

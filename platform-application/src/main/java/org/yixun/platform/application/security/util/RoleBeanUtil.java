@@ -19,16 +19,16 @@ public class RoleBeanUtil {
 		dest.setValid(orig.isValid());
 	}
 	
-	public static void dtoToDomain(Role desc,RoleDTO orig){
-		desc.setId(orig.getId());
-		desc.setName(orig.getName());
-		desc.setRoleDesc(orig.getRoleDesc());
-		desc.setSortOrder(orig.getSortOrder());
-		desc.setValid(orig.isValid());
+	public static void dtoToDomain(Role dest,RoleDTO orig){
+		dest.setId(orig.getId());
+		dest.setName(orig.getName());
+		dest.setRoleDesc(orig.getRoleDesc());
+		dest.setSortOrder(orig.getSortOrder());
+		dest.setValid(orig.isValid());
 		
-		desc.setAbolishDate(DateUtils.MAX_DATE);
-		desc.setCreateDate(new Date());
+		dest.setAbolishDate(DateUtils.MAX_DATE);
+		dest.setCreateDate(new Date());
 		
-		desc.setCreateOwner(AuthDetailUtil.getLoginName());
+		dest.setCreateOwner(AuthDetailUtil.getLoginName());
 	}
 }

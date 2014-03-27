@@ -17,12 +17,12 @@ public class ResourceTypeBeanUtil {
 		dest.setSortOrder(orig.getSortOrder());
 	}
 	
-	public static void dtoToDomain(ResourceType desc,ResourceTypeDTO orig){
-		desc.setId(orig.getId());
-		desc.setName(orig.getName());
-		desc.setSortOrder(orig.getSortOrder());
+	public static void dtoToDomain(ResourceType dest,ResourceTypeDTO orig){
+		dest.setId(orig.getId());
+		dest.setName(orig.getName());
+		dest.setSortOrder(orig.getSortOrder());
 		
-		desc.setAbolishDate(DateUtils.MAX_DATE);
-		desc.setCreateDate(new Date());
+		dest.setAbolishDate(DateUtils.MAX_DATE);
+		dest.setCreateDate(new Date());
 	}
 }

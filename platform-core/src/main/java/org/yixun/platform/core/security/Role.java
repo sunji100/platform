@@ -59,6 +59,10 @@ public class Role extends AbstractEntity {
 	@JoinTable(name="ks_role_resource_auth",joinColumns=@JoinColumn(name="IDENTITY_ID"),inverseJoinColumns=@JoinColumn(name="RESOURCE_ID"))
 	private Set<Resource> resources = new HashSet<Resource>();
 	
+	@ManyToMany
+	@JoinTable(name="ks_role_org_auth",joinColumns=@JoinColumn(name="ROLE_ID"),inverseJoinColumns=@JoinColumn(name="ORG_ID"))
+	private Set<Org> orgs = new HashSet<Org>();
+	
 	public Set<Resource> getResources() {
 		return resources;
 	}
@@ -74,6 +78,14 @@ public class Role extends AbstractEntity {
 
 	public void setIdentities(Set<Identity> identities) {
 		this.identities = identities;
+	}
+
+	public Set<Org> getOrgs() {
+		return orgs;
+	}
+
+	public void setOrgs(Set<Org> orgs) {
+		this.orgs = orgs;
 	}
 
 	public Date getAbolishDate() {
@@ -147,6 +159,7 @@ public class Role extends AbstractEntity {
 	public boolean isRoleExist(){
 		return !findByNamedQuery("findRoleByName",new Object[]{this.name}).isEmpty();
 	}
+	
 
 	@Override
 	public int hashCode() {

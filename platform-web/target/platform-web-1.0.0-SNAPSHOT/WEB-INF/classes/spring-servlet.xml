@@ -23,7 +23,13 @@
 
 	<!-- 启动SpringMVC的注解功能，它会自动注册HandlerMapping、 HandlerAdapter、ExceptionResolver的相关实例 -->
 	<mvc:annotation-driven />
-
+	
+	
+	<bean id="exceptionHandler" class="org.yixun.support.exception.ExceptionHandler">
+		<!-- 定义默认的异常处理页面，当该异常类型的注册时使用 -->  
+		<property name="defaultErrorView" value="errors/global_error"></property> 
+	</bean>
+	
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="messageConverters">
 			<util:list id="beanList">

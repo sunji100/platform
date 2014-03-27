@@ -12,8 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.yixun.platform.application.security.ResourceApplication;
-import org.yixun.platform.application.security.dto.ResourceDTO;
+import org.yixun.platform.application.security.MenuApplication;
+import org.yixun.platform.application.security.dto.MenuDTO;
 
 import com.dayatang.domain.InstanceFactory;
 import com.dayatang.spring.factory.SpringInstanceProvider;
@@ -32,10 +32,10 @@ public class ResourceApplicationTest extends AbstractTransactionalJUnit4SpringCo
     
     @Test
     public void findTopLevelMenu(){
-    	ResourceApplication resourceApplication = applicationContext.getBean(ResourceApplication.class);
-    	List<ResourceDTO> menus = resourceApplication.findMenuByUser("user1");
+    	MenuApplication resourceApplication = applicationContext.getBean(MenuApplication.class);
+    	List<MenuDTO> menus = resourceApplication.findMenuByUser("user1");
 //    	List<ResourceDTO> menus = resourceApplication.findTopLevelMenuByUser("user1");
-    	for (ResourceDTO menu : menus) {
+    	for (MenuDTO menu : menus) {
 			System.out.println(menu.getText());
 			System.out.println(menu.getMenuType());
 		}

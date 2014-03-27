@@ -36,6 +36,17 @@ public class IdentityController {
 	}
 	
 	@ResponseBody
+	@RequestMapping("/pageQueryIdentityByOrgId")
+	public Map<String, Object> pageQueryIdentityByOrgId(IdentityDTO identityDTO,@RequestParam("page")int pageNo,@RequestParam("pagesize")int pageSize,@RequestParam("orgId")Long orgId) throws Exception{
+		Page<IdentityDTO> page = identityApplication.pageQueryIdentityByOrgId(identityDTO, pageNo, pageSize,orgId);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("Rows", page.getResult());
+		result.put("Total", page.getTotalCount());
+		
+		return result;
+	}
+	
+	@ResponseBody
 	@RequestMapping("/pageQueryIdentityByRoleId")
 	public Map<String, Object> pageQueryIdentityByRoleId(IdentityDTO identityDTO,Long roleId,@RequestParam("page")int pageNo,@RequestParam("pagesize")int pageSize) throws Exception{
 		Page<IdentityDTO> page = identityApplication.pageQueryIdentityByRoleId(identityDTO, roleId, pageNo, pageSize);

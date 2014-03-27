@@ -2,7 +2,10 @@ package org.yixun.platform.application.security.impl;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -11,11 +14,11 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.yixun.platform.application.security.RoleApplication;
-import org.yixun.platform.application.security.dto.IdentityDTO;
 import org.yixun.platform.application.security.dto.RoleDTO;
-import org.yixun.platform.application.security.util.IdentityBeanUtil;
 import org.yixun.platform.application.security.util.RoleBeanUtil;
 import org.yixun.platform.core.security.Identity;
+import org.yixun.platform.core.security.Org;
+import org.yixun.platform.core.security.Resource;
 import org.yixun.platform.core.security.Role;
 import org.yixun.support.exception.BusinessException;
 
@@ -163,6 +166,183 @@ public class RoleApplicationImpl implements RoleApplication {
 			roleDTOs.add(roleDTO);
 		}
 		return new Page<RoleDTO>(pages.getCurrentPageNo(),pages.getTotalCount(),pages.getPageSize(),roleDTOs);
+	}
+
+	@Override
+	public void assignMenuToRole(Long roleId, Long[] menuIds) throws Exception {
+		Role role = Role.load(Role.class, roleId);
+		Set<Resource> menus = new HashSet<Resource>();
+		for (Long menuId : menuIds) {
+			Resource resource = Resource.load(Resource.class, menuId);
+			menus.add(resource);
+		}
+		role.setResources(menus);
+		
+	}
+
+	@Override
+	public void removeMenuForRole(Long roleId, Long[] menuIds) throws Exception {
+		Role role = Role.load(Role.class, roleId);
+		for (Long menuId : menuIds) {
+			Resource resource = Resource.load(Resource.class, menuId);
+			role.getResources().remove(resource);
+		}
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	public List<RoleDTO> findRoleByOrgId(RoleDTO queryDTO, Long orgId) throws Exception {
+		StringBuilder jpql = new StringBuilder("select _role from Role _role inner join _role.orgs _org where 1=1");
+		List<Object> conditionVals = new ArrayList<Object>();
+		
+		if(null != orgId){
+			jpql.append(" and _org.id = ?");
+			conditionVals.add(orgId);
+		}
+		
+		if(!StringUtils.isBlank(queryDTO.getName())){
+			jpql.append(" and _role.name like ?");
+			conditionVals.add(MessageFormat.format("%{0}%", queryDTO.getName()));
+		}
+		
+		List<Role> roles = queryChannelService.queryResult(jpql.toString(), conditionVals.toArray());
+		
+		List<RoleDTO> roleDTOs = new ArrayList<RoleDTO>();
+		RoleDTO roleDTO = null;
+		for(Role role:roles){
+			roleDTO = new RoleDTO();
+			RoleBeanUtil.domainToDTO(roleDTO, role);
+			roleDTOs.add(roleDTO);
+		}
+		return roleDTOs;
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	public List<RoleDTO> findParentRoleByOrgId(RoleDTO queryDTO, Long orgId) throws Exception {
+		Org org = Org.load(Org.class, orgId);
+		List<Long> orgIdList = new ArrayList<Long>();
+		orgIdList.add(org.getId());
+		
+		findAllParentOrgId(org, orgIdList);
+		
+		StringBuilder jpql = new StringBuilder("select new org.yixun.platform.application.security.dto.RoleDTO(_role,_org.id,_org.name) from Role _role inner join _role.orgs _org where 1=1");
+		List<Object> conditionVals = new ArrayList<Object>();
+		
+		if(null != orgIdList){	
+			Collections.reverse(orgIdList);
+			jpql.append(" and _org.id in ("+ StringUtils.join(orgIdList, ",") +")");
+		}
+		
+		if(!StringUtils.isBlank(queryDTO.getName())){
+			jpql.append(" and _role.name like ?");
+			conditionVals.add(MessageFormat.format("%{0}%", queryDTO.getName()));
+		}
+		
+		List<RoleDTO> roles = queryChannelService.queryResult(jpql.toString(), conditionVals.toArray());
+		
+//		List<RoleDTO> roleDTOs = new ArrayList<RoleDTO>();
+//		RoleDTO roleDTO = null;
+//		for(Role role:roles){
+//			roleDTO = new RoleDTO();
+//			RoleBeanUtil.domainToDTO(roleDTO, role);
+//			roleDTOs.add(roleDTO);
+//		}
+		return roles;
+
+	}
+	
+	@Override
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	public List<RoleDTO> findRoleByIdentityId(RoleDTO queryDTO, Long identityId) throws Exception {
+		
+		StringBuilder jpql = new StringBuilder("select new org.yixun.platform.application.security.dto.RoleDTO(_role,_identity.id,_identity.name) from Role _role inner join _role.identities _identity where 1=1 and _identity.id = ?");
+		List<Object> conditionVals = new ArrayList<Object>();
+		conditionVals.add(identityId);
+		
+		if(!StringUtils.isBlank(queryDTO.getName())){
+			jpql.append(" and _role.name like ?");
+			conditionVals.add(MessageFormat.format("%{0}%", queryDTO.getName()));
+		}
+		
+		List<RoleDTO> roles = queryChannelService.queryResult(jpql.toString(), conditionVals.toArray());
+		
+//		List<RoleDTO> roleDTOs = new ArrayList<RoleDTO>();
+//		RoleDTO roleDTO = null;
+//		for(Role role:roles){
+//			roleDTO = new RoleDTO();
+//			RoleBeanUtil.domainToDTO(roleDTO, role);
+//			roleDTOs.add(roleDTO);
+//		}
+		return roles;
+
+	}
+	
+	private void findAllParentOrgId(Org org,List<Long> orgIdList){
+		Set<Org> parents = org.getParents();
+		if(null != parents && parents.size() != 0){
+			for (Org parentOrg : parents) {
+				orgIdList.add(parentOrg.getId());
+				findAllParentOrgId(parentOrg,orgIdList);
+			}
+		}
+	}
+
+	@Override
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	public List<RoleDTO> findRoleByOrgIdAndIdentityId(RoleDTO queryDTO, Long orgId, Long identityId) throws Exception {
+		List<RoleDTO> parentRoleByOrgIdList = findParentRoleByOrgId(queryDTO, orgId);
+		List<RoleDTO> roleByIdentityIdList = findRoleByIdentityId(queryDTO, identityId);
+		
+		List<RoleDTO> roleDTOList = new ArrayList<RoleDTO>();
+		roleDTOList.addAll(parentRoleByOrgIdList);
+		roleDTOList.addAll(roleByIdentityIdList);
+		return roleDTOList;
+	}
+
+	@Override
+	public Page<RoleDTO> findRoleByNoAssignToIdentityIdOrOrgId(RoleDTO queryDTO, Long orgId,Long identityId,int page,int pageSize) throws Exception {
+		StringBuilder jpql = new StringBuilder("select _role from Role _role where 1=1");
+		List<Object> conditionVals = new ArrayList<Object>();
+		if(null != orgId){
+			jpql.append(" and _role.id not in (select _role.id from Org _org inner join _org.roles _role where _org.id = ?) ");
+			conditionVals.add(orgId);
+		}
+		if(null != identityId){
+			jpql.append(" and _role.id not in (select _role.id from Identity _identity inner join _identity.roles _role where _identity.id = ?) ");
+			conditionVals.add(identityId);
+		}
+		
+		Page<Role> pages = queryChannelService.queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), page, pageSize);
+		
+		List<RoleDTO> roleDTOs = new ArrayList<RoleDTO>();
+		RoleDTO roleDTO = null;
+		for(Role role:pages.getResult()){
+			roleDTO = new RoleDTO();
+			RoleBeanUtil.domainToDTO(roleDTO, role);
+			roleDTOs.add(roleDTO);
+		}
+		return new Page<RoleDTO>(pages.getCurrentPageNo(),pages.getTotalCount(),pages.getPageSize(),roleDTOs);
+	}
+
+	@Override
+	public void assignResourceToRole(Long roleId, Long[] resourceIds) throws Exception {
+		Role role = Role.load(Role.class, roleId);
+		for (Long resourceId : resourceIds) {
+			Resource resource = Resource.load(Resource.class, resourceId);
+			role.getResources().add(resource);
+		}
+		
+	}
+
+	@Override
+	public void removeResourceForRole(Long roleId, Long[] resourceIds) throws Exception {
+		Role role = Role.load(Role.class, roleId);
+		for (Long resourceId : resourceIds) {
+			Resource resource = Resource.load(Resource.class, resourceId);
+			role.getResources().remove(resource);
+		}
+		
 	}
 
 }

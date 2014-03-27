@@ -6,7 +6,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
+	var orgId = "${param.orgId}";
+	//var orgName = "${param.orgName}";
 	$(function(){
+		$("#orgIdID").val(orgId);
+		initOrgName();
 		autoResize();
 	});
 	function autoResize(){
@@ -25,6 +29,20 @@
 		} catch (e) {}
 	}
 	
+	function initOrgName(){
+		$.ajax({
+			url:"${pageContext.request.contextPath}/org/findOrgById/"+ orgId +".do",
+			dataType:"json",
+			cache:false,
+			success:function(json){
+				if(json && json.data){
+					 json = json.data;
+					 $("#orgNameID").val(json.text);
+				}
+			}
+		});
+	}
+	
 	function saveDataAction(){
 		$.post("${pageContext.request.contextPath}/identity/saveIdentity.do", 
 				$("#user_form").serialize(),
@@ -33,6 +51,7 @@
 						alert(json.error);
 					} else if(json && json.result){
 					 alert(json.result);
+					 parent.gridManager.setParm('orgId',orgId);
 					 parent.gridManager.loadData();
 					 parent._dialog.close();
 					}
@@ -45,6 +64,13 @@
 	<form id="user_form">
 		<table id="form_table" border="0" cellpadding="0" cellspacing="0"
 			class="form2column">
+			<tr>
+				<td class="label">组织名称:</td>
+				<td>
+					<input name="orgId" class="input-common" type="hidden" id="orgIdID" />
+					<input name="orgName" class="input-common" type="text" id="orgNameID" disabled="disabled" />
+				</td>
+			</tr>
 			<tr>
 				<td class="label">用户名称:</td>
 				<td><input name="name" class="input-common" type="text"id="nameID" /></td>

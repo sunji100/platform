@@ -71,6 +71,10 @@ public class Identity extends AbstractEntity {
 	@JoinTable(name="ks_role_user_auth",joinColumns={@JoinColumn(name="USER_ID")},inverseJoinColumns={@JoinColumn(name="ROLE_ID")})
 	private Set<Role> roles = new HashSet<Role>();
 	
+	@ManyToMany
+	@JoinTable(name="ks_org_user",joinColumns=@JoinColumn(name="IDENTITY_ID"),inverseJoinColumns=@JoinColumn(name="ORG_ID"))
+	private Set<Org> orgs = new HashSet<Org>();
+	
 	
 	public Set<Role> getRoles() {
 		return roles;
@@ -78,6 +82,14 @@ public class Identity extends AbstractEntity {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public Set<Org> getOrgs() {
+		return orgs;
+	}
+
+	public void setOrgs(Set<Org> orgs) {
+		this.orgs = orgs;
 	}
 
 	public Date getAbolishDate() {

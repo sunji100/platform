@@ -88,6 +88,7 @@
 	    	 alert('请只选择一行'); return;
 	     }
 	     id = newRow.id;
+	     console.info(JSON.stringify(newRow));
 	     url = "product-update.jsp?id=" + newRow.id;
 	     
 	     _dialog = jQuery.ligerDialog.open({

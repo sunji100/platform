@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_1_0.xsd"
+	version="1.0">
+	
+	<named-query name="findTopLevelMenuByUser">
+		<query>
+			select _resource from Resource _resource inner join _resource.roles _role inner join _role.identities _identity inner join _resource.resourceType _resourceType
+			where _resource.level=? and _identity.userAccount = ? and _resourceType.name in('DIRETORY','MENU') order by _resource.sortOrder asc,_resource.name asc
+		</query>
+	</named-query>
+	<named-query name="findMenuByUserAndParentId">
+		<query>
+			select _resource from Resource _resource inner join _resource.roles _role inner join _role.identities _identity inner join _resource.parents _parent
+			where _identity.userAccount = ? and _parent.id = ? order by _resource.sortOrder asc
+		</query>
+	</named-query>
+	<named-query name="findTopLevelMenu">
+		<query>
+			select _resource from Resource _resource inner join _resource.resourceType _resourceType
+			where _resource.level=? and _resourceType.name in('DIRETORY','MENU') order by _resource.sortOrder asc,_resource.name asc
+		</query>
+	</named-query>
+	<named-query name="findMenuByParentId">
+		<query>
+			select _resource from Resource _resource inner join _resource.parents _parent 
+			where _parent.id = ? order by _resource.sortOrder asc
+		</query>
+	</named-query>
+	<named-query name="findTopLevelDiretory">
+		<query>
+			select _resource from Resource _resource inner join _resource.resourceType _resourceType 
+			where _resourceType.id= ? and _resource.level=? order by _resource.sortOrder asc,_resource.name asc
+		</query>
+	</named-query>
+	<named-query name="findDiretoryByParentId">
+		<query>
+			select _resource from Resource _resource inner join _resource.resourceType _resourceType inner join _resource.parents _parent 
+			where _resourceType.id= ? and _parent.id = ? order by _resource.sortOrder asc
+		</query>
+	</named-query>
+	<named-query name="findMenuByRole">
+		<query>
+			select _resource from Resource _resource inner join _resource.roles _role inner join _resource.resourceType _resourceType 
+			where _role.id= ? and _resourceType.name in('DIRETORY','MENU') order by _resource.sortOrder asc
+		</query>
+	</named-query>
+	<named-query name="findMenuByParentIdAndNoAssignToRole">
+		<query>
+			select _resource from Resource _resource inner join _resource.parents _parent left join _resource.roles _role 
+			where _parent.id = ? and _role != ? order by _resource.sortOrder asc
+		</query>
+	</named-query>
+	<named-query name="findResourceByRole">
+		<query>
+			select _resource from Resource _resource inner join _resource.roles _role left join _resource.resourceType _resourceType 
+			where _role.id= ? and (_resourceType.name not in('DIRETORY','MENU') or _resourceType.name is null) order by _resource.sortOrder asc
+		</query>
+	</named-query>
+</entity-mappings>

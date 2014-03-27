@@ -1,11 +1,27 @@
 package org.yixun.platform.application.security.dto;
 
+import org.yixun.platform.application.security.util.RoleBeanUtil;
+import org.yixun.platform.core.security.Role;
+
 public class RoleDTO {
 	private Long id;
 	private String name;
 	private int sortOrder;
 	private boolean isValid;
 	private String roleDesc;
+	private Long orgId;
+	private String orgName;
+	
+	public RoleDTO(){
+		
+	}
+	
+	public RoleDTO(Role role,Long orgId,String orgName){
+		RoleBeanUtil.domainToDTO(this, role);
+		this.setOrgId(orgId);
+		this.setOrgName(orgName);
+	}
+	 
 	public Long getId() {
 		return id;
 	}
@@ -35,6 +51,27 @@ public class RoleDTO {
 	}
 	public void setRoleDesc(String roleDesc) {
 		this.roleDesc = roleDesc;
+	}
+
+	public Long getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(Long orgId) {
+		this.orgId = orgId;
+	}
+
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	@Override
+	public String toString() {
+		return "RoleDTO [id=" + id + ", name=" + name + ", sortOrder=" + sortOrder + ", isValid=" + isValid + ", roleDesc=" + roleDesc + ", orgId=" + orgId + ", orgName=" + orgName + "]";
 	}
 	
 }

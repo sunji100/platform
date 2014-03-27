@@ -1,7 +1,6 @@
 package org.yixun.platform.application.security.dto;
 
-import java.util.List;
-
+import org.yixun.platform.application.security.util.ResourceBeanUtil;
 import org.yixun.platform.core.security.Resource;
 
 public class ResourceDTO {
@@ -12,19 +11,20 @@ public class ResourceDTO {
 	private String identifier;
 	private String level;
 	private String icon;
-	private String menuType;
-	private List<ResourceDTO> children;
+	private String resourceType;
+	private Long resourceTypeId;
+	private String parentIds;
 	
-	public void domainToDTO(Resource resource){
-		this.setId(resource.getId());
-		this.setText(resource.getName());
-		this.setSortOrder(resource.getSortOrder());
-		this.setDescription(resource.getDescription());
-		this.setIdentifier(resource.getIdentifier());
-		this.setLevel(resource.getLevel());
-		this.setIcon(resource.getMenuIcon());
-		this.setMenuType(resource.getResourceType().getName());
+	public ResourceDTO(){
+		
 	}
+	
+	public ResourceDTO(Resource resource,String resourceType){
+		ResourceBeanUtil.domainToDTO(this,resource);
+		this.resourceType = resourceType;
+	}
+	
+	
 	
 	public Long getId() {
 		return id;
@@ -58,12 +58,7 @@ public class ResourceDTO {
 		this.level = level;
 	}
 	
-	public List<ResourceDTO> getChildren() {
-		return children;
-	}
-	public void setChildren(List<ResourceDTO> children) {
-		this.children = children;
-	}
+	
 
 	public String getText() {
 		return text;
@@ -81,12 +76,38 @@ public class ResourceDTO {
 		this.icon = icon;
 	}
 
-	public String getMenuType() {
-		return menuType;
+	public String getResourceType() {
+		return resourceType;
 	}
 
-	public void setMenuType(String menuType) {
-		this.menuType = menuType;
+	public void setResourceType(String resourceType) {
+		this.resourceType = resourceType;
 	}
+
+	public Long getResourceTypeId() {
+		return resourceTypeId;
+	}
+
+	public void setResourceTypeId(Long resourceTypeId) {
+		this.resourceTypeId = resourceTypeId;
+	}
+
+	public String getParentIds() {
+		return parentIds;
+	}
+
+	public void setParentIds(String parentIds) {
+		this.parentIds = parentIds;
+	}
+
+	@Override
+	public String toString() {
+		return "ResourceDTO [id=" + id + ", text=" + text + ", sortOrder=" + sortOrder + ", description=" + description + ", identifier=" + identifier + ", level=" + level + ", icon=" + icon
+				+ ", resourceType=" + resourceType + ", resourceTypeId=" + resourceTypeId + ", parentIds=" + parentIds + "]";
+	}
+
+	
+
+	
 	
 }

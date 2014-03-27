@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_1_0.xsd"
+	version="1.0">
+	
+	<named-query name="findIdentityByUserAccount">
+		<query>
+			select _identity from Identity _identity where _identity.userAccount = ?
+		</query>
+	</named-query>
+	<named-query name="findNotAssignUserByRole">
+		<query>
+			select _identity from Identity _identity where _identity.id not in (
+			select _identity.id from Identity _identity inner join _identity.roles _role where _role.id = ?)
+		</query>
+	</named-query>
+</entity-mappings>

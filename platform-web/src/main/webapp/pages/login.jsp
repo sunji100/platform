@@ -162,8 +162,8 @@ body {
 				    <c:if test="${param.login_error == '2' }">
 				      <li><font color='red'>验证码错误</font></li>
 				    </c:if>
-					<li>用户名:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="j_username" id="j_username" value="user1"/></li>
-					<li>密&nbsp;&nbsp;&nbsp;码:&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" name="j_password" id="j_password" value="123" /></li>
+					<li>用户名:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="j_username" id="j_username" value="user3"/></li>
+					<li>密&nbsp;&nbsp;&nbsp;码:&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" name="j_password" id="j_password" value="user3" /></li>
 					<li>验证码:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="jcaptcha" value="" /></li>
 					<li>&nbsp;&nbsp;&nbsp;&nbsp;<img src="jcaptcha.jpg" id="checkCode" onclick="refreshCode();"/></li>
 				</ul>

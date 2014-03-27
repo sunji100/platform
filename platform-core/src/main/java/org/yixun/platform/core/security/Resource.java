@@ -63,10 +63,11 @@ public class Resource extends AbstractEntity {
 	@JoinColumn(name="RESOURCETYPE_ID")
 	private ResourceType resourceType;
 	
-	@ManyToMany(mappedBy="resources")
+	@ManyToMany
+	@JoinTable(name="ks_role_resource_auth",joinColumns=@JoinColumn(name="RESOURCE_ID"),inverseJoinColumns=@JoinColumn(name="IDENTITY_ID"))
 	private Set<Role> roles = new HashSet<Role>();
 	
-	@ManyToMany
+	@ManyToMany(cascade=CascadeType.REMOVE)
 	@JoinTable(name="ks_resource_lineassignment",joinColumns=@JoinColumn(name="PARENT_ID"),inverseJoinColumns=@JoinColumn(name="CHILD_ID"))
 	private Set<Resource> childs = new HashSet<Resource>();
 	
@@ -192,13 +193,42 @@ public class Resource extends AbstractEntity {
 		return getRepository().findByNamedQuery(queryName, params, Resource.class);
 	}
 	
-	public static List<Resource> findTopLevelResourceByUser(String userAccount){
-		return findByNamedQuery("findTopLevelResourceByUser", new Object[]{userAccount});
+	public static List<Resource> findTopLevelMenuByUser(String userAccount){
+		return findByNamedQuery("findTopLevelMenuByUser", new Object[]{"1",userAccount});
 	}
 	
-	public static List<Resource> findResourceByParentId(Long parentId){
-		return findByNamedQuery("findResourceByParentId", new Object[]{parentId});
+	public static List<Resource> findTopLevelMenu(){
+		return findByNamedQuery("findTopLevelMenu",new Object[]{"1"});
 	}
+	
+	public static List<Resource> findTopLevelDiretory(){
+		return findByNamedQuery("findTopLevelDiretory",new Object[]{new Long(1),"1"});
+	}
+	
+	public static List<Resource> findMenuByUserAndParentId(String userAccount,Long parentId){
+		return findByNamedQuery("findMenuByUserAndParentId", new Object[]{userAccount,parentId});
+	}
+	
+	public static List<Resource> findMenuByParentId(Long parentId){
+		return findByNamedQuery("findMenuByParentId", new Object[]{parentId});
+	}
+	
+	public static List<Resource> findDiretoryByParentId(Long parentId){
+		return findByNamedQuery("findDiretoryByParentId", new Object[]{new Long(1),parentId});
+	}
+	
+	public static List<Resource> findMenuByRole(Long roleId){
+		return findByNamedQuery("findMenuByRole", new Object[]{roleId});
+	}
+	
+	public static List<Resource> findMenuByParentIdAndNoAssignToRole(Long parentId,Long roleId){
+		return findByNamedQuery("findMenuByParentIdAndNoAssignToRole", new Object[]{parentId});
+	}
+	
+	public static List<Resource> findResourceByRole(Long roleId){
+		return findByNamedQuery("findResourceByRole", new Object[]{roleId});
+	}
+	
 
 	@Override
 	public int hashCode() {

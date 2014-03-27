@@ -12,6 +12,7 @@ import javax.inject.Named;
 import org.yixun.platform.application.crud.dto.UserDetails;
 import org.yixun.platform.application.security.AuthDataService;
 import org.yixun.platform.core.security.Identity;
+import org.yixun.platform.core.security.Org;
 import org.yixun.platform.core.security.Resource;
 import org.yixun.platform.core.security.Role;
 
@@ -38,14 +39,24 @@ public class AuthDataServiceImpl implements AuthDataService {
 //			jpql = "select _role from Identity _identity inner join _identity.roles _role where _identity.userAccount = ?";
 //			List<Role> roles = queryChannelService.queryResult(jpql, conditionVals.toArray());
 			Set<Role> roles = identity.getRoles();
+			List<String> roleList = new ArrayList<String>();
 			
 			if(null != roles){
-				List<String> roleList = new ArrayList<String>();
 				for (Role role : roles) {
 					roleList.add(role.getName());
 				}
-				userDetails.setRoles(roleList);
 			}
+			
+			Set<Org> orgs = identity.getOrgs();
+			if(orgs != null){
+				for (Org org : orgs) {
+					Set<Role> orgRoles = org.getRoles();
+					for (Role role : orgRoles) {
+						roleList.add(role.getName());
+					}
+				}
+			}
+			userDetails.setRoles(roleList);
 			return userDetails;
 		}
 		return null;

@@ -22,4 +22,8 @@ public class ResourceTypeDTO {
 	public void setSortOrder(int sortOrder) {
 		this.sortOrder = sortOrder;
 	}
+	@Override
+	public String toString() {
+		return "ResourceTypeDTO [id=" + id + ", name=" + name + ", sortOrder=" + sortOrder + "]";
+	}
 }

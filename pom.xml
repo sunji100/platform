@@ -16,6 +16,7 @@
 		<module>platform-applicationImpl</module>
 		<module>platform-web</module>
 		<module>platform-support</module>
+		<module>platform-workflow</module>
 	</modules>
 
 	<properties>
@@ -26,6 +27,7 @@
 		<spring.security.version>3.0.8.RELEASE</spring.security.version>
 		<koalaSecurity.version>2.0.0-SNAPSHOT</koalaSecurity.version>
 		<koala.framework.version>2.0.0-SNAPSHOT</koala.framework.version>
+		<activiti-version>5.14</activiti-version>
 
 		<!--DB实现以及MVC模型的实现支持，不要修改这两个值 -->
 		<dbProtocol>JPA</dbProtocol>
@@ -647,6 +649,29 @@
 				<artifactId>xbean-spring</artifactId>
 				<version>3.13</version>
 			</dependency>
+			
+			<dependency>
+			    <groupId>net.sf.ehcache</groupId>
+			    <artifactId>ehcache</artifactId>
+			    <version>2.8.1</version>
+			</dependency>
+			
+			<!--  activiti -->
+			<dependency>
+		      <groupId>org.yixun</groupId>
+		      <artifactId>activiti-engine</artifactId>
+		      <version>${activiti-version}</version>
+		    </dependency>
+		    <dependency>
+		      <groupId>org.activiti</groupId>
+		      <artifactId>activiti-spring</artifactId>
+		      <version>${activiti-version}</version>
+		    </dependency>
+		    <dependency>
+		      <groupId>org.codehaus.groovy</groupId>
+		      <artifactId>groovy-all</artifactId>
+		      <version>2.0.4</version>
+		    </dependency>
 
 		</dependencies>
 

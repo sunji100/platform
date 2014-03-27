@@ -16,8 +16,22 @@ public class IdentityDTO {
 	private String userAccount;
 	private String userDesc;
 	private String userPassword;
+	private Long orgId;
+	private String orgName;
 	
 	
+	public String getOrgName() {
+		return orgName;
+	}
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+	public Long getOrgId() {
+		return orgId;
+	}
+	public void setOrgId(Long orgId) {
+		this.orgId = orgId;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -71,6 +85,11 @@ public class IdentityDTO {
 	}
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
+	}
+	@Override
+	public String toString() {
+		return "IdentityDTO [id=" + id + ", name=" + name + ", sortOrder=" + sortOrder + ", isValid=" + isValid + ", lastLoginTime=" + lastLoginTime + ", lastModifyTime=" + lastModifyTime
+				+ ", userAccount=" + userAccount + ", userDesc=" + userDesc + ", userPassword=" + userPassword + ", orgId=" + orgId + ", orgName=" + orgName + "]";
 	}
 	
 }

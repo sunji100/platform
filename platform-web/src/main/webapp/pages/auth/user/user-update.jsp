@@ -7,7 +7,11 @@
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
 	var id = "${param.id}";
+	var orgId = "${param.orgId}";
+	var orgName = "${param.orgName}";
 	$(function(){
+		$("#id_orgId").val(orgId);
+		$("#id_orgName").val(orgName);
 		autoResize();
 		loadData();
 		$.ajaxSetup ({
@@ -91,6 +95,7 @@
 			function(json) {
 				if(json && json.result){
 				 alert(json.result);
+				 parent.gridManager.setParm('orgId',orgId);
 				 parent.gridManager.loadData();
 				 parent._dialog.close();
 				}
@@ -104,12 +109,19 @@
 		<table id="form_table" border="0" cellpadding="0" cellspacing="0"
 			class="form2column">
 			<tr>
+				<td class="label">组织名称:</td>
+				<td>
+					<input name="orgId" class="input-common" type="hidden" id="id_orgId" />
+					<input name="orgName" class="input-common" type="text" id="id_orgName" disabled="disabled" />
+				</td>
+			</tr>
+			<tr>
 				<td class="label">用户名称:</td>
 				<td><input name="name" class="input-common" type="text" id="nameID" /></td>
 			</tr>
 			<tr>
 				<td class="label">用户账户:</td>
-				<td><input name="userAccount" class="input-common" type="text" id="userAccountID" /></td>
+				<td><input name="userAccount" class="input-common" type="text" id="userAccountID" disabled="disabled" /></td>
 			</tr>
 			<tr>
 				<td class="label">用户描述:</td>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_1_0.xsd"
+	version="1.0">
+	
+	<named-query name="findTopLevelOrg">
+		<query>
+			select _org from Org _org 
+			where _org.level = ? order by _org.sortOrder asc
+		</query>
+	</named-query>
+	
+	<named-query name="findOrgByParentId">
+		<query>
+			select _org from Org _org inner join _org.parents _parent  
+			where _parent.id = ? order by _org.sortOrder asc
+		</query>
+	</named-query>
+	
+	<named-query name="findNextLevelIdentity">
+		<query>
+			select _identity from Org _org inner join _org.identities _identity 
+			where _identity.abolishDate > ? and _org.id = ?
+		</query>
+	</named-query>
+</entity-mappings>

@@ -2,6 +2,7 @@ package org.yixun.platform.application.security.impl;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ import org.yixun.platform.application.security.IdentityApplication;
 import org.yixun.platform.application.security.dto.IdentityDTO;
 import org.yixun.platform.application.security.util.IdentityBeanUtil;
 import org.yixun.platform.core.security.Identity;
+import org.yixun.platform.core.security.Org;
 import org.yixun.platform.core.security.Role;
 import org.yixun.support.exception.BusinessException;
 
@@ -54,8 +56,43 @@ public class IdentityApplicationImpl implements IdentityApplication {
 	@Override
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public Page<IdentityDTO> pageQueryIdentity(IdentityDTO queryDTO, int page, int pageSize) {
-		StringBuilder jpql = new StringBuilder("select _identity from Identity _identity where 1=1");
+		StringBuilder jpql = new StringBuilder("select _identity from Identity _identity where 1=1 and _identity.abolishDate > ?");
 		List<Object> conditionVals = new ArrayList<Object>();
+		conditionVals.add(new Date());
+		
+		if(null != queryDTO.getName()){
+			jpql.append(" and _identity.name like ?");
+			conditionVals.add(MessageFormat.format("%{0}%", queryDTO.getName()));
+		}
+		
+		if(null != queryDTO.getUserAccount()){
+			jpql.append(" and _identity.userAccount like ?");
+			conditionVals.add(MessageFormat.format("%{0}%", queryDTO.getUserAccount()));
+		}
+		
+		Page<Identity> pages = queryChannelService.queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), page, pageSize);
+		
+		List<IdentityDTO> identityDTOs = new ArrayList<IdentityDTO>();
+		IdentityDTO identityDTO = null;
+		for (Identity identity : pages.getResult()) {
+			identityDTO = new IdentityDTO();
+			IdentityBeanUtil.domainToDTO(identityDTO, identity);
+			identityDTOs.add(identityDTO);
+		}
+		return new Page<IdentityDTO>(pages.getCurrentPageNo(),pages.getTotalCount(),pages.getPageSize(),identityDTOs);
+	}
+	
+	@Override
+	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	public Page<IdentityDTO> pageQueryIdentityByOrgId(IdentityDTO queryDTO, int page, int pageSize,Long orgId) {
+		StringBuilder jpql = new StringBuilder("select _identity from Identity _identity inner join _identity.orgs _org where 1=1 and _identity.abolishDate > ?");
+		List<Object> conditionVals = new ArrayList<Object>();
+		conditionVals.add(new Date());
+		
+		if(null != orgId){
+			jpql.append(" and _org.id = ?");
+			conditionVals.add(orgId);
+		}
 		
 		if(null != queryDTO.getName()){
 			jpql.append(" and _identity.name like ?");
@@ -86,6 +123,10 @@ public class IdentityApplicationImpl implements IdentityApplication {
 		if(identity.isAccountExist()){
 			throw new BusinessException("用户已存在");
 		}
+		
+		Org org = Org.load(Org.class, identityDTO.getOrgId());
+		identity.getOrgs().add(org);
+		
 		identity.save();
 		identityDTO.setId(identity.getId());
 		return identityDTO;
@@ -112,7 +153,8 @@ public class IdentityApplicationImpl implements IdentityApplication {
 	public void removeIdentity(Long[] ids) {
 		for (Long id : ids) {
 			Identity identity = Identity.load(Identity.class, id);
-			identity.remove();
+			//identity.remove();
+			identity.setAbolishDate(new Date());
 		}
 		
 	}
@@ -120,8 +162,9 @@ public class IdentityApplicationImpl implements IdentityApplication {
 	@Override
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public Page<IdentityDTO> pageQueryIdentityByRoleId(IdentityDTO queryDTO, Long roleId, int page, int pageSize) throws Exception {
-		StringBuilder jpql = new StringBuilder("select _identity from Identity _identity inner join _identity.roles _role where 1=1");
+		StringBuilder jpql = new StringBuilder("select _identity from Identity _identity inner join _identity.roles _role where 1=1 and _identity.abolishDate > ?");
 		List<Object> conditionVals = new ArrayList<Object>();
+		conditionVals.add(new Date());
 		
 		if(null != roleId){
 			jpql.append(" and _role.id = ?");
@@ -154,10 +197,11 @@ public class IdentityApplicationImpl implements IdentityApplication {
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public Page<IdentityDTO> findNotAssignUserByRole(IdentityDTO queryDTO,Long roleId,int page,int pageSize) throws Exception{
 		StringBuilder jpql = new StringBuilder("select _identity from Identity _identity where 1=1 and "
-				+ "_identity.id not in (select _identity.id from Identity _identity inner join _identity.roles _role where _role.id = ?)");
+				+ "_identity.id not in (select _identity.id from Identity _identity inner join _identity.roles _role where _role.id = ?) and _identity.abolishDate > ?");
 		List<Object> conditionVals = new ArrayList<Object>();
 		
 		conditionVals.add(roleId);
+		conditionVals.add(new Date());
 		
 		if(null != queryDTO.getName()){
 			jpql.append(" and _identity.name like ?");
