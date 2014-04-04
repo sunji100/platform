@@ -10,15 +10,24 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.ManagementService;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.impl.RepositoryServiceImpl;
 import org.activiti.engine.impl.bpmn.behavior.UserTaskActivityBehavior;
 import org.activiti.engine.impl.interceptor.Command;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.impl.pvm.PvmActivity;
+import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.impl.task.TaskDefinition;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.task.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.yixun.platform.application.security.dto.IdentityDTO;
@@ -32,6 +41,7 @@ import org.yixun.platform.core.security.Identity;
 import org.yixun.platform.core.security.Role;
 import org.yixun.platform.core.workflow.BpmConfUser;
 import org.yixun.platform.workflow.cmd.ProcessDefinitionDiagramCmd;
+import org.yixun.platform.workflow.listener.ConfUserTaskListener;
 
 import com.dayatang.querychannel.service.QueryChannelService;
 import com.dayatang.querychannel.support.Page;
@@ -39,11 +49,17 @@ import com.dayatang.querychannel.support.Page;
 @Named
 @Transactional
 public class BpmAdminApplicationImpl implements BpmAdminApplication {
+	private static Logger logger = LoggerFactory
+            .getLogger(BpmAdminApplicationImpl.class);
 	
 	@Inject
 	private RepositoryService repositoryService;
 	@Inject
 	private ManagementService managementService;
+	@Inject
+	private TaskService taskService;
+	@Inject
+	private HistoryService historyService;
 	@Inject
 	private QueryChannelService queryChannelService;
 	
@@ -56,10 +72,25 @@ public class BpmAdminApplicationImpl implements BpmAdminApplication {
 		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity)((RepositoryServiceImpl)repositoryService).getDeployedProcessDefinition(processDefinitionId);
 		List<ActivityImpl> activities = processDefinitionEntity.getActivities();
 		
+		ActivityImpl startActivity = processDefinitionEntity.getInitial();
+		if (startActivity.getOutgoingTransitions().size() != 1) {
+			throw new IllegalStateException("start activity outgoing transitions cannot more than 1, now is : " + startActivity.getOutgoingTransitions().size());
+		}
+
+		PvmTransition pvmTransition = startActivity.getOutgoingTransitions().get(0);
+		PvmActivity targetActivity = pvmTransition.getDestination();
+
+		String firstTaskActivityId = "";
+		if (!"userTask".equals(targetActivity.getProperty("type"))) {
+			logger.debug("first activity is not userTask, just skip");
+		} else {
+			firstTaskActivityId = targetActivity.getId();
+		}
+		
 		List<Map<String, Object>> userTaskList = new ArrayList<Map<String,Object>>();
 		for (ActivityImpl activityImpl : activities) {
 			String type = activityImpl.getProperties().get("type").toString();
-			if("userTask".equals(type)){
+			if("userTask".equals(type) && !firstTaskActivityId.equals(activityImpl.getId())){
 				Map<String, Object> userTaskInfo = new HashMap<String, Object>();
 				String procDefId = activityImpl.getProcessDefinition().getId();
 				userTaskInfo.put("procDefId", procDefId);
@@ -306,6 +337,48 @@ public class BpmAdminApplicationImpl implements BpmAdminApplication {
 				bpmConfUser.getRoles().remove(role);
 			}
 		}
+	}
+	
+	/**
+	 * 查看所有运行中的任务
+	 */
+	@Override
+	public List<Map<String, Object>> listTasks() throws Exception {
+		List<Task> taskList = taskService.createTaskQuery().orderByTaskCreateTime().desc().list();
+		
+		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
+		for(Task task:taskList){
+			Map<String, Object> taskMap = new HashMap<String, Object>();
+			taskMap.put("id", task.getId());
+			taskMap.put("name", task.getName());
+			taskMap.put("createTime", task.getCreateTime());
+			taskMap.put("taskDefKey", task.getTaskDefinitionKey());
+			taskMap.put("taskAssignee", task.getAssignee());
+			String processInstanceId = task.getProcessInstanceId();
+			taskMap.put("processInstanceId", processInstanceId);
+			HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+			taskMap.put("started", historicProcessInstance.getStartUserId());
+			ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(historicProcessInstance.getProcessDefinitionId()).singleResult();
+			taskMap.put("procName", processDefinition.getName());
+			taskMap.put("procDefId", processDefinition.getId());
+			
+			taskMap.put("procTitle", findProcTitle(historicProcessInstance.getId()));
+			resultList.add(taskMap);
+		}
+		return resultList;
+	}
+	
+	/**
+	 * 获得流程实例标题
+	 */
+	private String findProcTitle(String processInstanceId) throws Exception {
+		List<HistoricVariableInstance> historicVariableInstances = historyService.createHistoricVariableInstanceQuery().processInstanceId(processInstanceId).list();
+		for (HistoricVariableInstance historicVariableInstance : historicVariableInstances) {
+			if("procTitle".equals(historicVariableInstance.getVariableName())){
+				return String.valueOf(historicVariableInstance.getValue());
+			}
+		}
+		return null;
 	}
 
 }

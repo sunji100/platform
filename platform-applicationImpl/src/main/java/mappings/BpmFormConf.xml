@@ -7,6 +7,6 @@
 	<named-query name="findBpmFormConfByPdId">
 		<query>
 			select _bpmFormConf from BpmFormConf _bpmFormConf where _bpmFormConf.procDefId = ? 
-		</query>
+		</query> 
 	</named-query>
 </entity-mappings>

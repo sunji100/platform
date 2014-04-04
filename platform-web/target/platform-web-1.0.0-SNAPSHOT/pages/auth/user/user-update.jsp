@@ -8,10 +8,8 @@
 <script type="text/javascript">
 	var id = "${param.id}";
 	var orgId = "${param.orgId}";
-	var orgName = "${param.orgName}";
 	$(function(){
 		$("#id_orgId").val(orgId);
-		$("#id_orgName").val(orgName);
 		autoResize();
 		loadData();
 		$.ajaxSetup ({
@@ -112,7 +110,7 @@
 				<td class="label">组织名称:</td>
 				<td>
 					<input name="orgId" class="input-common" type="hidden" id="id_orgId" />
-					<input name="orgName" class="input-common" type="text" id="id_orgName" disabled="disabled" />
+					<input name="orgName" class="input-common" type="text" id="orgNameID" disabled="disabled" />
 				</td>
 			</tr>
 			<tr>

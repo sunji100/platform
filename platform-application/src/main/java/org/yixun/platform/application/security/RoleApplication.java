@@ -25,4 +25,5 @@ public interface RoleApplication {
 	public Page<RoleDTO> findRoleByNoAssignToIdentityIdOrOrgId(RoleDTO queryDTO,Long orgId,Long identityId,int page,int pageSize) throws Exception;
 	public void assignResourceToRole(Long roleId,Long[] resourceIds) throws Exception;
 	public void removeResourceForRole(Long roleId,Long[] resourceIds) throws Exception;
+	public List<RoleDTO> findRoleForOrgHasUserByUserId(Long userId) throws Exception;
 }

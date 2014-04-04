@@ -32,6 +32,7 @@ public class AuthDataServiceImpl implements AuthDataService {
 		Identity identity = queryChannelService.querySingleResult(jpql, conditionVals.toArray());
 		if(null != identity){
 			UserDetails userDetails = new UserDetails();
+			userDetails.setUserId(identity.getId());
 			userDetails.setUseraccount(identity.getUserAccount());
 			userDetails.setPassword(identity.getUserPassword());
 			userDetails.setEnabled(identity.isValid());

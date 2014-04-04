@@ -284,6 +284,50 @@ public class MenuApplicationImpl implements MenuApplication {
 		return false;
 	}
 
+	/**
+	 * 获得角色所拥有的菜单树
+	 * @param roleId
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public List<MenuDTO> findMenuTreeByRole(Long roleId) throws Exception {
+		List<Resource> resources = Resource.findTopLevelMenuByRole(roleId);
+		
+		List<MenuDTO> menuList = new ArrayList<MenuDTO>();
+		MenuDTO menuDTO = null;
+		for (Resource resource : resources) {
+			menuDTO = new MenuDTO();
+			MenuBeanUtil.domainToDTO(menuDTO, resource);
+			
+			Long parentId = resource.getId();
+			findAllSubMenuByRole(roleId, parentId, menuDTO);
+			menuList.add(menuDTO);
+		}
+		return menuList;
+	}
+	
+	/**
+	 * 获得用户拥有顶级菜单相应的子菜单
+	 * @param roleId
+	 * @param parentId
+	 * @param topMenuDTO
+	 */
+	private void findAllSubMenuByRole(Long roleId,Long parentId,MenuDTO topMenuDTO){
+		List<Resource> subMenuList = Resource.findMenuByParentIdAndRoleId(parentId, roleId);
+		if(null != subMenuList && subMenuList.size() != 0){
+			List<MenuDTO> subMenuDTOList = new ArrayList<MenuDTO>();
+			for (Resource subMenu : subMenuList) {
+				MenuDTO subMenuDTO = new MenuDTO();
+				MenuBeanUtil.domainToDTO(subMenuDTO, subMenu);
+				
+				findAllSubMenuByRole(roleId,subMenu.getId(), subMenuDTO);
+				subMenuDTOList.add(subMenuDTO);
+			}
+			topMenuDTO.setChildren(subMenuDTOList);
+		}
+	}
+
 	
 
 }

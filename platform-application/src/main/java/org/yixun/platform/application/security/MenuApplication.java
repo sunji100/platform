@@ -15,5 +15,6 @@ public interface MenuApplication {
 	public List<MenuDTO> findDiretory(Long selfId) throws Exception;
 	public void updateMenuSortOrder(MenuDTO[] menuDTOList) throws Exception;
 	public List<MenuDTO> findMenuByRole(Long roleId) throws Exception;
+	public List<MenuDTO> findMenuTreeByRole(Long roleId) throws Exception;
 	public List<MenuDTO> findMenuTreeNoAssignToRole(Long roleId) throws Exception;
 }

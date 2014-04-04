@@ -190,6 +190,10 @@ public class Org extends AbstractEntity {
 	public List<Identity> findNextLevelIdentity(){
 		return findByNamedQuery("findNextLevelIdentity",new Object[]{new Date(),this.getId()},Identity.class);
 	}
+	
+	public static List<Org> findOrgByIdentityId(Long userId) {
+		return findByNamedQuery("findOrgByIdentityId",new Object[]{userId},Org.class);
+	}
 
 	@Override
 	public int hashCode() {

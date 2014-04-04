@@ -13,6 +13,7 @@
 	var accordion = null;
 	var tab = null;
 	var tabidcounter = 0;
+	var treeManager = [];
 	$(function(){
 		// 布局
 		$("#main-content").ligerLayout({
@@ -25,7 +26,8 @@
 		var height = $(".l-layout-center").height();
 		// Tab
 		$("#framecenter").ligerTab({
-			height : height
+			height : height,
+			onAfterRemoveTabItem : cancelTreeSelect
 		});
 		
 		tab = $("#framecenter").ligerGetTabManager();
@@ -49,26 +51,88 @@
              		if (node.data.menuType == "DIRETORY") {
              			return;
              		}
-             		if (!tabid) {
-                        tabidcounter++;
-                        tabid = "tabid" + tabidcounter;
-                        $(node.target).attr("tabid", tabid);
-                    }
-             		addTabEvent(tabid,text,url);
+             		//if (!tabid) {
+                        //tabidcounter++;
+                        //tabid = "tabid" + url.replace(/\/|\./g, "");
+                        //$(node.target).attr("tabid", tabid);
+                    //}
+             		addTabEvent(text,url);
              	});
+				
+				treeManager.push($("#sub_"+menu.id).ligerGetTreeManager());
 			});
 			//Accordion
 	         accordion = $("#leftmenu").ligerAccordion({ height: $(".l-layout-center").height() - 40, speed: null });
 		});
+		//window['f_addTab'] = addTabEvent;
+		//window.prototype.f_addTab = addTabEvent;
+		//window.prototype.f_removeTab = removeTabEvent;
+		
 		window['f_addTab'] = addTabEvent;
+		
 	});
 	
-	function addTabEvent(tabid,text,url){
+	function addTabEvent(text,url){
+		var idx = url.indexOf("?");
+		var tabid = "tabid";
+		if(idx != -1){
+			tabid += url.substring(0, idx);
+		} else {
+			tabid += url;
+		}
+		tabid = tabid.replace(/\/|\./g, "");
+		if(idx != -1){
+			url += "&tabid="+tabid; 
+		} else {
+			url += "?tabid="+tabid;
+		}
+		
 		tab.addTabItem({
 			tabid :tabid,
 			text : text,
 			url : "${pageContext.request.contextPath}" + url
 		});
+	}
+	
+	function removeTabEvent(tabid){
+		tab.removeTabItem(tabid);
+	}
+	
+	/*tab之间跳转*/
+	function forwardTabEvent(text,url){
+		var idx = url.indexOf("?");
+		var tabid = "tabid";
+		if(idx != -1){
+			tabid += url.substring(0, idx);
+		} else {
+			tabid += url;
+		}
+		tabid = tabid.replace(/\/|\./g, "");
+		if(idx != -1){
+			url += "&tabid="+tabid; 
+		} else {
+			url += "?tabid="+tabid;
+		}
+		if(tab.isTabItemExist(tabid)){
+   		 	tab.selectTabItem(tabid);
+   		 	tab.reload(tabid);
+   	 	} else {
+	   	 	tab.addTabItem({
+				tabid :tabid,
+				text : text,
+				url : "${pageContext.request.contextPath}" + url
+			});
+   	 	}
+	}
+	
+	/*关闭tab标签后，取消tree的选择节点*/
+	function cancelTreeSelect(tabid){
+		for(var i=0;i<treeManager.length;i++){
+			if(treeManager[i].getSelected()){
+				treeManager[i].cancelSelect(treeManager[i].getSelected().data);
+			}
+		}
+		//tree.cancelSelect(tree.getSelected());
 	}
 </script>
 </head>

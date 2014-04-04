@@ -28,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		for(String role:user.getRoles()){
 			grantedAuthorities.add(new GrantedAuthorityImpl(role));
 		}
-		CustomUserDetails userDetails = new CustomUserDetails(user.getPassword(), user.getUseraccount(),user.isAccountNonExpired(),user.isAccountNonLocked(),user.isCredentialsNonExpired(),user.isEnabled(),grantedAuthorities);
+		CustomUserDetails userDetails = new CustomUserDetails(user.getPassword(), user.getUseraccount(),user.isAccountNonExpired(),user.isAccountNonLocked(),user.isCredentialsNonExpired(),user.isEnabled(),grantedAuthorities,user.getUserId());
 		return userDetails;
 	}
 

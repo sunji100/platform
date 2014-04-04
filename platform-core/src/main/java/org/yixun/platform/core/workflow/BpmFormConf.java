@@ -23,6 +23,9 @@ public class BpmFormConf extends AbstractEntity {
 	@Column(name="PROC_DEF_KEY_")
 	private String procDefKey;
 	
+	@Column(name="TASK_DEF_KEY_")
+	private String taskDefKey;
+	
 	@Column(name="FORM_URL")
 	private String formUrl;
 
@@ -40,6 +43,14 @@ public class BpmFormConf extends AbstractEntity {
 
 	public void setProcDefKey(String procDefKey) {
 		this.procDefKey = procDefKey;
+	}
+
+	public String getTaskDefKey() {
+		return taskDefKey;
+	}
+
+	public void setTaskDefKey(String taskDefKey) {
+		this.taskDefKey = taskDefKey;
 	}
 
 	public String getFormUrl() {

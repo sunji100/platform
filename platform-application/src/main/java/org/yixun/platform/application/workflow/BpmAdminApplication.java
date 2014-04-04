@@ -22,4 +22,6 @@ public interface BpmAdminApplication {
 	public void assignRoleToUserTask(BpmConfUserDTO bpmConfDTO,Long[] roleIds) throws Exception;
 	public void assignUserToUserTask(BpmConfUserDTO bpmConfDTO,Long[] userIds) throws Exception;
 	public void removeAssignForUserTask(BpmConfUserDTO[] bpmConfDTOs) throws Exception;
+	public List<Map<String, Object>> listTasks() throws Exception;
+	public List<Map<String, Object>> listProcessInstances() throws Exception;
 }

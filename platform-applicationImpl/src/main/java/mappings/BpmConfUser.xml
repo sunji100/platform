@@ -16,7 +16,7 @@
 			select _bpmConfUser from BpmConfUser _bpmConfUser where _bpmConfUser.procDefId = ? 
 			and _bpmConfUser.taskDefKey = ? 
 		</query>
-	</named-query>
+	</named-query> 
 	<named-query name="findNotAssignRoleByUserTask">
 		<query>
 			select _role from Role _role where _role.id not in(

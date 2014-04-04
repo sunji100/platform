@@ -21,7 +21,7 @@
 			combox.selectValue(parentId);
 		}
 		$("#menuIcon").attr("src", rootPath + "/images/icons/menu/attibutes.gif");
-		$("#iconID").val(rootPath + "/images/icons/menu/attibutes.gif");
+		$("#iconID").val("images/icons/menu/attibutes.gif");
 		$("#menuIcon").attr("alt", "图片为空");
 		loadAllMenuIcons();
 	}

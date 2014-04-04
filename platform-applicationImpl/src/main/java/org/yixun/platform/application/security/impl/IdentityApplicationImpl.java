@@ -146,6 +146,11 @@ public class IdentityApplicationImpl implements IdentityApplication {
 		Identity identity = Identity.load(Identity.class, id);
 		IdentityDTO identityDTO = new IdentityDTO();
 		IdentityBeanUtil.domainToDTO(identityDTO, identity);
+		Set<Org> orgs = identity.getOrgs();
+		if(null != orgs && orgs.size() != 0){
+			Org org = orgs.iterator().next();
+			identityDTO.setOrgName(org.getName());
+		}
 		return identityDTO;
 	}
 	
@@ -245,6 +250,24 @@ public class IdentityApplicationImpl implements IdentityApplication {
 			role.getIdentities().remove(identity);
 		}
 		
+	}
+
+	/**
+	 * 获得组织中所有用户
+	 */
+	@Override
+	public List<IdentityDTO> findIdentityByOrgId(Long orgId) throws Exception {
+		Org org = Org.load(Org.class, orgId);
+		Set<Identity> identities = org.getIdentities();
+		
+		List<IdentityDTO> identityDTOs = new ArrayList<IdentityDTO>();
+		IdentityDTO identityDTO = null;
+		for (Identity identity : identities) {
+			identityDTO = new IdentityDTO();
+			IdentityBeanUtil.domainToDTO(identityDTO, identity);
+			identityDTOs.add(identityDTO);
+		}
+		return identityDTOs;
 	}
 
 }

@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.yixun.platform.application.security.dto.IdentityDTO;
 import org.yixun.platform.core.security.Identity;
-import org.yixun.platform.infra.auth.AuthDetailUtil;
 
 import com.dayatang.utils.DateUtils;
 
@@ -34,7 +33,5 @@ public class IdentityBeanUtil {
 		
 		identity.setAbolishDate(DateUtils.MAX_DATE);
 		identity.setCreateDate(new Date());
-		
-		identity.setCreateOwner(AuthDetailUtil.getLoginName());
 	}
 }

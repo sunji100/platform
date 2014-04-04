@@ -149,4 +149,10 @@ public class OrgApplicationImpl implements OrgApplication {
 		return orgDTO;
 	}
 
+	@Override
+	public OrgDTO findOrgByIdentityId(Long userId) throws Exception {
+		List<Org> orgList = Org.findOrgByIdentityId(userId);
+		return null;
+	}
+
 }

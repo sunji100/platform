@@ -40,6 +40,18 @@
 			where _resourceType.id= ? and _parent.id = ? order by _resource.sortOrder asc
 		</query>
 	</named-query>
+	<named-query name="findTopLevelMenuByRole">
+		<query>
+			select _resource from Resource _resource inner join _resource.roles _role inner join _resource.resourceType _resourceType 
+			where _role.id= ? and _resource.level=1 and _resourceType.name in('DIRETORY','MENU') order by _resource.sortOrder asc
+		</query>
+	</named-query>
+	<named-query name="findMenuByParentIdAndRoleId">
+		<query>
+			select _resource from Resource _resource inner join _resource.parents _parent inner join _resource.roles _role 
+			where _parent.id = ? and _role.id= ? order by _resource.sortOrder asc
+		</query>
+	</named-query>
 	<named-query name="findMenuByRole">
 		<query>
 			select _resource from Resource _resource inner join _resource.roles _role inner join _resource.resourceType _resourceType 

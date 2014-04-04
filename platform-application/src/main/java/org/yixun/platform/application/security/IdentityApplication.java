@@ -20,4 +20,5 @@ public interface IdentityApplication {
 	public void assignUserToRole(Long roleId,Long[] identityIds) throws Exception;
 	public void removeUserForRole(Long roleId,Long[] identityIds) throws Exception;
 	public Page<IdentityDTO> pageQueryIdentityByOrgId(IdentityDTO queryDTO, int page, int pageSize,Long orgId) throws Exception;
+	public List<IdentityDTO> findIdentityByOrgId(Long orgId) throws Exception;
 }

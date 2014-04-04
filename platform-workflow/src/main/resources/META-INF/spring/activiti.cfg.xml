@@ -27,6 +27,7 @@
 		<property name="taskListeners">
 			<list>
 				<bean class="org.yixun.platform.workflow.listener.ConfUserTaskListener"/>
+				<bean class="org.yixun.platform.workflow.listener.DelegateTaskListener"/>
 			</list>
 		</property>
 	</bean>
@@ -45,4 +46,9 @@
 		factory-method="getHistoryService" />
 	<bean id="managementService" factory-bean="processEngine"
 		factory-method="getManagementService" />
+	<bean id="identityService" factory-bean="processEngine"
+		factory-method="getIdentityService" />
+		
+	<bean id="applicationContextHelper" class="org.yixun.platform.workflow.spring.ApplicationContextHelper"/>
+	
 </beans>

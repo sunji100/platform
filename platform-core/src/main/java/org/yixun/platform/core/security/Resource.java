@@ -217,6 +217,14 @@ public class Resource extends AbstractEntity {
 		return findByNamedQuery("findDiretoryByParentId", new Object[]{new Long(1),parentId});
 	}
 	
+	public static List<Resource> findTopLevelMenuByRole(Long roleId){
+		return findByNamedQuery("findTopLevelMenuByRole", new Object[]{roleId});
+	}
+	
+	public static List<Resource> findMenuByParentIdAndRoleId(Long parentId,Long roleId){
+		return findByNamedQuery("findMenuByParentIdAndRoleId", new Object[]{parentId,roleId});
+	}
+	
 	public static List<Resource> findMenuByRole(Long roleId){
 		return findByNamedQuery("findMenuByRole", new Object[]{roleId});
 	}

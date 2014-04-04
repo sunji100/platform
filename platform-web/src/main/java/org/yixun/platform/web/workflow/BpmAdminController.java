@@ -238,4 +238,21 @@ public class BpmAdminController {
 		result.put("result", "success");
 		return result;
 	}
+	
+	/**
+	 * 查看所有运行中的任务
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/listTasks")
+	public Map<String, Object> listTasks() throws Exception {
+		
+		List<Map<String, Object>> resultList = bpmAdminApplication.listTasks();
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("Rows", resultList);
+		
+		return result;
+	}
 }

@@ -136,7 +136,7 @@
 			deleteDataAction();
 		} else if("role" == item.id){
 			if(selectRow()){
-				top.f_addTab(null,selectedRow.name + "的角色管理","/pages/auth/role/roleListByUser.jsp?userId=" + selectedRow.id);
+				top.f_addTab(selectedRow.name + "的角色管理","/pages/auth/role/roleListByUser.jsp?userId=" + selectedRow.id);
 			}
 		}
 	}
@@ -176,7 +176,7 @@
 	     }
 	     id = newRow.id;
 	     
-		var url = "user-update.jsp?id=" + id + "&orgId=" + selectedNode.id + "&orgName=" + selectedNode.text;
+		var url = "user-update.jsp?id=" + id + "&orgId=" + selectedNode.id;
 		_dialog = jQuery.ligerDialog.open({
 	  	    title:'修改',
 	  	    url:url,

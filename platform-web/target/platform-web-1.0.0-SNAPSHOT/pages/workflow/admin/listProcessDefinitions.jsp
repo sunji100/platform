@@ -83,7 +83,13 @@
 					}],
 					data:gridData,
 		            pageSize:10,
-		            rownumbers:true
+		            rownumbers:true,
+		            toolbar: { items: [{
+      							id : "userTask",
+      							text : '流程任务分配',
+      							click : itemclick,
+      							img : rootPath + "/images/icons/toolbar/page_edit.gif"
+      						}]}
 		        });
 			}
 	};
@@ -153,13 +159,11 @@
 	}
 	
 	function itemclick(item){
-		if("add" == item.id){
-			openAddDialog();
-		} else if("modify" == item.id){
-			openModifyDialog();
-		} else if("delete" == item.id){
-			deleteDataAction();
-		} 
+		if("userTask" == item.id){
+			if(selectRow()){
+				top.f_addTab(selectedRow.name + "的任务管理","/pages/workflow/admin/assignUserTask.jsp?processDefinitionId=" + selectedRow.id);
+			}
+		}
 	}
 	
 	var selectedRow;
@@ -176,57 +180,6 @@
 	     return true;
 	}
 	
-	function openAddDialog(){
-		var url = "resourcetype-add.jsp";
-		_dialog = jQuery.ligerDialog.open({
-	  	    title:'新增',
-	  	    url:url,
-	  	    isResize: true, width: 550, height: 550, isHidden: false
-	     });
-	}
-	
-	function openModifyDialog(){
-		var newRow = gridManager.getSelected();
-	     if (!newRow) { alert('请选择行'); return; }
-	     var i = 0;
-	     $.each(gridManager.getSelectedRows(), function(index, element) {
-			  i++;
-		  });
-	     if(i>1){
-	    	 alert('请只选择一行'); return;
-	     }
-	     id = newRow.id;
-	     
-		var url = "resourcetype-update.jsp?id=" + id;
-		_dialog = jQuery.ligerDialog.open({
-	  	    title:'修改',
-	  	    url:url,
-	  	    isResize: true, width: 550, height: 550, isHidden: false
-	     });
-	}
-	
-	function deleteDataAction(){
-		var newRow = gridManager.getSelected();
-		if (!newRow) { alert('请选择行'); return; }
-		var removeData = "";
-		$.each(gridManager.getSelectedRows(), function(index, element) {
-			removeData = removeData + element.id + ","; 
-		});
-		removeData = removeData.substr(0, removeData.length-1);
-		$.post("${pageContext.request.contextPath}/resourceType/removeResourceType.do", 
-				{'ids':removeData},
-				function(json) {
-					if(json.error){
-						alert(json.error);
-						return;
-					}
-					if(json && json.result){
-					 alert(json.result);
-					 gridManager.loadData();
-					}
-				});
-		
-	}
 </script>
 <title>Insert title here</title>
 </head>

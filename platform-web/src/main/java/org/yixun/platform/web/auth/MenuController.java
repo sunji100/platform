@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.yixun.platform.application.security.MenuApplication;
 import org.yixun.platform.application.security.dto.MenuDTO;
-import org.yixun.platform.infra.auth.AuthDetailUtil;
+import org.yixun.platform.web.auth.util.AuthDetailUtil;
 
 @Controller
 @RequestMapping("/menu")
@@ -61,11 +61,32 @@ public class MenuController {
 		return diretoryList;
 	}
 	
+	/**
+	 * 获得菜单树
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findMenuTree")
 	public Map<String, Object> findMenuTree() throws Exception{
 		
 		List<MenuDTO> menuList = menuApplication.findMenu();
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("Rows", menuList);
+		return result;
+	}
+	
+	/**
+	 * 获得角色所拥有的菜单树
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/findMenuTreeByRole")
+	public Map<String, Object> findMenuTreeByRole(Long roleId) throws Exception{
+		
+		List<MenuDTO> menuList = menuApplication.findMenuTreeByRole(roleId);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("Rows", menuList);
@@ -122,6 +143,12 @@ public class MenuController {
 		return result;
 	}
 	
+	/**
+	 * 菜单排序 
+	 * @param menuDTOList
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping(value="/updateMenuSortOrder",method={RequestMethod.POST})
 	public Map<String, Object> updateMenuSortOrder(@RequestBody MenuDTO[] menuDTOList) throws Exception {

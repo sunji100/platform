@@ -13,6 +13,7 @@ import javax.inject.Named;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.yixun.platform.application.security.OrgApplication;
 import org.yixun.platform.application.security.RoleApplication;
 import org.yixun.platform.application.security.dto.RoleDTO;
 import org.yixun.platform.application.security.util.RoleBeanUtil;
@@ -31,6 +32,8 @@ public class RoleApplicationImpl implements RoleApplication {
 	
 	@Inject
 	private QueryChannelService queryChannelService;
+	@Inject
+	private OrgApplication orgApplication;
 	
 	@Override
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
@@ -343,6 +346,15 @@ public class RoleApplicationImpl implements RoleApplication {
 			role.getResources().remove(resource);
 		}
 		
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public List<RoleDTO> findRoleForOrgHasUserByUserId(Long userId) throws Exception {
+		
+		return null;
 	}
 
 }

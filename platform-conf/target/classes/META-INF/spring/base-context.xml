@@ -19,5 +19,5 @@
 	</context:component-scan>
 	<context:property-placeholder location="classpath*:META-INF/props/*.properties"
 		ignore-unresolvable="true" />
-	<aop:aspectj-autoproxy />
+	<aop:aspectj-autoproxy/>
 </beans>

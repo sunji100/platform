@@ -12,4 +12,5 @@ public interface OrgApplication {
 	public void assignRoleToOrg(Long orgId,Long[] roleIds) throws Exception;
 	public void removeRoleForOrg(Long orgId,Long[] roleIds) throws Exception; 
 	public OrgDTO findOrgById(Long id) throws Exception;
+	public OrgDTO findOrgByIdentityId(Long userId) throws Exception;
 }

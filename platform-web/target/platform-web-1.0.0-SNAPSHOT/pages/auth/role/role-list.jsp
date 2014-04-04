@@ -104,7 +104,8 @@
 						name : "text",
 						width : 200,
 						type : "text",
-						align : "left"
+						align : "left",
+						id : "name"
 					}, {
 						display : "菜单标识",
 						name : "identifier",
@@ -126,6 +127,9 @@
 						type : "text",
 						align : "left"
 					}],
+					tree : {
+						columnId : "name"
+					},
 					data:menuGridData,
 					pageSize:100,
 					pageSizeOptions:[10, 20, 30, 40, 50, 100],
@@ -200,6 +204,7 @@
 	};
 	var selectedRole;
 	
+	/*选择roleGrid一行后*/
 	function roleGridSelect(rowdata, rowid, rowobj){
 		selectedRole = rowdata;
 		if("menu" == tab.getSelectedTabItemID()){
@@ -227,7 +232,7 @@
 	
 	function loadMenuGridData(roleId){
 		$.ajax({
-		      url: "${pageContext.request.contextPath}/menu/findMenuByRole.do",
+		      url: "${pageContext.request.contextPath}/menu/findMenuTreeByRole.do",
 		      data: "roleId=" + roleId,
 		      type: "POST",
 		      success: function(json){
@@ -276,7 +281,7 @@
 			deleteDataAction();
 		} else if("user" == item.id){
 			if(selectRow()){
-				top.f_addTab(null,selectedRow.name + "的用户管理","/pages/auth/user/userListByRole.jsp?roleId=" + selectedRow.id);
+				top.f_addTab(selectedRow.name + "的用户管理","/pages/auth/user/userListByRole.jsp?roleId=" + selectedRow.id);
 			}
 		}
 	}

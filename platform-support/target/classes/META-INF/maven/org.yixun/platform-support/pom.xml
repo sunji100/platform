@@ -146,6 +146,11 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
 			</dependency>
+			
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib</artifactId>
+			</dependency>
 
 			<!-- 加入Spring对JPA的支持 -->
 			<dependency>

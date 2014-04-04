@@ -8,6 +8,7 @@ public class UserDetails implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -6118463534180314210L;
+	private Long userId;
 	private String password;
 	private String useraccount;
 	private boolean accountNonExpired = true;
@@ -16,6 +17,12 @@ public class UserDetails implements Serializable {
 	private boolean enabled = true;
 	private List<String> roles;
 	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	public List<String> getRoles() {
 		return roles;
 	}

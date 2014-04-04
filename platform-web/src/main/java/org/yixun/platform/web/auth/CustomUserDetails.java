@@ -12,6 +12,7 @@ public class CustomUserDetails implements UserDetails {
 	 */
 	private static final long serialVersionUID = -289672576676553497L;
 	private Collection<GrantedAuthority> authorities;
+	private Long userId;
 	private String password;
 	private String username;
 	private boolean accountNonExpired;
@@ -24,7 +25,8 @@ public class CustomUserDetails implements UserDetails {
 	}
 	
 	public CustomUserDetails(String password, String username, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired,
-			boolean enabled,Collection<GrantedAuthority> authorities) {
+			boolean enabled,Collection<GrantedAuthority> authorities,Long userId) {
+		this.userId = userId;
 		this.authorities = authorities;
 		this.password = password;
 		this.username = username;
@@ -37,6 +39,10 @@ public class CustomUserDetails implements UserDetails {
 	public Collection<GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
 		return authorities;
+	}
+
+	public Long getUserId() {
+		return userId;
 	}
 
 	public String getPassword() {

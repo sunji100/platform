@@ -3,10 +3,7 @@ package org.yixun.platform.application.security.util;
 import java.util.Date;
 
 import org.yixun.platform.application.security.dto.ResourceTypeDTO;
-import org.yixun.platform.application.security.dto.RoleDTO;
 import org.yixun.platform.core.security.ResourceType;
-import org.yixun.platform.core.security.Role;
-import org.yixun.platform.infra.auth.AuthDetailUtil;
 
 import com.dayatang.utils.DateUtils;
 

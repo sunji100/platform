@@ -2,11 +2,8 @@ package org.yixun.platform.application.security.util;
 
 import java.util.Date;
 
-import org.yixun.platform.application.security.dto.IdentityDTO;
 import org.yixun.platform.application.security.dto.RoleDTO;
-import org.yixun.platform.core.security.Identity;
 import org.yixun.platform.core.security.Role;
-import org.yixun.platform.infra.auth.AuthDetailUtil;
 
 import com.dayatang.utils.DateUtils;
 
@@ -29,6 +26,5 @@ public class RoleBeanUtil {
 		dest.setAbolishDate(DateUtils.MAX_DATE);
 		dest.setCreateDate(new Date());
 		
-		dest.setCreateOwner(AuthDetailUtil.getLoginName());
 	}
 }

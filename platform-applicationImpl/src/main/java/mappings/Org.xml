@@ -24,4 +24,11 @@
 			where _identity.abolishDate > ? and _org.id = ?
 		</query>
 	</named-query>
+	
+	<named-query name="findOrgByIdentityId">
+		<query>
+			select _org from Org _org inner join _org.identities _identity 
+			where _identity.id = ?
+		</query>
+	</named-query>
 </entity-mappings>
