@@ -6,6 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
+	/**
+	角色管理界面
+	*/
 	var _dialog;
 	var menuGridData;
 	var resourceGridData;
@@ -29,9 +32,10 @@
 		
 		tab = $("#center").ligerGetTabManager();
 		
-		PageLoader.initGridPanel();
+		PageLoader.initGridPanel();//获得所有角色
 	});
 	PageLoader = {
+			//初始化角色grid
 			initGridPanel:function(){
 				gridManager = $("#maingrid").ligerGrid({
 					width : '98%',
@@ -94,7 +98,7 @@
 					onSelectRow:roleGridSelect
 		        });
 				
-
+				//初始化菜单grid
 				menuGridManager = $("#menugrid").ligerGrid({
 					width : '98%',
 		            height:'95%',
@@ -151,7 +155,7 @@
 			                 	        }
 			        ]}
 		        });
-				
+				//初始化资源grid
 				resourceGridManager = $("#resourcegrid").ligerGrid({
 					width : '98%',
 		            height:'95%',
@@ -229,7 +233,7 @@
 			}
 		}
 	}
-	
+	/*获得角色所拥有的菜单树*/
 	function loadMenuGridData(roleId){
 		$.ajax({
 		      url: "${pageContext.request.contextPath}/menu/findMenuTreeByRole.do",
@@ -245,7 +249,7 @@
 		   }
 		);
 	}
-	
+	/*获得角色所拥有的资源*/
 	function loadResourceGridData(roleId){
 		$.ajax({
 		      url: "${pageContext.request.contextPath}/resource/findResourceByRole.do",
@@ -298,7 +302,7 @@
 	     }
 	     return true;
 	}
-	
+	/*新增角色对话框*/
 	function openAddDialog(){
 		var url = "role-add.jsp";
 		_dialog = jQuery.ligerDialog.open({
@@ -307,7 +311,7 @@
 	  	    isResize: true, width: 550, height: 550, isHidden: false
 	     });
 	}
-	
+	/*修改角色对话框*/
 	function openModifyDialog(){
 		var newRow = gridManager.getSelected();
 	     if (!newRow) { alert('请选择行'); return; }
@@ -326,7 +330,7 @@
 	  	    isResize: true, width: 550, height: 550, isHidden: false
 	     });
 	}
-	
+	/*删除角色*/
 	function deleteDataAction(){
 		var newRow = gridManager.getSelected();
 		if (!newRow) { alert('请选择行'); return; }
@@ -349,12 +353,13 @@
 				});
 		
 	}
-	
+	//初始化菜单分配对话框
 	function initMenuTree() {
 		var manager = $("#menuTree").ligerGetTreeManager();
 		if (manager != null) {
 			manager.clear();
 		}
+		/*获得菜单树*/
 		$.getJSON('${pageContext.request.contextPath}/menu/findMenuTree.do', function(menus) {
 			var menuDialog = $.ligerDialog.open({
 				width : 400,
@@ -374,11 +379,10 @@
 						var postData = [];
 						for ( var i = 0; i < nodes.length; i++) {
 							postData.push(nodes[i].data.id);
+							//获取上一级菜单
 							var parent = manager.getParent(nodes[i].data);
 							while(parent != null){
-								
 								postData.push(parent.id);
-								
 								parent = manager.getParent(parent);
 							}
 						}
@@ -408,6 +412,7 @@
 				} ]
 			});
 			var manager = $("#menuTree").ligerGetTreeManager();
+			/*将角色已有菜单设为选中*/
 			manager.selectNode(function(data,index){
 				var flag = false;
 				var listData = treeDataToListData(menuGirdData);
@@ -449,11 +454,11 @@
 		}
 		return listData;
 	}
-	
+	/*菜单分配对话框*/
 	function assignMenuToRoleAction(){
 		initMenuTree();
 	}
-	
+	/*删除菜单分配*/
 	function removeMenuForRoleAction(){
 		var newRow = menuGridManager.getSelected();
 		if (!newRow) { alert('请选择行'); return; }
@@ -487,7 +492,7 @@
 			removeResourceForRoleAction();
 		}
 	}
-	
+	/*资源分配对话框*/
 	var assignResourceToRoleDialog;
 	function openAssignResourceToRoleDialog(){
 		assignResourceToRoleDialog = $.ligerDialog.open({
@@ -556,7 +561,7 @@
 			assignResourceToRoleDialog.hidden();
 		}
 	}
-	
+	/*分配资源到角色*/
 	function assignResourceToRoleAction(){
 		var newRow = resourceGrid.getSelected();
 		if (!newRow) { alert('请选择行'); return; }
@@ -581,7 +586,7 @@
 		   }
 		);
 	}
-	
+	/*删除分配的资源*/
 	function removeResourceForRoleAction(){
 		var newRow = resourceGridManager.getSelected();
 		if (!newRow) { alert('请选择行'); return; }

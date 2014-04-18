@@ -6,6 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
+	/**
+	用户管理界面
+	*/
 	var _dialog;
 	var selectedNode;//tree当前节点
 	$(function(){
@@ -17,7 +20,7 @@
 			space : 4,
 			allowLeftCollapse:false
 		});
-		PageLoader.initOrgMenuTree();
+		PageLoader.initOrgMenuTree();//获得组织机构树
 	});
 	PageLoader = {
 			initOrgMenuTree:function(){
@@ -26,7 +29,7 @@
 	             		data:menu.Rows,
 	             		checkbox:false
 	             	});
-					
+					//默认选中顶级组织
 					tree.selectNode(function(treenodedata, treedataindex){
 						if(treenodedata.level == 1){
 							return true;
@@ -37,7 +40,7 @@
 					selectedNode = tree.getSelected().data;
 					var selectedTreeId = selectedNode.id;
 					
-					
+					//显示选中组织所有用户
 					gridManager = $("#maingrid").ligerGrid({
 						width : '98%',
 			            height:'92%',
@@ -116,7 +119,7 @@
 						}]}
 			        });
 					
-					
+					//为组织树绑定选中事件
 					tree.bind("select", function(node) {
 						selectedNode = node.data;
 						gridManager.options.page = 1;
@@ -154,7 +157,7 @@
 	     }
 	     return true;
 	}
-	
+	/*增加用户对话框*/
 	function openAddDialog(){
 		var url = "user-add.jsp?orgId=" + selectedNode.id + "&orgName=" + selectedNode.text;
 		_dialog = jQuery.ligerDialog.open({
@@ -163,7 +166,7 @@
 	  	    isResize: true, width: 550, height: 550, isHidden: false
 	     });
 	}
-	
+	/*修改用户对话框*/
 	function openModifyDialog(){
 		var newRow = gridManager.getSelected();
 	     if (!newRow) { alert('请选择行'); return; }
@@ -183,7 +186,7 @@
 	  	    isResize: true, width: 550, height: 550, isHidden: false
 	     });
 	}
-	
+	/*删除用户*/
 	function deleteDataAction(){
 		var newRow = gridManager.getSelected();
 		if (!newRow) { alert('请选择行'); return; }

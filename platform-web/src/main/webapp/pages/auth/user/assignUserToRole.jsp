@@ -6,9 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
+	/**
+	向角色添加用户
+	*/
 	var roleId = "${param.roleId}";
 	$(function(){
-		PageLoader.initGridPanel();
+		PageLoader.initGridPanel();//显示所有未分配到此角色的用户信息
 	});
 	PageLoader = {
 			initGridPanel:function(){
@@ -52,7 +55,7 @@
 	};
 	
 	
-	
+	/*分配用户*/
 	function saveDataAction(){
 		var newRow = gridManager.getSelected();
 		if (!newRow) { alert('请选择行'); return; }

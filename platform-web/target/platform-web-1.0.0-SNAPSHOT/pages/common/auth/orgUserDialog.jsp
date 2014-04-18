@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="utf-8"%>
 <script type="text/javascript">
+	/**
+	用户选择(组织机构形式)对话框
+	*/
+	/*用户选择(组织机构形式)对话框*/
 	function openOrgUserDialog(callback) {
 		var manager = $("#menuTree").ligerGetTreeManager();
 		if (manager != null) {
@@ -25,7 +29,7 @@
 						var node = manager.getSelected();
 						if(0 == node.data.level){//只有选择用户才有效
 							menuDialog.hide();
-							callback(node.data);
+							callback(node.data);//将选择的用户传给回调方法
 						}
 					}
 				}, {

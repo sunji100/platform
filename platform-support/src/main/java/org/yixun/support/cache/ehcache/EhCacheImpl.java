@@ -1,5 +1,8 @@
 package org.yixun.support.cache.ehcache;
 
+import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -10,7 +13,7 @@ import net.sf.ehcache.Element;
 public class EhCacheImpl implements org.yixun.support.cache.Cache {
 	private Cache cache;
 	private String name;
-	
+	private Logger logger = Logger.getLogger(EhCacheImpl.class);
 	public EhCacheImpl(){
 		
 	}
@@ -55,6 +58,15 @@ public class EhCacheImpl implements org.yixun.support.cache.Cache {
 	@Override
 	public void clearCache() {
 		cache.removeAll();
+	}
+
+	@Override
+	public void remove(String key) {
+		if(cache.isKeyInCache(key)){
+			cache.remove(key);
+		} else {
+			logger.debug("缓存" + key + "不存在");
+		}
 		
 	}
 

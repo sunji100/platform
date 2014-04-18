@@ -14,6 +14,7 @@
 		loadAllMenuIcons();
 		loadData();
 	});
+	/*初始化父菜单Combox*/
 	function initCombox(){
 		combox = $("#parentTextID").ligerComboBox({
 			width : 180, 
@@ -27,6 +28,7 @@
 	function parentIdChange(value,text){
 		$("#parentIdID").val(value);
 	}
+	/*加载所有菜单图标*/
 	function loadAllMenuIcons(){
 		$.post("${pageContext.request.contextPath}/menu/getIconNames.do",
 				function(json) {
@@ -74,7 +76,7 @@
 			$(parent.document).find('div.l-dialog-content:last').height(height-5);
 		} catch (e) {}
 	}
-	
+	/*获得菜单数据*/
 	function loadData(){
 		if(""==id) return;
 		$.ajax({
@@ -110,7 +112,7 @@
 			}
 		});
 	}
-	
+	/*保存菜单修改*/
 	function saveDataAction(){
 		$.post("${pageContext.request.contextPath}/menu/updateMenu.do?id=" + id, 
 			$("#menu_form").serialize(),

@@ -5,10 +5,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
+<%@ include file="/pages/common/excel.jsp"%>
 <script type="text/javascript">
+	/**
+	资源类型管理界面
+	*/
 	var _dialog;
 	$(function(){
-		PageLoader.initGridPanel();
+		PageLoader.initGridPanel();//显示所有资源Grid
 	});
 	PageLoader = {
 			initGridPanel:function(){
@@ -21,11 +25,41 @@
 						name : "name",
 						width : 200,
 						type : "text",
-						align : "left"
+						align : "left",
+						columns:[{
+							display : "资源类型名称",
+							name : "name",
+							width : 200,
+							type : "text",
+							align : "left",
+							totalSummary:
+		                    {
+		                        render: function (suminf, column, cell)
+		                        {
+		                            return '<div>最大值:' + suminf.max + '</div>';
+		                        },
+		                        align: 'left'
+		                    }
+						},{
+							display : "aaaa",
+							name : "name",
+							width : 200,
+							type : "text",
+							align : "left",
+							totalSummary:
+		                    {
+		                        render: function (suminf, column, cell)
+		                        {
+		                            return '<div>最大值:' + suminf.max + '</div>';
+		                        },
+		                        align: 'left'
+		                    }
+						}]
+						
 					}],
 		            url:'${pageContext.request.contextPath}/resourceType/pageQueryResourceType.do',
 		            pageSize:3 ,
-		            rownumbers:false,
+		            rownumbers:true,
 		            toolbar: { items: [
           	        { 
           	          	id:'add',
@@ -46,6 +80,20 @@
           	        	text: '删除', 
           	        	click: itemclick, 
           	        	img : rootPath + "/images/icons/toolbar/page_delete.gif"
+          	        },{ 
+          	        	line: true 
+          	        },{ 
+          	        	id:'excel',
+          	        	text: 'excel', 
+          	        	click: itemclick, 
+          	        	img : rootPath + "/images/icons/toolbar/page_delete.gif"
+          	        },{ 
+          	        	line: true 
+          	        },{ 
+          	        	id:'excelAll',
+          	        	text: 'excel all', 
+          	        	click: itemclick, 
+          	        	img : rootPath + "/images/icons/toolbar/page_delete.gif"
           	        }]}
 		        });
 			}
@@ -58,7 +106,11 @@
 			openModifyDialog();
 		} else if("delete" == item.id){
 			deleteDataAction();
-		} 
+		} else if("excel" == item.id){
+			exportExcel("或32基本面.xls",gridManager);
+		} else if("excelAll" == item.id){
+			exportExcel("或32基本面.xls",gridManager,true);
+		}
 	}
 	
 	var selectedRow;
@@ -74,7 +126,7 @@
 	     }
 	     return true;
 	}
-	
+	/*打开资源类型增加对话框*/
 	function openAddDialog(){
 		var url = "resourcetype-add.jsp";
 		_dialog = jQuery.ligerDialog.open({
@@ -83,7 +135,7 @@
 	  	    isResize: true, width: 550, height: 550, isHidden: false
 	     });
 	}
-	
+	/*打开资源类型修改对话框*/
 	function openModifyDialog(){
 		var newRow = gridManager.getSelected();
 	     if (!newRow) { alert('请选择行'); return; }
@@ -103,7 +155,7 @@
 	  	    isResize: true, width: 550, height: 550, isHidden: false
 	     });
 	}
-	
+	/*删除选中的资源类型*/
 	function deleteDataAction(){
 		var newRow = gridManager.getSelected();
 		if (!newRow) { alert('请选择行'); return; }
@@ -130,6 +182,8 @@
 <title>Insert title here</title>
 </head>
 <body>
+<iframe name="excelFrame" style="display:none;"></iframe>
+<!-- 动作权限demo -->
 <ss3:authorize url="selectButton">
 selectButton动作权限
 </ss3:authorize>

@@ -5,7 +5,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
+<%@ include file="/pages/common/excel.jsp"%>
 <script type="text/javascript">
+	/**
+	grid编辑方式，做增删除改查
+	*/
 	var gridManager;
 	var _dialog;
 	var gridData;
@@ -27,13 +31,13 @@
 			      success: function(json){
 			         if(json){
 			        	 gridData = json;
+			        	 console.info(gridData.Rows);
 			         }
 			      }
 			   }
 			);
 		},
 		initGridPanel:function(){
-			console.info(gridData);
 			gridManager = $("#maingrid").ligerGrid({
 				isScroll:false,
 	            checkbox:true,
@@ -62,14 +66,30 @@
 	                }
 	            }
 	            ],
-	            toolbar: { items: [
+	            toolbar: {
+	            	items: [
         	            { id:'add',text: '增加', click: itemclick, icon: 'add' },
         	            { line: true },
         	            { id:'modify',text: '修改', click: itemclick, icon: 'modify' },
         	            { line: true },
-        	            { id:'delete',text: '删除', click: itemclick, icon: 'delete'}
+        	            { id:'delete',text: '删除', click: itemclick, icon: 'delete'},
+        	            { 
+              	        	line: true 
+              	        },{ 
+              	        	id:'excel',
+              	        	text: 'excel', 
+              	        	click: itemclick, 
+              	        	img : rootPath + "/images/icons/toolbar/page_delete.gif"
+              	        },{ 
+              	        	line: true 
+              	        },{ 
+              	        	id:'excelAll',
+              	        	text: 'excel all', 
+              	        	click: itemclick, 
+              	        	img : rootPath + "/images/icons/toolbar/page_delete.gif"
+              	        }
         	            ]
-        	            }
+        	        }
 	        });
 		}
 	};
@@ -94,7 +114,11 @@
  			updateRow();
  		} else if("delete" == item.id){
  			deleteDataAction();
- 		}
+ 		} else if("excel" == item.id){
+			exportExcel("或32基本面.xls",gridManager);
+		} else if("excelAll" == item.id){
+			exportExcel("或32基本面.xls",gridManager,true);
+		}
  	}
      
      function deleteRow(rowid)
@@ -162,7 +186,6 @@
 		} else {
 			MessageBox.confirm("确定删除?",function(flag){
 				if(flag){
-					console.info("ddd");
 					removeData = gridManager.getRow(rowid)["id"];
 					deletePostAction(removeData,rowid);
 				}

@@ -12,5 +12,6 @@ import java.lang.annotation.Target;
 @Documented
 @Inherited
 public @interface Cache {
-	String value() default "";
+	String cacheName() default "";
+	String cacheKey() default "";
 }

@@ -6,6 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
+	/**
+	资源类型增加界面
+	*/
 	$(function(){
 		autoResize();
 	});
@@ -24,7 +27,7 @@
 			$(parent.document).find('div.l-dialog-content:last').height(height-5);
 		} catch (e) {}
 	}
-	
+	/*增加资源类型*/
 	function saveDataAction(){
 		$.post("${pageContext.request.contextPath}/resourceType/saveResourceType.do", 
 				$("#user_form").serialize(),

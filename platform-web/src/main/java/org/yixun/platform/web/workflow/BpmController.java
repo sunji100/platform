@@ -38,6 +38,22 @@ public class BpmController {
 	}
 	
 	/**
+	 * 显示用户可发起的流程定义
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/listProcessDefinitionsByUserId")
+	public Map<String, Object> listProcessDefinitionsByUserId() throws Exception {
+		Long userId = AuthDetailUtil.getLoginUserId();
+		List<Map<String, Object>> resultList = bpmApplication.listProcessDefinitionsByUserId(userId);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("Rows", resultList);
+		return result;
+	}
+	
+	/**
 	 * 根据流程定义ID及task key查询相应表单url
 	 * @param procDefId
 	 * @return

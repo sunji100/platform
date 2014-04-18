@@ -6,6 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
+	/**
+	按组织授权界面
+	*/
 	var _dialog;
 	var selectedNode;//tree当前节点
 	var gridData;
@@ -18,7 +21,7 @@
 			space : 4,
 			allowLeftCollapse:false
 		});
-		PageLoader.initOrgMenuTree();
+		PageLoader.initOrgMenuTree();//初始显示组织及用户树
 	});
 	PageLoader = {
 			initOrgMenuTree:function(){
@@ -106,7 +109,7 @@
 				});
 			}
 	};
-	
+	/*获得组织或用户所拥有的角色*/
 	function loadGridData(node){
 		var url;
 		var data;
@@ -156,6 +159,7 @@
 	}
 	
 	var assignRolesToUserDialog;
+	/*打开角色分配对话*/
 	function openAssignRolesToOrgDialog(){
 		assignRolesToUserDialog = $.ligerDialog.open({
 			title : "角色",
@@ -218,7 +222,7 @@
 			assignRolesToUserDialog.hidden();
 		}
 	}
-	
+	/*分配角色到组织或用户*/
 	function assignRolesToUserAction(){
 		var newRow = roleGrid.getSelected();
 		if (!newRow) { alert('请选择行'); return; }
@@ -248,7 +252,7 @@
 		   }
 		);
 	}
-	
+	/*删除为组织或用户分配的角色*/
 	function removeRolesForOrgAction(){
 		var newRow = gridManager.getSelected();
 		if (!newRow) { alert('请选择行'); return; }

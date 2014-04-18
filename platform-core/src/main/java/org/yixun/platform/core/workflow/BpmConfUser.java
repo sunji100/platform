@@ -18,7 +18,7 @@ import org.yixun.platform.core.security.Role;
 import com.dayatang.domain.AbstractEntity;
 
 @Entity
-@Table(name="bpm_conf")
+@Table(name="bpm_task_conf")
 public class BpmConfUser extends AbstractEntity {
 
 	/**
@@ -36,11 +36,11 @@ public class BpmConfUser extends AbstractEntity {
 	private String procDefKey;
 	
 	@ManyToMany
-	@JoinTable(name="bpm_conf_role",joinColumns={@JoinColumn(name="BPM_CONF_ID")},inverseJoinColumns={@JoinColumn(name="ROLE_ID")})
+	@JoinTable(name="bpm_task_conf_role",joinColumns={@JoinColumn(name="BPM_CONF_ID")},inverseJoinColumns={@JoinColumn(name="ROLE_ID")})
 	private Set<Role> roles = new HashSet<Role>();
 	
 	@ManyToMany
-	@JoinTable(name="bpm_conf_user",joinColumns={@JoinColumn(name="BPM_CONF_ID")},inverseJoinColumns={@JoinColumn(name="USER_ID")})
+	@JoinTable(name="bpm_task_conf_user",joinColumns={@JoinColumn(name="BPM_CONF_ID")},inverseJoinColumns={@JoinColumn(name="USER_ID")})
 	private Set<Identity> users = new HashSet<Identity>();
 
 	public String getProcDefId() {

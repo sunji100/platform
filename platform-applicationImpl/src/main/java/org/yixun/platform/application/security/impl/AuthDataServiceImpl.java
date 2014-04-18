@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.commons.lang.StringUtils;
 import org.yixun.platform.application.crud.dto.UserDetails;
 import org.yixun.platform.application.security.AuthDataService;
 import org.yixun.platform.core.security.Identity;
@@ -24,6 +25,9 @@ public class AuthDataServiceImpl implements AuthDataService {
 	@Inject
 	private QueryChannelService queryChannelService;
 	
+	/**
+	 * 获得用户的详细信息
+	 */
 	public UserDetails loadUserByUseraccount(String useraccount) {
 		String jpql = "select _identity from Identity _identity where _identity.userAccount = ?";
 		List<Object> conditionVals = new ArrayList<Object>();
@@ -39,6 +43,7 @@ public class AuthDataServiceImpl implements AuthDataService {
 			
 //			jpql = "select _role from Identity _identity inner join _identity.roles _role where _identity.userAccount = ?";
 //			List<Role> roles = queryChannelService.queryResult(jpql, conditionVals.toArray());
+			//用户所拥有的角色
 			Set<Role> roles = identity.getRoles();
 			List<String> roleList = new ArrayList<String>();
 			
@@ -47,20 +52,55 @@ public class AuthDataServiceImpl implements AuthDataService {
 					roleList.add(role.getName());
 				}
 			}
-			
+			//用户所在组织
 			Set<Org> orgs = identity.getOrgs();
 			if(orgs != null){
+				List<Long> orgIdList = new ArrayList<Long>();
+				//获得用户所在组织及所有上级组织
 				for (Org org : orgs) {
-					Set<Role> orgRoles = org.getRoles();
-					for (Role role : orgRoles) {
-						roleList.add(role.getName());
-					}
+					orgIdList.add(org.getId());
+					findAllParentOrgId(org,orgIdList);
+//					Set<Role> orgRoles = org.getRoles();
+//					for (Role role : orgRoles) {
+//						roleList.add(role.getName());
+//					}
 				}
+				//获得用户从组织中继承来的角色
+				List<String> orgRoleList = findRolesByOrgList(orgIdList);
+				for (String roleName : orgRoleList) {
+					roleList.add(roleName);
+				}
+				
 			}
 			userDetails.setRoles(roleList);
 			return userDetails;
 		}
 		return null;
+	}
+	
+	/**
+	 * 获得组织所拥有的角色
+	 * @param orgIdList
+	 * @return
+	 */
+	private List<String> findRolesByOrgList(List<Long> orgIdList){
+		String jpql = "select _role.name from Role _role inner join _role.orgs _org where _org.id in ("+ StringUtils.join(orgIdList, ",") +")";
+		return queryChannelService.queryResult(jpql, null);
+	}
+	
+	/**
+	 * 获得相应组织所有上级组织
+	 * @param org 当前组织
+	 * @param orgIdList 上级组织IDList
+	 */
+	private void findAllParentOrgId(Org org,List<Long> orgIdList){
+		Set<Org> parents = org.getParents();
+		if(null != parents && parents.size() != 0){
+			for (Org parentOrg : parents) {
+				orgIdList.add(parentOrg.getId());
+				findAllParentOrgId(parentOrg,orgIdList);
+			}
+		}
 	}
 
 	public Map<String, List<String>> getAllResourceAndRoles() {

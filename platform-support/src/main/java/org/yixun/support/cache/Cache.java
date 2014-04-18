@@ -7,4 +7,5 @@ public interface Cache {
 	public boolean isKeyInCache(String key);
 	public void removeCache();
 	public void clearCache();
+	public void remove(String key);
 }

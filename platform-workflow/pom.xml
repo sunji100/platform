@@ -26,7 +26,7 @@
             <version>${project.version}</version> 
         </dependency> 
 		<dependency>
-			<groupId>org.yixun</groupId>
+			<groupId>org.activiti</groupId>
 			<artifactId>activiti-engine</artifactId>
 		</dependency>
 		<dependency>
@@ -136,6 +136,16 @@
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
 		</dependency>
 	</dependencies>
 </project>

@@ -6,7 +6,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
-	var id = "${param.id}";
+	/**
+	角色修改对话框
+	*/
+	var id = "${param.id}";//角色ID
 	$(function(){
 		autoResize();
 		loadData();
@@ -63,7 +66,7 @@
 			}
 		});
 	}
-	
+	/*修改角色*/
 	function saveDataAction(){
 		$.post("${pageContext.request.contextPath}/role/updateRole.do?id=" + id, 
 			$("#user_form").serialize(),

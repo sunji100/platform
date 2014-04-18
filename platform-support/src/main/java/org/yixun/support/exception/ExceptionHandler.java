@@ -8,9 +8,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
+import org.yixun.support.i18n.I18NManager;
 
 public class ExceptionHandler extends SimpleMappingExceptionResolver {
 
@@ -19,12 +19,14 @@ public class ExceptionHandler extends SimpleMappingExceptionResolver {
 			HttpServletResponse response, Object handler, Exception ex) {
 		
 		String exceptionMsg = null;
-		if(ex instanceof BusinessException){
-			exceptionMsg = ex.getMessage();
-		}
-		if(StringUtils.isBlank(exceptionMsg)){
-			exceptionMsg = "其他异常:" + ex.toString();
-		}
+		exceptionMsg = ex.getMessage();
+//		exceptionMsg = WebErrUtils.formatException(ex);
+//		if(ex instanceof BusinessException){
+//			exceptionMsg = ex.getMessage();
+//		}
+//		if(StringUtils.isBlank(exceptionMsg)){
+//			exceptionMsg = "其他异常:" + ex.toString();
+//		}
 		
 		String viewName = determineViewName(ex, request);
 		if (viewName != null) {

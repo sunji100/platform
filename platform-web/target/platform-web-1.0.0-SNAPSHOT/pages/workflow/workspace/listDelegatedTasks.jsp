@@ -6,6 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
+	/**
+	 代理中的任务界面
+	 */
 	var _dialog;
 	var gridData;
 	var _selfTabid = "${param.tabid}";

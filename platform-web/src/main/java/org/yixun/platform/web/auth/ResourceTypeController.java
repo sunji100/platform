@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.yixun.platform.application.security.ResourceTypeApplication;
 import org.yixun.platform.application.security.dto.ResourceTypeDTO;
+import org.yixun.support.exception.BizException;
 
 import com.dayatang.querychannel.support.Page;
 
@@ -20,7 +21,14 @@ public class ResourceTypeController {
 	
 	@Inject
 	private ResourceTypeApplication resourceTypeApplication;
-	
+	/**
+	 * 显示所有资源类型
+	 * @param resourceTypeDTO
+	 * @param page
+	 * @param pagesize
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/pageQueryResourceType")
 	public Map<String, Object> pageQueryResourceType(ResourceTypeDTO resourceTypeDTO,int page,int pagesize) throws Exception{
@@ -30,7 +38,12 @@ public class ResourceTypeController {
 		result.put("Total", pages.getTotalCount());
 		return result;
 	}
-	
+	/**
+	 * 删除资源类型
+	 * @param ids
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/removeResourceType")
 	public Map<String, Object> removeResourceType(String ids) throws Exception {
@@ -46,7 +59,12 @@ public class ResourceTypeController {
 		result.put("result", "success");
 		return result;
 	}
-	
+	/**
+	 * 增加资源类型
+	 * @param resourceTypeDTO
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/saveResourceType")
 	public Map<String, Object> saveResourceType(ResourceTypeDTO resourceTypeDTO) throws Exception {
@@ -57,7 +75,12 @@ public class ResourceTypeController {
 		result.put("data", data);
 		return result;
 	}
-	
+	/**
+	 * 修改资源类型
+	 * @param resourceTypeDTO
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/updateResourceType")
 	public Map<String, Object> updateResourceType(ResourceTypeDTO resourceTypeDTO) throws Exception {
@@ -67,7 +90,12 @@ public class ResourceTypeController {
 		result.put("result", "success");
 		return result;
 	}
-	
+	/**
+	 * 获得资源类型信息
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findResourceTypeById/{id}")
 	public Map<String, Object> findResourceTypeById(@PathVariable("id")Long id) throws Exception {

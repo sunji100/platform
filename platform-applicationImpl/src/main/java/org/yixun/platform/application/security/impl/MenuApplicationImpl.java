@@ -49,7 +49,12 @@ public class MenuApplicationImpl implements MenuApplication {
 		}
 		return topMenuDTOList;
 	}
-	
+	/**
+	 * 获得指定用户所有子菜单项
+	 * @param userAccount  用户名
+	 * @param parentId  父菜单ID
+	 * @param topMenuDTO 父菜单对象
+	 */
 	private void findAllSubMenuByUser(String userAccount,Long parentId,MenuDTO topMenuDTO){
 		List<Resource> subMenuList = Resource.findMenuByUserAndParentId(userAccount, parentId);
 		if(null != subMenuList && subMenuList.size() != 0){
@@ -65,6 +70,9 @@ public class MenuApplicationImpl implements MenuApplication {
 		}
 	}
 	
+	/**
+	 * 获得全部菜单的菜单树
+	 */
 	@Override
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<MenuDTO> findMenu() throws Exception {
@@ -172,7 +180,7 @@ public class MenuApplicationImpl implements MenuApplication {
 		if(null != resourceType){
 			menuDTO.setMenuTypeId(resourceType.getId());
 		}
-		
+		//获得上一级目录信息
 		Set<Resource> parents = menu.getParents();
 		for (Resource parent : parents) {
 			menuDTO.setParentId(parent.getId());
@@ -181,7 +189,7 @@ public class MenuApplicationImpl implements MenuApplication {
 		
 		return menuDTO;
 	}
-
+	
 	@Override
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<MenuDTO> findDiretory(Long selfId) throws Exception {
@@ -202,6 +210,12 @@ public class MenuApplicationImpl implements MenuApplication {
 		return topDiretoryDTOList;
 	}
 	
+	/**
+	 * 获得父目录的所有子目录
+	 * @param selfId 不显示的目录
+	 * @param parentId 父目录ID
+	 * @param topDiretoryDTO 父目录对象
+	 */
 	private void findAllSubDiretory(Long selfId,Long parentId,MenuDTO topDiretoryDTO){
 		List<Resource> subDiretoryList = Resource.findDiretoryByParentId(parentId);
 		if(null != subDiretoryList && subDiretoryList.size() != 0){

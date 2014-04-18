@@ -6,10 +6,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
+	/**
+	流程委托管理界面
+	*/
 	var _dialog;
 	var gridData;
 	$(function(){
-		PageLoader.initGridPanel();
+		PageLoader.initGridPanel();//当前用户委托列表
 		loadGridData();
 	});
 	PageLoader = {
@@ -92,7 +95,7 @@
 		   }
 		);
 	}
-	
+	/*删除委托*/
 	function removeDelegateInfo(id,rowindex){
 		var url = "${pageContext.request.contextPath}/bpm/delegate/removeDelegateInfo.do";
 		var data = {idList:id};

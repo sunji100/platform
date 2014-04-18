@@ -6,6 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
+	/**
+	指定用户的角色管理界面
+	*/
 	var userId = "${param.userId}";
 	var _dialog;
 	$(function(){

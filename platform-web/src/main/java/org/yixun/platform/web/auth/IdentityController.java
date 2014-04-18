@@ -34,7 +34,15 @@ public class IdentityController {
 		
 		return result;
 	}
-	
+	/**
+	 * 获得指定组织下所有用户
+	 * @param identityDTO
+	 * @param pageNo
+	 * @param pageSize
+	 * @param orgId 组织ID
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/pageQueryIdentityByOrgId")
 	public Map<String, Object> pageQueryIdentityByOrgId(IdentityDTO identityDTO,@RequestParam("page")int pageNo,@RequestParam("pagesize")int pageSize,@RequestParam("orgId")Long orgId) throws Exception{
@@ -45,7 +53,15 @@ public class IdentityController {
 		
 		return result;
 	}
-	
+	/**
+	 * 获得已分配到角色上的用户
+	 * @param identityDTO
+	 * @param roleId 角色ID
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/pageQueryIdentityByRoleId")
 	public Map<String, Object> pageQueryIdentityByRoleId(IdentityDTO identityDTO,Long roleId,@RequestParam("page")int pageNo,@RequestParam("pagesize")int pageSize) throws Exception{
@@ -56,7 +72,15 @@ public class IdentityController {
 		
 		return result;
 	}
-	
+	/**
+	 * 获得所有未分配到指定角色的用户
+	 * @param identityDTO
+	 * @param roleId 角色ID
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findNotAssignUserByRole")
 	public Map<String, Object> findNotAssignUserByRole(IdentityDTO identityDTO,@RequestParam("roleId")Long roleId,@RequestParam("page")int pageNo,@RequestParam("pagesize")int pageSize) throws Exception{
@@ -67,7 +91,13 @@ public class IdentityController {
 		
 		return result;
 	}
-	
+	/**
+	 * 向指定角色分配用户
+	 * @param roleId 角色ID
+	 * @param identityIds 用户ID数组
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/assignUserToRole")
 	public Map<String, Object> assignUserToRole(Long roleId,String identityIds) throws Exception{
@@ -82,7 +112,13 @@ public class IdentityController {
 		result.put("result", "sucess");
 		return result;
 	}
-	
+	/**
+	 * 删除指定角色已分配的用户
+	 * @param roleId 角色ID
+	 * @param identityIds 用户ID数组
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/removeUserForRole")
 	public Map<String, Object> removeUserForRole(Long roleId,String identityIds) throws Exception{
@@ -97,7 +133,12 @@ public class IdentityController {
 		result.put("result", "sucess");
 		return result;
 	}
-	
+	/**
+	 * 新增用户
+	 * @param identityDTO
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/saveIdentity")
 	public Map<String, Object> saveIdentity(IdentityDTO identityDTO) throws Exception{
@@ -108,7 +149,12 @@ public class IdentityController {
 		result.put("result", "sucess");
 		return result;
 	}
-	
+	/**
+	 * 修改用户信息
+	 * @param identityDTO
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/updateIdentity")
 	public Map<String, Object> updateIdentity(IdentityDTO identityDTO) throws Exception{
@@ -117,7 +163,12 @@ public class IdentityController {
 		result.put("result", "sucess");
 		return result;
 	}
-	
+	/**
+	 * 获得用户信息
+	 * @param id 用户ID
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findIdentityById/{id}")
 	public Map<String, Object> findIdentityById(@PathVariable Long id) throws Exception{
@@ -126,7 +177,12 @@ public class IdentityController {
 		result.put("data", identityDTO);
 		return result;
 	}
-	
+	/**
+	 * 删除用户
+	 * @param ids 要删除的用户id数组
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/removeIdentity")
 	public Map<String, Object> removeIdentity(String ids) throws Exception{

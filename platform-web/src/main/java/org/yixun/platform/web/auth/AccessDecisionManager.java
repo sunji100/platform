@@ -11,6 +11,11 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
+/**
+ * 匹配用户拥有的权限与请求权限
+ * @author sunji
+ *
+ */
 public class AccessDecisionManager implements org.springframework.security.access.AccessDecisionManager {
 
 	public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {

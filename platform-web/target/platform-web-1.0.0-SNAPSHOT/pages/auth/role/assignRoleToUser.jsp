@@ -6,9 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
-	var userId = "${param.userId}";
+	/**
+	为用户分配角色界面
+	*/
+	var userId = "${param.userId}";//用户ID
 	$(function(){
-		PageLoader.initGridPanel();
+		PageLoader.initGridPanel();//显示没有分配到用户的角色
 	});
 	PageLoader = {
 			initGridPanel:function(){
@@ -46,7 +49,7 @@
 	};
 	
 	
-	
+	/*为用户分配角色*/
 	function saveDataAction(){
 		var newRow = gridManager.getSelected();
 		if (!newRow) { alert('请选择行'); return; }

@@ -37,7 +37,10 @@ public class OrgApplicationImpl implements OrgApplication {
 		}
 		return topOrgDTOList;
 	}
-	
+	/**
+	 * 迭代指定父组织的所有下级组织
+	 * @param topOrgDTO 父组织
+	 */
 	private void findAllSubOrg(OrgDTO topOrgDTO){
 		List<Org> subOrgList = Org.findOrgByParentId(topOrgDTO.getId());
 		
@@ -67,6 +70,7 @@ public class OrgApplicationImpl implements OrgApplication {
 	@Override
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<OrgDTO> findOrgAndIdentityTree() throws Exception {
+		//获得顶级组织
 		List<Org> topOrgList = Org.findTopLevelOrg();
 		
 		List<OrgDTO> topOrgDTOList = new ArrayList<OrgDTO>();
@@ -81,9 +85,13 @@ public class OrgApplicationImpl implements OrgApplication {
 		}
 		return topOrgDTOList;
 	}
-	
+	/**
+	 * 迭代获取所有下级组织及组织中的用户
+	 * @param topOrg
+	 * @param topOrgDTO
+	 */
 	private void findAllSubOrgAndIdentity(Org topOrg,OrgDTO topOrgDTO){
-		
+		//获得组织中的用户
 		List<Identity> nextLevelIdentityList = topOrg.findNextLevelIdentity();
 		if(null != nextLevelIdentityList && nextLevelIdentityList.size() != 0){
 			List<OrgDTO> subIdentityDTOList = new ArrayList<OrgDTO>();
@@ -100,7 +108,7 @@ public class OrgApplicationImpl implements OrgApplication {
 			}
 			topOrgDTO.setChildren(subIdentityDTOList);
 		}
-		
+		//获得组织的下级组织
 		List<Org> subOrgList = Org.findOrgByParentId(topOrgDTO.getId());
 		if(null != subOrgList && subOrgList.size() !=0){
 			List<OrgDTO> subOrgDTOList = new ArrayList<OrgDTO>();

@@ -21,7 +21,7 @@ import org.yixun.platform.core.security.Identity;
 import org.yixun.platform.core.security.Org;
 import org.yixun.platform.core.security.Resource;
 import org.yixun.platform.core.security.Role;
-import org.yixun.support.exception.BusinessException;
+import org.yixun.support.exception.BizException;
 
 import com.dayatang.querychannel.service.QueryChannelService;
 import com.dayatang.querychannel.support.Page;
@@ -88,7 +88,7 @@ public class RoleApplicationImpl implements RoleApplication {
 		Role role = new Role();
 		RoleBeanUtil.dtoToDomain(role,roleDTO);
 		if(role.isRoleExist()){
-			throw new BusinessException("角色已存在!!");
+			throw new BizException("role.exist", "用户已存在.");
 		}
 		role.setId(null);
 		role.save();
@@ -219,7 +219,10 @@ public class RoleApplicationImpl implements RoleApplication {
 		}
 		return roleDTOs;
 	}
-
+	
+	/**
+	 * 获得组织及从上级组织继承的角色
+	 */
 	@Override
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<RoleDTO> findParentRoleByOrgId(RoleDTO queryDTO, Long orgId) throws Exception {
@@ -254,7 +257,9 @@ public class RoleApplicationImpl implements RoleApplication {
 		return roles;
 
 	}
-	
+	/**
+	 * 获得用户所拥有的角色
+	 */
 	@Override
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<RoleDTO> findRoleByIdentityId(RoleDTO queryDTO, Long identityId) throws Exception {
@@ -280,7 +285,11 @@ public class RoleApplicationImpl implements RoleApplication {
 		return roles;
 
 	}
-	
+	/**
+	 * 获得所有的上级组织
+	 * @param org
+	 * @param orgIdList
+	 */
 	private void findAllParentOrgId(Org org,List<Long> orgIdList){
 		Set<Org> parents = org.getParents();
 		if(null != parents && parents.size() != 0){
@@ -294,7 +303,9 @@ public class RoleApplicationImpl implements RoleApplication {
 	@Override
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<RoleDTO> findRoleByOrgIdAndIdentityId(RoleDTO queryDTO, Long orgId, Long identityId) throws Exception {
+		//组织所拥有的角色
 		List<RoleDTO> parentRoleByOrgIdList = findParentRoleByOrgId(queryDTO, orgId);
+		//角色所拥有的角色
 		List<RoleDTO> roleByIdentityIdList = findRoleByIdentityId(queryDTO, identityId);
 		
 		List<RoleDTO> roleDTOList = new ArrayList<RoleDTO>();

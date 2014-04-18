@@ -31,7 +31,7 @@
 		});
 		
 		tab = $("#framecenter").ligerGetTabManager();
-		
+		/*获得登录用户的菜单项*/
 		$.getJSON("${pageContext.request.contextPath}/menu/findMenuByUser.do",function(menu){
 			
 			$(menu.data).each(function(i,menu){
@@ -71,7 +71,7 @@
 		window['f_addTab'] = addTabEvent;
 		
 	});
-	
+	/*新建标签页*/
 	function addTabEvent(text,url){
 		var idx = url.indexOf("?");
 		var tabid = "tabid";

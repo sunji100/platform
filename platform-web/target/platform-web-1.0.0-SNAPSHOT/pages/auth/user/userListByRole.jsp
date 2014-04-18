@@ -6,11 +6,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
-	var roleId = "${param.roleId}";
-	console.info(roleId);
+	/**
+	指定角色的用户管理界面
+	*/
+	var roleId = "${param.roleId}";//角色ID
 	var _dialog;
 	$(function(){
-		PageLoader.initGridPanel();
+		PageLoader.initGridPanel();//获得角色已分配用户
 	});
 	PageLoader = {
 			initGridPanel:function(){
@@ -86,7 +88,7 @@
 			deleteDataAction();
 		}
 	}
-	
+	/*打开分配用户对话框*/
 	function openAssignUserToRoleDialog(){
 		var url = "${pageContext.request.contextPath}/pages/auth/user/assignUserToRole.jsp?roleId=" + roleId;
 		_dialog = jQuery.ligerDialog.open({
@@ -95,7 +97,7 @@
 	  	    isResize: true, width: 470, height: 500, isHidden: false
 	     });
 	}
-	
+	/*删除分配的用户*/
 	function deleteDataAction(){
 		var newRow = gridManager.getSelected();
 		if (!newRow) { alert('请选择行'); return; }

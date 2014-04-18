@@ -6,6 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
+	/**
+	流程任务分配界面
+	*/
 	var _dialog;
 	var assignGridData;
 	var processDefinitionId = '${param.processDefinitionId}';
@@ -19,7 +22,7 @@
 			allowLeftCollapse:false
 		});
 		
-		PageLoader.initGridPanel();
+		PageLoader.initGridPanel();//流程定义中的用户任务
 	});
 	PageLoader = {
 			initGridPanel:function(){
@@ -65,7 +68,7 @@
 			        headerRowHeight: 30,//表头行的高度
 			        onSelectRow:roleGridSelect
 		        });
-				
+				//初始化执行人grid
 				assignGridManager = $("#assigngrid").ligerGrid({
 					width : '98%',
 		            height:'95%',
@@ -117,6 +120,7 @@
 	}
 	
 	var selectedUserTask;
+	/*获得用户任务的执行人或角色*/
 	function loadAssignGridData(rowdata){
 		selectedUserTask = rowdata;
 		$.ajax({
@@ -143,7 +147,7 @@
 			deleteAssignForUserTask();
 		}
 	}
-	
+	/*删除用户任务的办理人或角色*/
 	function deleteAssignForUserTask(){
 		var newRow = assignGridManager.getSelected();
 		if (!newRow) { alert('请选择行'); return; }
@@ -172,6 +176,7 @@
 	}
 	
 	var assignRolesToUserTaskDialog;
+	/*打开办理角色分配对话框*/
 	function openAssignRolesToUserTaskDialog(){
 		assignRolesToUserTaskDialog = $.ligerDialog.open({
 			title : "角色",
@@ -231,7 +236,7 @@
 			assignUsersToUserTaskDialog.hidden();
 		}
 	}
-	
+	/*为用户任务分配办理角色*/
 	function assignRolesToUserTaskAction(){
 		var newRow = roleGrid.getSelected();
 		if (!newRow) { alert('请选择行'); return; }
@@ -259,6 +264,7 @@
 	}
 	
 	var assignUsersToUserTaskDialog;
+	/*打开办理人分配对话框*/
 	function openAssignUsersToUserTaskDialog(){
 		assignUsersToUserTaskDialog = $.ligerDialog.open({
 			title : "用户",
@@ -306,7 +312,7 @@
 			checkbox : true
 		});
 	}
-	
+	/*为用户任务分配办理人*/
 	function assignUsersToUserTaskAction(){
 		var newRow = userGrid.getSelected();
 		if (!newRow) { alert('请选择行'); return; }

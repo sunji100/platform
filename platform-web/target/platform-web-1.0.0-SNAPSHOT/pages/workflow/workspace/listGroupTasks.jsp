@@ -6,6 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
+	/**
+	待领任务界面
+	*/
 	var _dialog;
 	var gridData;
 	var _selfTabid = "${param.tabid}";
@@ -97,10 +100,6 @@
 	
 	/*完成任务领取，并转到待办页面*/
 	function claimTask(taskId){
-		 var url = "/pages/workflow/workspace/listPersonalTasks.jsp";
-    	 top.forwardTabEvent("待办任务",url);
-    	 top.removeTabEvent(_selfTabid);
-    	 return;
 		var url = "${pageContext.request.contextPath}/bpm/claimTask.do";
 		var data = {taskId:taskId};
 		$.ajax({

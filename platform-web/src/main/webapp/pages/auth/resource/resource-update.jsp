@@ -6,12 +6,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
+	/**
+	修改资源界面
+	*/
 	var id = "${param.id}";
 	$(function(){
 		autoResize();
 		loadAllResourceType();
 		loadData();
 	});
+	/*初始化资源资源combox*/
 	function loadAllResourceType(){
 		$.post("${pageContext.request.contextPath}/resource/findAllResourceType.do",
 				function(json) {
@@ -41,7 +45,7 @@
 			$(parent.document).find('div.l-dialog-content:last').height(height-5);
 		} catch (e) {}
 	}
-	
+	/*获得资源信息*/
 	function loadData(){
 		if(""==id) return;
 		$.ajax({
@@ -75,7 +79,7 @@
 			}
 		});
 	}
-	
+	/*修改资源*/
 	function saveDataAction(){
 		$.post("${pageContext.request.contextPath}/resource/updateResource.do?id=" + id, 
 			$("#resource_form").serialize(),

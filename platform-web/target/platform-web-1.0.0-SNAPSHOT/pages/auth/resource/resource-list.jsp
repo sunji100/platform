@@ -6,9 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
+	/**
+	资源管理界面
+	*/
 	var _dialog;
 	$(function(){
-		PageLoader.initGridPanel();
+		PageLoader.initGridPanel();//显示所有资源
 	});
 	PageLoader = {
 			initGridPanel:function(){
@@ -79,7 +82,7 @@
 		} 
 	}
 	
-	
+	/*打开增加资源对话框*/
 	function openAddDialog(){
 		var url = "resource-add.jsp";
 		_dialog = jQuery.ligerDialog.open({
@@ -88,7 +91,7 @@
 	  	    isResize: true, width: 550, height: 550, isHidden: false
 	     });
 	}
-	
+	/*打开修改资源对话框*/
 	function openModifyDialog(){
 		var newRow = gridManager.getSelected();
 	     if (!newRow) { alert('请选择行'); return; }
@@ -107,7 +110,7 @@
 	  	    isResize: true, width: 550, height: 550, isHidden: false
 	     });
 	}
-	
+	/*删除选中的资源*/
 	function deleteDataAction(){
 		var newRow = gridManager.getSelected();
 		if (!newRow) { alert('请选择行'); return; }

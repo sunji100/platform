@@ -13,6 +13,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.yixun.platform.application.security.AuthDataService;
 
+/**
+ * 获得用户的详细信息
+ * @author sunji
+ *
+ */
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Inject
@@ -23,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		if(null == user){
 			throw new UsernameNotFoundException("用户名没找到");
 		}
-
+		//用户所拥有的角色
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
 		for(String role:user.getRoles()){
 			grantedAuthorities.add(new GrantedAuthorityImpl(role));

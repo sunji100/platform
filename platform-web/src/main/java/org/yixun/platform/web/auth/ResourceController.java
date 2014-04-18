@@ -22,7 +22,14 @@ public class ResourceController {
 	
 	@Inject
 	private ResourceApplication resourceApplication;
-	
+	/**
+	 * 查询所有资源
+	 * @param queryDTO
+	 * @param page
+	 * @param pagesize
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/pageQueryResource")
 	public Map<String, Object> pageQueryResource(ResourceDTO queryDTO,int page,int pagesize) throws Exception{
@@ -32,7 +39,11 @@ public class ResourceController {
 		result.put("Total", pages.getTotalCount());
 		return result;
 	}
-	
+	/**
+	 * 查询所有资源类型
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findAllResourceType")
 	public Map<String, Object> findAllResourceType() throws Exception{
@@ -41,7 +52,12 @@ public class ResourceController {
 		result.put("data", resourceTypes);
 		return result;
 	}
-	
+	/**
+	 * 增加资源
+	 * @param resourceDTO
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/saveResource")
 	public Map<String, Object> saveResource(ResourceDTO resourceDTO) throws Exception {
@@ -50,7 +66,12 @@ public class ResourceController {
 		result.put("result", "success");
 		return result;
 	}
-	
+	/**
+	 * 获得指定资源详细信息
+	 * @param id 资源ID
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findResourceById/{id}")
 	public Map<String, Object> findResourceById(@PathVariable("id")Long id) throws Exception {
@@ -59,7 +80,12 @@ public class ResourceController {
 		result.put("data", resourceDTO);
 		return result;
 	}
-	
+	/**
+	 * 更新资源信息
+	 * @param resourceDTO
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/updateResource")
 	public Map<String, Object> updateResource(ResourceDTO resourceDTO) throws Exception {
@@ -68,7 +94,12 @@ public class ResourceController {
 		result.put("result", "success");
 		return result;
 	}
-	
+	/**
+	 * 删除资源
+	 * @param ids 资源ID数组
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/removeResource")
 	public Map<String, Object> removeResource(String ids) throws Exception {
@@ -83,7 +114,12 @@ public class ResourceController {
 		result.put("result", "success");
 		return result;
 	}
-	
+	/**
+	 * 获得角色所拥有的资源
+	 * @param roleId 角色ID
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findResourceByRole")
 	public Map<String, Object> findResourceByRole(Long roleId) throws Exception {
@@ -94,7 +130,15 @@ public class ResourceController {
 		
 		return result;
 	}
-	
+	/**
+	 * 没有分配到角色的资源
+	 * @param queryDTO
+	 * @param roleId 角色ID
+	 * @param page
+	 * @param pagesize
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findResourceNotAssignToRole")
 	public Map<String, Object> findResourceNotAssignToRole(ResourceDTO queryDTO,Long roleId,int page,int pagesize) throws Exception{

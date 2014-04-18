@@ -31,7 +31,14 @@ public class RoleController {
 	public String list(){
 		return "auth/role/role-list";
 	}
-	
+	/**
+	 * 获得所有角色
+	 * @param queryDTO
+	 * @param page
+	 * @param pageSize
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/pageQueryRole")
 	public Map<String, Object> pageQueryRole(RoleDTO queryDTO,@RequestParam("page")int page,@RequestParam("pagesize")int pageSize) throws Exception{
@@ -51,7 +58,15 @@ public class RoleController {
 		result.put("Rows", pages.getResult());
 		return result;
 	}
-	
+	/**
+	 * 没有分配给指定用户的角色
+	 * @param queryDTO
+	 * @param userId 用户ID
+	 * @param page
+	 * @param pagesize
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findNotAssignRoleByUser")
 	public Map<String, Object> findNotAssignRoleByUser(RoleDTO queryDTO,Long userId,@RequestParam("page")int page,int pagesize) throws Exception{
@@ -61,7 +76,13 @@ public class RoleController {
 		result.put("Rows", pages.getResult());
 		return result;
 	}
-	
+	/**
+	 * 为用户分配角色
+	 * @param userId
+	 * @param roleIds
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/assignRoleToUser")
 	public Map<String, Object> assignRoleToUser(Long userId, String roleIds) throws Exception {
@@ -76,7 +97,13 @@ public class RoleController {
 		result.put("result", "success");
 		return result;
 	}
-	
+	/**
+	 * 删除为用户分配的角色
+	 * @param userId
+	 * @param roleIds
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/removeRoleForUser")
 	public Map<String, Object> removeRoleForUser(Long userId, Long[] roleIds) throws Exception {
@@ -85,7 +112,12 @@ public class RoleController {
 		result.put("result", "success");
 		return result;
 	}
-	
+	/**
+	 * 获得角色信息
+	 * @param id 角色ID
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findRoleById/{id}")
 	public Map<String, Object> findRoleById(@PathVariable("id")Long id) throws Exception{
@@ -95,7 +127,12 @@ public class RoleController {
 		result.put("data", roleDTO);
 		return result;
 	}
-	
+	/**
+	 * 修改角色
+	 * @param roleDTO
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/updateRole")
 	public Map<String, Object> updateRole(RoleDTO roleDTO) throws Exception{
@@ -105,7 +142,12 @@ public class RoleController {
 		result.put("result", "success");
 		return result;
 	}
-	
+	/**
+	 * 删除角色
+	 * @param ids
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/removeRole")
 	public Map<String, Object> removeRole(String ids) throws Exception{
@@ -121,7 +163,12 @@ public class RoleController {
 		result.put("result", "success");
 		return result;
 	}
-	
+	/**
+	 * 增加角色
+	 * @param roleDTO
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/saveRole")
 	public Map<String, Object> saveRole(RoleDTO roleDTO) throws Exception{
@@ -132,7 +179,13 @@ public class RoleController {
 		result.put("data", roleDTO);
 		return result;
 	}
-	
+	/**
+	 * 为角色添加菜单
+	 * @param roleId 角色ID
+	 * @param menuIds 菜单ID数组
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/assignMenuToRole")
 	public Map<String, Object> assignMenuToRole(Long roleId, String menuIds) throws Exception {
@@ -152,7 +205,13 @@ public class RoleController {
 		result.put("result", "success");
 		return result;
 	}
-	
+	/**
+	 * 删除菜单分配
+	 * @param roleId 角色ID
+	 * @param menuIds 菜单ID数组
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/removeMenuForRole")
 	public Map<String, Object> removeMenuForRole(Long roleId, String menuIds) throws Exception {
@@ -167,7 +226,13 @@ public class RoleController {
 		result.put("result", "success");
 		return result;
 	}
-	
+	/**
+	 * 获得组织及从上级组织继承的角色
+	 * @param queryDTO
+	 * @param orgId
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findParentRoleByOrgId")
 	public Map<String, Object> findParentRoleByOrgId(RoleDTO queryDTO, Long orgId) throws Exception {
@@ -177,7 +242,14 @@ public class RoleController {
 		result.put("Rows", roleDTOs);
 		return result;
 	}
-	
+	/**
+	 * 获得用户所拥有的角色及从组织中继承的角色
+	 * @param queryDTO
+	 * @param orgId
+	 * @param identityId
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findRoleByOrgIdAndIdentityId")
 	public Map<String, Object> findRoleByOrgIdAndIdentityId(RoleDTO queryDTO, Long orgId,Long identityId) throws Exception {
@@ -187,7 +259,16 @@ public class RoleController {
 		result.put("Rows", roleDTOs);
 		return result;
 	}
-	
+	/**
+	 * 未被分配到用户或组织的角色
+	 * @param queryDTO
+	 * @param orgId 组织ID
+	 * @param identityId 用户ID
+	 * @param page
+	 * @param pagesize
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findRoleByNoAssignToIdentityIdOrOrgId")
 	public Map<String, Object> findRoleByNoAssignToIdentityIdOrOrgId(RoleDTO queryDTO, Long orgId,Long identityId,int page,int pagesize) throws Exception {
@@ -198,7 +279,13 @@ public class RoleController {
 		result.put("Rows", pages.getResult());
 		return result;
 	}
-	
+	/**
+	 * 分配资源到角色
+	 * @param roleId 角色ID
+	 * @param resourceIds 资源ID数组
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/assignResourceToRole")
 	public Map<String, Object> assignResourceToRole(Long roleId, String resourceIds) throws Exception {
@@ -219,6 +306,13 @@ public class RoleController {
 		return result;
 	}
 	
+	/**
+	 * 删除分配的资源
+	 * @param roleId 角色ID
+	 * @param resourceIds
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/removeResourceForRole")
 	public Map<String, Object> removeResourceForRole(Long roleId, String resourceIds) throws Exception {

@@ -104,7 +104,7 @@
 		} 
 	}
 	
-	
+	/*打开增加菜单对话框*/
 	function openAddDialog(){
 		var newRow = gridManager.getSelected();
 		var url;
@@ -128,7 +128,7 @@
 	  	    isResize: true, width: 550, height: 550, isHidden: false
 	     });
 	}
-	
+	/*打开菜单修改对话框*/
 	function openModifyDialog(){
 		var newRow = gridManager.getSelected();
 	     if (!newRow) { alert('请选择行'); return; }
@@ -148,6 +148,7 @@
 	     });
 	}
 	
+	/*删除选中菜单*/
 	function deleteDataAction(){
 		var newRow = gridManager.getSelected();
 		if (!newRow) { alert('请选择行'); return; }
@@ -195,9 +196,10 @@
 		this.sortOrder = sortOrder;
 		this.id = id;
 	}
-	
+	/*改变菜单排序 */
 	function updateSortAction(){
 		var data = [];
+		//获得当前grid中的菜单顺序
 		for ( var i = 0; i < gridManager.rows.length; i++) {
 			var rowNo = i + 1;
 			data.push(new menu(rowNo,gridManager.rows[i].id));

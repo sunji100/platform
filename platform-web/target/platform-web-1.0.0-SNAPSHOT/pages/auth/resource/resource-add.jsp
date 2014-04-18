@@ -6,7 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
-	
+	/**
+	增加资源界面
+	*/
 	$(function(){
 		autoResize();
 		initAddForm();
@@ -16,6 +18,7 @@
 		$("#parentIds").val(_parentId);
 		loadAllResourceType();
 	}
+	//初始化资源类型combox
 	function loadAllResourceType(){
 		$.post("${pageContext.request.contextPath}/resource/findAllResourceType.do",
 				function(json) {
@@ -45,7 +48,7 @@
 			$(parent.document).find('div.l-dialog-content:last').height(height-5);
 		} catch (e) {}
 	}
-	
+	/*增加资源*/
 	function saveDataAction(){
 		$.post("${pageContext.request.contextPath}/resource/saveResource.do", 
 				$("#resource_form").serialize(),

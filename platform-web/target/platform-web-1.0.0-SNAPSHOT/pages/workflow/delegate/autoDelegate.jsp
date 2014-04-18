@@ -7,13 +7,16 @@
 <%@ include file="/pages/common/header.jsp"%>
 <%@ include file="/pages/common/auth/orgUserDialog.jsp"%>
 <script type="text/javascript">
+	/**
+	设置流程委托界面
+	*/
 	var tabid = "${param.tabid}";
 	var _dialog;
 	var gridData;
 	$(function(){
 		$("#startTime").ligerDateEditor();//加载日期选择器
 		$("#endTime").ligerDateEditor();//加载日期选择器
-		PageLoader.initGridPanel();
+		PageLoader.initGridPanel();//获得流程定义列表
 		loadGridData();
 	});
 	PageLoader = {
@@ -113,7 +116,7 @@
 		   }
 		);
 	}
-	
+	/*保存委托设置*/
 	function addDelegateInfo(){
 		var newRow = gridManager.getSelected();
 		if (!newRow) { alert('请选择行'); return; }

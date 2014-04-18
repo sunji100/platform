@@ -28,6 +28,7 @@
 		<koalaSecurity.version>2.0.0-SNAPSHOT</koalaSecurity.version>
 		<koala.framework.version>2.0.0-SNAPSHOT</koala.framework.version>
 		<activiti-version>5.14</activiti-version>
+		<jackson-version>2.3.2</jackson-version>
 
 		<!--DB实现以及MVC模型的实现支持，不要修改这两个值 -->
 		<dbProtocol>JPA</dbProtocol>
@@ -658,7 +659,7 @@
 			
 			<!--  activiti -->
 			<dependency>
-		      <groupId>org.yixun</groupId>
+		      <groupId>org.activiti</groupId>
 		      <artifactId>activiti-engine</artifactId>
 		      <version>${activiti-version}</version>
 		    </dependency>
@@ -668,10 +669,16 @@
 		      <version>${activiti-version}</version>
 		    </dependency>
 		    <dependency>
+		      <groupId>org.activiti</groupId>
+		      <artifactId>activiti-json-converter</artifactId>
+		      <version>${activiti-version}</version>
+		    </dependency>
+		    <dependency>
 		      <groupId>org.codehaus.groovy</groupId>
 		      <artifactId>groovy-all</artifactId>
 		      <version>2.0.4</version>
 		    </dependency>
+		    
 		    
 		    <!-- cglib -->
 		    <dependency>
@@ -679,7 +686,26 @@
 				<artifactId>cglib</artifactId>
 				<version>3.1</version>
 			</dependency>
-
+			
+			
+			            
+			<dependency>
+			    <groupId>math.geom2d</groupId>
+			    <artifactId>javaGeom</artifactId>
+			    <version>0.11.1</version>
+			</dependency>
+			<!-- gson -->
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>2.2.4</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.4</version>
+			</dependency>
 		</dependencies>
 
 	</dependencyManagement>
@@ -708,6 +734,16 @@
 					<skipTests>true</skipTests>
 				</configuration>
 			</plugin>
+			
+			<plugin>  
+            <groupId>org.apache.maven.plugins</groupId>  
+            <artifactId>maven-compiler-plugin</artifactId> 
+            <version>3.1</version>  
+            <configuration>  
+                <source>1.7</source>  
+                <target>1.7</target>  
+            </configuration>  
+        </plugin> 
 		</plugins>
 		<pluginManagement>
 			<plugins>

@@ -40,7 +40,11 @@ public class MenuController {
 		result.put("data", topMenuList);
 		return result;
 	}
-	
+	/**
+	 * 获得登录用户的菜单项
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/findMenuByUser")
 	public Map<String, Object> findMenuByUser(HttpServletRequest request){
@@ -52,6 +56,12 @@ public class MenuController {
 		return result;
 	}
 	
+	/**
+	 * 获得目录树
+	 * @param selfId 不显示的目录ID
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findDiretoryTree")
 	public List<MenuDTO> findDiretoryTree(Long selfId) throws Exception{
@@ -62,7 +72,7 @@ public class MenuController {
 	}
 	
 	/**
-	 * 获得菜单树
+	 * 获得全部菜单的菜单树
 	 * @return
 	 * @throws Exception
 	 */
@@ -92,7 +102,12 @@ public class MenuController {
 		result.put("Rows", menuList);
 		return result;
 	}
-	
+	/**
+	 * 新增菜单
+	 * @param menuDTO 
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/saveMenu")
 	public Map<String, Object> saveMenu(MenuDTO menuDTO) throws Exception{
@@ -120,7 +135,12 @@ public class MenuController {
 		result.put("result", "success");
 		return result;
 	}
-	
+	/**
+	 * 修改菜单信息
+	 * @param menuDTO
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/updateMenu")
 	public Map<String, Object> updateMenu(MenuDTO menuDTO) throws Exception{
@@ -132,6 +152,12 @@ public class MenuController {
 		return result;
 	}
 	
+	/**
+	 * 获得菜单信息
+	 * @param id  要获得的菜单id
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findMenuById/{id}")
 	public Map<String, Object> findMenuById(@PathVariable("id")Long id) throws Exception{
@@ -167,7 +193,7 @@ public class MenuController {
 		result.put("Rows", menuList);
 		return result;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("/findMenuTreeNoAssignToRole")
 	public Map<String, Object> findMenuTreeNoAssignToRole(Long roleId) throws Exception {
@@ -178,7 +204,11 @@ public class MenuController {
 		return result;
 	}
 	
-	
+	/**
+	 * 获得所有图标资源
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/getIconNames")
 	public Map<String,Object> getIconNames(HttpServletRequest request) {

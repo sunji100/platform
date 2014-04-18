@@ -63,7 +63,7 @@
         </dependency> 
         <!--  activiti -->
 		<dependency>
-	      <groupId>org.yixun</groupId>
+	      <groupId>org.activiti</groupId>
 	      <artifactId>activiti-engine</artifactId>
 	    </dependency>
 	    <dependency>

@@ -13,6 +13,7 @@ import javax.inject.Named;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.ManagementService;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
@@ -25,6 +26,7 @@ import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.impl.task.TaskDefinition;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,10 +38,12 @@ import org.yixun.platform.application.security.util.IdentityBeanUtil;
 import org.yixun.platform.application.security.util.RoleBeanUtil;
 import org.yixun.platform.application.workflow.BpmAdminApplication;
 import org.yixun.platform.application.workflow.dto.BpmConfUserDTO;
+import org.yixun.platform.application.workflow.dto.BpmStarterConfDTO;
 import org.yixun.platform.application.workflow.util.BpmConfUserBeanUtil;
 import org.yixun.platform.core.security.Identity;
 import org.yixun.platform.core.security.Role;
 import org.yixun.platform.core.workflow.BpmConfUser;
+import org.yixun.platform.core.workflow.BpmStarterConf;
 import org.yixun.platform.workflow.cmd.ProcessDefinitionDiagramCmd;
 import org.yixun.platform.workflow.listener.ConfUserTaskListener;
 
@@ -60,6 +64,8 @@ public class BpmAdminApplicationImpl implements BpmAdminApplication {
 	private TaskService taskService;
 	@Inject
 	private HistoryService historyService;
+	@Inject
+	private RuntimeService runtimeService;
 	@Inject
 	private QueryChannelService queryChannelService;
 	
@@ -101,7 +107,7 @@ public class BpmAdminApplicationImpl implements BpmAdminApplication {
 				TaskDefinition taskDefinition = ((UserTaskActivityBehavior)activityImpl.getActivityBehavior()).getTaskDefinition();
 				String taskDefKey = taskDefinition.getKey();
 				userTaskInfo.put("taskDefKey", taskDefKey);
-				String taskName = taskDefinition.getNameExpression().toString();
+				String taskName = String.valueOf(taskDefinition.getNameExpression());
 				userTaskInfo.put("taskName", taskName);
 				userTaskList.add(userTaskInfo);
 			}
@@ -127,6 +133,7 @@ public class BpmAdminApplicationImpl implements BpmAdminApplication {
 			pdMap.put("version", pd.getVersion());
 			pdMap.put("description", pd.getDescription());
 			pdMap.put("suspended", pd.isSuspended());
+			pdMap.put("deploymentId", pd.getDeploymentId());
 			resultList.add(pdMap);
 		}
 		return resultList;
@@ -379,6 +386,193 @@ public class BpmAdminApplicationImpl implements BpmAdminApplication {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * 所有运行中的流程实例
+	 */
+	@Override
+	public List<Map<String, Object>> listProcessInstances() throws Exception {
+		List<ProcessInstance> procInsList = runtimeService.createProcessInstanceQuery().orderByProcessInstanceId().desc().list();
+		
+		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
+		for (ProcessInstance processInstance : procInsList) {
+			Map<String, Object> hiMap = new HashMap<String, Object>();
+			hiMap.put("procInsId", processInstance.getId());
+			HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstance.getId()).singleResult();
+			hiMap.put("procInsStartTime", historicProcessInstance.getStartTime());
+			hiMap.put("suspended", processInstance.isSuspended());
+			
+			Task currentTask = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
+			hiMap.put("currentTaskName", currentTask.getName());
+			hiMap.put("currentTaskAssign", currentTask.getAssignee());
+			
+			ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(processInstance.getProcessDefinitionId()).singleResult();
+			hiMap.put("procName", processDefinition.getName());
+			hiMap.put("procDefId", processDefinition.getId());
+			hiMap.put("procDefKey", processDefinition.getKey());
+			
+			hiMap.put("procTitle", findProcTitle(processInstance.getId()));
+			resultList.add(hiMap);
+		}
+		return resultList;
+	}
+
+	/**
+	 * 暂停流程实例
+	 */
+	@Override
+	public void suspendProcessInstanceId(String processInstanceId) throws Exception {
+		runtimeService.suspendProcessInstanceById(processInstanceId);
+		
+	}
+
+	/**
+	 * 激活流程实例
+	 */
+	@Override
+	public void activeProcessInstanceId(String processInstanceId) throws Exception {
+		runtimeService.activateProcessInstanceById(processInstanceId);
+		
+	}
+
+	/**
+	 * 删除流程实例
+	 */
+	@Override
+	public void removeProcessInstanceId(String processInstanceId) throws Exception {
+		runtimeService.deleteProcessInstance(processInstanceId, "管理员删除");
+		
+	}
+
+	/**
+	 * 删除流程定义
+	 */
+	@Override
+	public void removeProcessDeployment(String deploymentId) throws Exception {
+		repositoryService.deleteDeployment(deploymentId, true);
+		
+	}
+	
+	/**
+	 * 查询流程定义的可发起人
+	 */
+	@Override
+	public List<BpmStarterConfDTO> findStarterByProcDefId(String procDefId) throws Exception {
+		List<BpmStarterConf> bpmStarterConfList = BpmStarterConf.find("procDefId", procDefId);
+		
+		List<BpmStarterConfDTO> bpmStarterConfDTOList = new ArrayList<BpmStarterConfDTO>();
+		BpmStarterConfDTO bpmStarterConfDTO = null;
+		for (BpmStarterConf bpmStarterConf : bpmStarterConfList) {
+			bpmStarterConfDTO = new BpmStarterConfDTO();
+			bpmStarterConfDTO.setId(bpmStarterConf.getId());
+			bpmStarterConfDTO.setProcDefId(procDefId);
+			Long roleId = bpmStarterConf.getRoleId();
+			if(null != roleId && 0 != roleId){
+				bpmStarterConfDTO.setStarterId(roleId);
+				Role role = Role.load(Role.class, roleId);
+				if(null != role){
+					bpmStarterConfDTO.setStarter(role.getName());
+				}
+				bpmStarterConfDTO.setStarterType("role");
+			}
+			Long userId = bpmStarterConf.getUserId();
+			if(null != userId && 0 != userId){
+				bpmStarterConfDTO.setStarterId(userId);
+				Identity user = Identity.load(Identity.class, userId);
+				if(null != user){
+					bpmStarterConfDTO.setStarter(user.getName());
+				}
+				bpmStarterConfDTO.setStarterType("user");
+			}
+			bpmStarterConfDTOList.add(bpmStarterConfDTO);
+		}
+		return bpmStarterConfDTOList;
+	}
+
+	/**
+	 * 查询未被分配到流程定义上的角色
+	 */
+	@Override
+	public Page<RoleDTO> findNotAssignRoleByProcDef(String procDefId, int page, int pagesize) throws Exception {
+		StringBuilder jpql = new StringBuilder("select _role from Role _role where not exists "
+				+ "(select _bpmStarterConf.roleId from BpmStarterConf _bpmStarterConf where _bpmStarterConf.procDefId = ? and _bpmStarterConf.roleId = _role.id )");
+		List<Object> conditionVals = new ArrayList<Object>();
+		
+		conditionVals.add(procDefId);
+		
+		Page<Role> pages = queryChannelService.queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), page, pagesize);
+		
+		List<RoleDTO> roleDTOs = new ArrayList<RoleDTO>();
+		RoleDTO roleDTO = null;
+		for(Role role:pages.getResult()){
+			roleDTO = new RoleDTO();
+			RoleBeanUtil.domainToDTO(roleDTO, role);
+			roleDTOs.add(roleDTO);
+		}
+		return new Page<RoleDTO>(pages.getCurrentPageNo(),pages.getTotalCount(),pages.getPageSize(),roleDTOs);
+	}
+	
+	/**
+	 * 查询未被分配到流程定义上的用户
+	 */
+	@Override
+	public Page<IdentityDTO> findNotAssignUserByProcDef(String procDefId, int page, int pagesize) throws Exception {
+		StringBuilder jpql = new StringBuilder("select _user from Identity _user where not exists "
+				+ "(select _bpmStarterConf.userId from BpmStarterConf _bpmStarterConf where _bpmStarterConf.procDefId = ? and  _bpmStarterConf.userId = _user.id)");
+		List<Object> conditionVals = new ArrayList<Object>();
+		
+		conditionVals.add(procDefId);
+		
+		Page<Identity> pages = queryChannelService.queryPagedResultByPageNo(jpql.toString(), conditionVals.toArray(), page, pagesize);
+		
+		List<IdentityDTO> identityDTOs = new ArrayList<IdentityDTO>();
+		IdentityDTO identityDTO = null;
+		for (Identity identity : pages.getResult()) {
+			identityDTO = new IdentityDTO();
+			IdentityBeanUtil.domainToDTO(identityDTO, identity);
+			identityDTOs.add(identityDTO);
+		}
+		return new Page<IdentityDTO>(pages.getCurrentPageNo(),pages.getTotalCount(),pages.getPageSize(),identityDTOs);
+	}
+
+	/**
+	 * 为流程定义分配可执行角色
+	 */
+	@Override
+	public void assignRoleToProcDef(String procDefId, Long[] roleIds) throws Exception {
+		for (Long roleId : roleIds) {
+			BpmStarterConf bpmStarterConf = new BpmStarterConf();
+			bpmStarterConf.setProcDefId(procDefId);
+			bpmStarterConf.setRoleId(roleId);
+			bpmStarterConf.save();
+		}
+		
+	}
+	
+	/**
+	 * 为流程定义分配可执行用户
+	 */
+	@Override
+	public void assignUserToProcDef(String procDefId, Long[] userIds) throws Exception {
+		for (Long userId : userIds) {
+			BpmStarterConf bpmStarterConf = new BpmStarterConf();
+			bpmStarterConf.setProcDefId(procDefId);
+			bpmStarterConf.setUserId(userId);
+			bpmStarterConf.save();
+		}
+	}
+
+	/**
+	 * 删除流程定义可执行用户或角色
+	 */
+	@Override
+	public void removeAssignForProcDef(Long[] ids) throws Exception {
+		for (Long id : ids) {
+			BpmStarterConf bpmStarterConf = BpmStarterConf.load(BpmStarterConf.class, id);
+			bpmStarterConf.remove();
+		}
+		
 	}
 
 }

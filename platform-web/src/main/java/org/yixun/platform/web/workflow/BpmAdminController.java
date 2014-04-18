@@ -24,6 +24,7 @@ import org.yixun.platform.application.security.dto.IdentityDTO;
 import org.yixun.platform.application.security.dto.RoleDTO;
 import org.yixun.platform.application.workflow.BpmAdminApplication;
 import org.yixun.platform.application.workflow.dto.BpmConfUserDTO;
+import org.yixun.platform.application.workflow.dto.BpmStarterConfDTO;
 import org.yixun.platform.workflow.cmd.ProcessDefinitionDiagramCmd;
 
 import com.dayatang.querychannel.support.Page;
@@ -79,7 +80,7 @@ public class BpmAdminController {
 	@ResponseBody
 	@RequestMapping("/activeProcessDefinition")
 	public Map<String, Object> activeProcessDefinition(String processDefinitionId) throws Exception {
-		repositoryService.activateProcessDefinitionById(processDefinitionId, true, null);
+		bpmAdminApplication.activeProcessDefinition(processDefinitionId);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("result", "success");
@@ -102,7 +103,7 @@ public class BpmAdminController {
 	
 	/**
 	 * 显示流程定义中的userTask列表
-	 * @param processDefinitionId
+	 * @param processDefinitionId 流程定义ID
 	 * @return
 	 * @throws Exception
 	 */
@@ -157,7 +158,7 @@ public class BpmAdminController {
 	}
 	
 	/**
-	 * 为UserTask分配角色
+	 * 为UserTask分配办理角色
 	 * @param bpmConfDTO
 	 * @param roleIds
 	 * @return
@@ -252,6 +253,204 @@ public class BpmAdminController {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("Rows", resultList);
+		
+		return result;
+	}
+	
+	/**
+	 * 查看所有运行中的流程实例
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/listProcessInstances")
+	public Map<String, Object> listProcessInstances() throws Exception {
+		
+		List<Map<String, Object>> resultList = bpmAdminApplication.listProcessInstances();
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("Rows", resultList);
+		
+		return result;
+	}
+	
+	/**
+	 * 暂停流程实例
+	 * @param processInstanceId
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/suspendProcessInstanceId")
+	public Map<String, Object> suspendProcessInstanceId(String processInstanceId) throws Exception {
+		
+		bpmAdminApplication.suspendProcessInstanceId(processInstanceId);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("result", "success");
+		
+		return result;
+	}
+	
+	/**
+	 * 激活流程实例
+	 * @param processInstanceId
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/activeProcessInstanceId")
+	public Map<String, Object> activeProcessInstanceId(String processInstanceId) throws Exception {
+		
+		bpmAdminApplication.activeProcessInstanceId(processInstanceId);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("result", "success");
+		
+		return result;
+	}
+	
+	/**
+	 * 删除流程实例
+	 * @param processInstanceId
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/removeProcessInstanceId")
+	public Map<String, Object> removeProcessInstanceId(String processInstanceId) throws Exception {
+		
+		bpmAdminApplication.removeProcessInstanceId(processInstanceId);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("result", "success");
+		
+		return result;
+	}
+	
+	/**
+	 * 删除流程定义
+	 * @param deploymentId
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/removeProcessDeployment")
+	public Map<String, Object> removeProcessDeployment(String deploymentId) throws Exception {
+		bpmAdminApplication.removeProcessDeployment(deploymentId);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("result", "success");
+		
+		return result;
+	}
+	
+	/**
+	 * 获得流程实例的已有授权人或角色
+	 * @param procDefId
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/findStarterByProcDefId")
+	public Map<String, Object> findStarterByProcDefId(String procDefId) throws Exception {
+		List<BpmStarterConfDTO> bpmStarterConfDTOs = bpmAdminApplication.findStarterByProcDefId(procDefId);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("Rows", bpmStarterConfDTOs);
+		
+		return result;
+	}
+	
+	/**
+	 * 查询未被分配到流程定义上的角色
+	 * @param procDefId
+	 * @param page
+	 * @param pagesize
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/findNotAssignRoleByProcDef")
+	public Map<String, Object> findNotAssignRoleByProcDef(String procDefId,int page,int pagesize) throws Exception {
+		Page<RoleDTO> pages = bpmAdminApplication.findNotAssignRoleByProcDef(procDefId,page,pagesize);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("Rows", pages.getResult());
+		result.put("Total", pages.getTotalCount());
+		
+		return result;
+	}
+	
+	/**
+	 * 查询未被分配到流程定义上的用户
+	 * @param procDefId
+	 * @param page
+	 * @param pagesize
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/findNotAssignUserByProcDef")
+	public Map<String, Object> findNotAssignUserByProcDef(String procDefId,int page,int pagesize) throws Exception {
+		Page<IdentityDTO> pages = bpmAdminApplication.findNotAssignUserByProcDef(procDefId, page, pagesize);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("Rows", pages.getResult());
+		result.put("Total", pages.getTotalCount());
+		
+		return result;
+	}
+	
+	/**
+	 * 为流程定义分配可执行角色
+	 * @param procDefId
+	 * @param roleIds
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/assignRoleToProcDef")
+	public Map<String, Object> assignRoleToProcDef(String procDefId,Long[] roleIds) throws Exception {
+		bpmAdminApplication.assignRoleToProcDef(procDefId, roleIds);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("result", "success");
+		
+		return result;
+	}
+	
+	/**
+	 * 为流程定义分配可执行用户
+	 * @param procDefId
+	 * @param userIds
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/assignUserToProcDef")
+	public Map<String, Object> assignUserToProcDef(String procDefId,Long[] userIds) throws Exception {
+		bpmAdminApplication.assignUserToProcDef(procDefId, userIds);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("result", "success");
+		
+		return result;
+	}
+	
+	/**
+	 * 删除流程定义可执行用户或角色
+	 * @param ids
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/removeAssignForProcDef")
+	public Map<String, Object> removeAssignForProcDef(Long[] ids) throws Exception {
+		bpmAdminApplication.removeAssignForProcDef(ids);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("result", "success");
 		
 		return result;
 	}

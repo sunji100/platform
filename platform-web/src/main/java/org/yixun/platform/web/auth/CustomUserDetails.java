@@ -5,6 +5,11 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * 用户详细信息实体类
+ * @author sunji
+ *
+ */
 public class CustomUserDetails implements UserDetails {
 
 	/**

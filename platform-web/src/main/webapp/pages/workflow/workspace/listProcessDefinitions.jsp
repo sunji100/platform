@@ -6,6 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
+	/**
+	发起流程界面
+	*/
 	var _dialog;
 	var gridData;
 	$(function(){
@@ -113,7 +116,7 @@
 	
 	/*加载grid数据*/
 	function loadGridData(){
-		var url = "${pageContext.request.contextPath}/bpm/listProcessDefinitions.do";
+		var url = "${pageContext.request.contextPath}/bpm/listProcessDefinitionsByUserId.do";//显示用户可发起的流程定义
 		$.ajax({
 		      url: url,
 		      type: "POST",

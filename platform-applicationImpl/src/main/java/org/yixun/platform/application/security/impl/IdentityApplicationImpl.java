@@ -8,21 +8,16 @@ import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
-import org.junit.experimental.theories.ParametersSuppliedBy;
-import org.openkoala.exception.extend.ApplicationException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.yixun.platform.application.crud.dto.ProductDTO;
 import org.yixun.platform.application.security.IdentityApplication;
 import org.yixun.platform.application.security.dto.IdentityDTO;
 import org.yixun.platform.application.security.util.IdentityBeanUtil;
 import org.yixun.platform.core.security.Identity;
 import org.yixun.platform.core.security.Org;
 import org.yixun.platform.core.security.Role;
-import org.yixun.support.exception.BusinessException;
+import org.yixun.support.exception.BizException;
 
 import com.dayatang.querychannel.service.QueryChannelService;
 import com.dayatang.querychannel.support.Page;
@@ -117,11 +112,11 @@ public class IdentityApplicationImpl implements IdentityApplication {
 	}
 
 	@Override
-	public IdentityDTO saveIdentity(IdentityDTO identityDTO) throws BusinessException {
+	public IdentityDTO saveIdentity(IdentityDTO identityDTO) throws Exception {
 		Identity identity = new Identity();
 		IdentityBeanUtil.dtoToDomain(identityDTO,identity);
 		if(identity.isAccountExist()){
-			throw new BusinessException("用户已存在");
+			throw new BizException("user.exist","用户已存在");
 		}
 		
 		Org org = Org.load(Org.class, identityDTO.getOrgId());

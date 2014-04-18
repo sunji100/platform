@@ -6,7 +6,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
-	var orgId = "${param.orgId}";
+	/**
+	新增用户界面
+	*/
+	var orgId = "${param.orgId}";//当前组织
 	//var orgName = "${param.orgName}";
 	$(function(){
 		$("#orgIdID").val(orgId);
@@ -28,7 +31,7 @@
 			$(parent.document).find('div.l-dialog-content:last').height(height-5);
 		} catch (e) {}
 	}
-	
+	/*获得组织名称*/
 	function initOrgName(){
 		$.ajax({
 			url:"${pageContext.request.contextPath}/org/findOrgById/"+ orgId +".do",
@@ -42,7 +45,7 @@
 			}
 		});
 	}
-	
+	/*新增用户*/
 	function saveDataAction(){
 		$.post("${pageContext.request.contextPath}/identity/saveIdentity.do", 
 				$("#user_form").serialize(),

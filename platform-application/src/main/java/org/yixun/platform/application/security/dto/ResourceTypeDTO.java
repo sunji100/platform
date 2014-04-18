@@ -1,6 +1,12 @@
 package org.yixun.platform.application.security.dto;
 
-public class ResourceTypeDTO {
+import java.io.Serializable;
+
+public class ResourceTypeDTO implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3257524183057689210L;
 	private Long id;
 	private String name;
 	private int sortOrder;

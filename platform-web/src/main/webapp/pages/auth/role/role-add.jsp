@@ -6,6 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
+	/**
+	新增角色对话框
+	*/
 	$(function(){
 		autoResize();
 	});
@@ -24,7 +27,7 @@
 			$(parent.document).find('div.l-dialog-content:last').height(height-5);
 		} catch (e) {}
 	}
-	
+	/*增加角色*/
 	function saveDataAction(){
 		$.post("${pageContext.request.contextPath}/role/saveRole.do", 
 				$("#user_form").serialize(),

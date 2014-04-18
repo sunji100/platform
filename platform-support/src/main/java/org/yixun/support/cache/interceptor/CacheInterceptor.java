@@ -10,6 +10,11 @@ import org.yixun.support.cache.annotation.Cache;
 
 import com.dayatang.domain.InstanceFactory;
 
+/**
+ * 添加缓存切面类
+ * @author sunji
+ *
+ */
 @Named
 @Aspect
 public class CacheInterceptor {
@@ -19,16 +24,24 @@ public class CacheInterceptor {
 	
 	@Around("anyMethod() && @annotation(cacheAnnotation)")
 	public Object doAround(ProceedingJoinPoint pjp,Cache cacheAnnotation){
+		//缓存名称
 		String cacheName;
-		if(null == cacheAnnotation.value() || "".equals(cacheAnnotation.value())){
+		if(null == cacheAnnotation.cacheName() || "".equals(cacheAnnotation.cacheName())){
 			cacheName = pjp.getTarget().getClass().getName();
 		} else {
-			cacheName = cacheAnnotation.value();
+			cacheName = cacheAnnotation.cacheName();
 		}
 		
 		org.yixun.support.cache.Cache cache = InstanceFactory.getInstance(org.yixun.support.cache.Cache.class, cacheName);
 		
-		String cacheKey = getCacheKey(pjp.getTarget().getClass().getName(), pjp.getSignature().getName(), pjp.getArgs());
+		//缓存key名称
+		String cacheKey;
+		if(null == cacheAnnotation.cacheKey() || "".equals(cacheAnnotation.cacheKey())){
+			cacheKey = getCacheKey(pjp.getTarget().getClass().getName(), pjp.getSignature().getName(), pjp.getArgs());
+		} else {
+			cacheKey = cacheAnnotation.cacheKey();
+		}
+		//添加或获取缓存数据
 		Object result = null;
 		synchronized (this) {
 			if (!cache.isKeyInCache(cacheKey)) {

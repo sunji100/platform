@@ -6,8 +6,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
-	var id = "${param.id}";
-	var orgId = "${param.orgId}";
+	/**
+	修改用户界面
+	*/
+	var id = "${param.id}";//用户ID
+	var orgId = "${param.orgId}";//组织ID
 	$(function(){
 		$("#id_orgId").val(orgId);
 		autoResize();
@@ -31,7 +34,7 @@
 			$(parent.document).find('div.l-dialog-content:last').height(height-5);
 		} catch (e) {}
 	}
-	
+	/*获得用户信息*/
 	function loadData(){
 		if(""==id) return;
 		/*$.getJSON("${pageContext.request.contextPath}/identity/findIdentityById/"+ id +".do",
@@ -86,7 +89,7 @@
 			}
 		});
 	}
-	
+	/*保存用户修改*/
 	function saveDataAction(){
 		$.post("${pageContext.request.contextPath}/identity/updateIdentity.do?id=" + id, 
 			$("#user_form").serialize(),

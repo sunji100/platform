@@ -20,7 +20,12 @@ public class OrgController {
 	
 	@Inject
 	private OrgApplication orgApplication;
-	
+	/**
+	 * 获得组织机构树
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findOrgTree")
 	public Map<String, Object> findOrgTree(HttpServletRequest request) throws Exception {
@@ -36,7 +41,11 @@ public class OrgController {
 		
 		return result;
 	}
-	
+	/**
+	 * 处理组织图标
+	 * @param orgDTO
+	 * @param request
+	 */
 	private void modifyAllSubIcon(OrgDTO orgDTO,HttpServletRequest request){
 		if(null != orgDTO.getChildren()){
 			for (OrgDTO subOrgDTO : orgDTO.getChildren()) {
@@ -45,7 +54,12 @@ public class OrgController {
 			}
 		}
 	}
-	
+	/**
+	 * 组织机构及组织中用户树
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findOrgAndIdentityTree")
 	public Map<String, Object> findOrgAndIdentityTree(HttpServletRequest request) throws Exception {
@@ -61,7 +75,13 @@ public class OrgController {
 		
 		return result;
 	}
-	
+	/**
+	 * 为组织分配角色
+	 * @param orgId
+	 * @param roleIds
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/assignRoleToOrg")
 	public Map<String, Object> assignRoleToOrg(Long orgId,String roleIds) throws Exception {
@@ -76,7 +96,13 @@ public class OrgController {
 		result.put("result", "success");
 		return result;
 	}
-	
+	/**
+	 * 删除为组织分配的角色
+	 * @param orgId
+	 * @param roleIds
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/removeRoleForOrg")
 	public Map<String, Object> removeRoleForOrg(Long orgId,String roleIds) throws Exception {
@@ -91,7 +117,12 @@ public class OrgController {
 		result.put("result", "success");
 		return result;
 	}
-	
+	/**
+	 * 获得组织信息
+	 * @param orgId 组织ID
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/findOrgById/{id}")
 	public Map<String, Object> findOrgById(@PathVariable("id")Long orgId) throws Exception{

@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <script type="text/javascript">
-	var parentId = "${param.parentId}";
+	var parentId = "${param.parentId}";//父菜单ID
 	var parentText = "${param.parentText}";
 	var combox;
 	$(function(){
@@ -14,6 +14,7 @@
 		initCombox();
 		initAddForm();
 	});
+	/*初始化画面数据*/
 	function initAddForm(){
 		//$("#parentIdID").val(parentId);
 		//$("#parentTextID").val(parentText);
@@ -29,6 +30,7 @@
 		$("#parentIdID").val(value);
 	}
 	
+	/*初始化父菜单combox*/
 	function initCombox(){
 		combox = $("#parentTextID").ligerComboBox({
 			width : 180, 
@@ -38,6 +40,8 @@
             onSelected:parentIdChange,
         }); 
 	}
+	
+	/*获得/images/icons/menu目录下所有的图标资源*/
 	function loadAllMenuIcons(){
 		$.post("${pageContext.request.contextPath}/menu/getIconNames.do",
 				function(json) {
@@ -70,6 +74,7 @@
 					}
 			});
 	}
+	/*根据表单大小设置对话框大小*/
 	function autoResize(){
 		var _form = $("#form_table");
 		var width = 550;
@@ -85,7 +90,7 @@
 			$(parent.document).find('div.l-dialog-content:last').height(height-5);
 		} catch (e) {}
 	}
-	
+	/*保存菜单*/
 	function saveDataAction(){
 		console.info($("#menu_form").serialize());
 		$.post("${pageContext.request.contextPath}/menu/saveMenu.do", 

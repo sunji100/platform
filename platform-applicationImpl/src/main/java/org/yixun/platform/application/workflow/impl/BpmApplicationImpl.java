@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,6 +28,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.yixun.platform.application.workflow.BpmApplication;
+import org.yixun.platform.core.security.Identity;
+import org.yixun.platform.core.security.Org;
+import org.yixun.platform.core.security.Role;
 import org.yixun.platform.core.workflow.BpmFormConf;
 import org.yixun.platform.workflow.cmd.HistoryProcessInstanceDiagramCmd;
 import org.yixun.platform.workflow.cmd.RollbackTaskCmd;
@@ -58,6 +62,7 @@ public class BpmApplicationImpl implements BpmApplication {
 	@Override
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
 	public List<Map<String, Object>> listProcessDefinitions() throws Exception {
+		
 		List<ProcessDefinition> pdList = repositoryService.createProcessDefinitionQuery().list();
 		
 		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
@@ -73,6 +78,104 @@ public class BpmApplicationImpl implements BpmApplication {
 			resultList.add(pdMap);
 		}
 		return resultList;
+	}
+	/**
+	 * 获得用户可发起的流程定义
+	 */
+	@Override
+	public List<Map<String, Object>> listProcessDefinitionsByUserId(Long userId) throws Exception {
+		Identity user = Identity.load(Identity.class, userId);
+		List<Long> roleIds = findAllRolesByUser(user);
+		List<String> procDefIds = findProcDefIdByUserIdOrRoleId(userId, roleIds);
+		
+		List<Map<String, Object>> resultList = new ArrayList<Map<String,Object>>();
+		
+		for (String procDefId : procDefIds) {
+			List<ProcessDefinition> pdList = repositoryService.createProcessDefinitionQuery().processDefinitionId(procDefId).list();
+			for(ProcessDefinition pd:pdList){
+				Map<String, Object> pdMap = new HashMap<String, Object>();
+				pdMap.put("id", pd.getId());
+				pdMap.put("key", pd.getKey());
+				pdMap.put("name", pd.getName());
+				pdMap.put("category", pd.getCategory());
+				pdMap.put("version", pd.getVersion());
+				pdMap.put("description", pd.getDescription());
+				pdMap.put("suspended", pd.isSuspended());
+				resultList.add(pdMap);
+			}
+		}
+		
+		return resultList;
+	}
+	/**
+	 * 根据用户ID和角色ID查询可发起的流程定义
+	 * @param userId
+	 * @param roleIds
+	 * @return
+	 */
+	private List<String> findProcDefIdByUserIdOrRoleId(Long userId,List<Long> roleIds){
+		String jpql = "select _bpmStarterConf.procDefId from BpmStarterConf _bpmStarterConf where _bpmStarterConf.userId = ? or _bpmStarterConf.roleId in ("+ StringUtils.join(roleIds, ",") +")";
+		List<Object> conditionVals = new ArrayList<Object>();
+		
+		conditionVals.add(userId);
+		
+		return queryChannelService.queryResult(jpql, conditionVals.toArray());
+	}
+	/**
+	 * 获得用户及其从组织中继承的全部角色
+	 * @param user
+	 * @return
+	 */
+	private List<Long> findAllRolesByUser(Identity user){
+		//用户所拥有的角色
+		Set<Role> roles = user.getRoles();
+		List<Long> roleList = new ArrayList<Long>();
+		if(null != roles){
+			for (Role role : roles) {
+				roleList.add(role.getId());
+			}
+		}
+		
+		//用户所在组织
+		Set<Org> orgs = user.getOrgs();
+		if(orgs != null){
+			List<Long> orgIdList = new ArrayList<Long>();
+			//获得用户所在组织及所有上级组织
+			for (Org org : orgs) {
+				orgIdList.add(org.getId());
+				findAllParentOrgId(org,orgIdList);
+			}
+			//获得用户从组织中继承来的角色
+			List<Long> orgRoleList = findRolesByOrgList(orgIdList);
+			for (Long roleId : orgRoleList) {
+				roleList.add(roleId);
+			}
+		}
+		return roleList;
+	}
+	/**
+	 * 获得组织所拥有的角色
+	 * @param orgIdList
+	 * @return
+	 */
+	private List<Long> findRolesByOrgList(List<Long> orgIdList){
+		String jpql = "select _role.id from Role _role inner join _role.orgs _org where _org.id in ("+ StringUtils.join(orgIdList, ",") +")";
+		return queryChannelService.queryResult(jpql, null);
+	}
+	
+	/**
+	 * 获得相应组织所有上级组织
+	 * @param org 当前组织
+	 * @param orgIdList 上级组织IDList
+	 */
+	private void findAllParentOrgId(Org org,List<Long> orgIdList){
+		Set<Org> parents = org.getParents();
+		if(null != parents && parents.size() != 0){
+			for (Org parentOrg : parents) {
+				orgIdList.add(parentOrg.getId());
+				findAllParentOrgId(parentOrg,orgIdList);
+			}
+		}
 	}
 	
 	/**
@@ -408,6 +511,5 @@ public class BpmApplicationImpl implements BpmApplication {
 		taskService.claim(taskId, String.valueOf(userId));
 		
 	}
-	
 
 }

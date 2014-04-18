@@ -7,11 +7,14 @@
 <%@ include file="/pages/common/header.jsp"%>
 <%@ include file="/pages/common/auth/orgUserDialog.jsp"%>
 <script type="text/javascript">
+	/**
+	管理运行中的用户任务界面
+	*/
 	var _dialog;
 	var gridData;
 	var _selfTabid = "${param.tabid}";
 	$(function(){
-		PageLoader.initGridPanel();
+		PageLoader.initGridPanel();//所有正在运行中的用户任务
 		loadGridData();
 	});
 	PageLoader = {

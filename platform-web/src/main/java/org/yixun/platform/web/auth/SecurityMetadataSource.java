@@ -16,20 +16,30 @@ import org.yixun.support.cache.Cache;
 
 import com.dayatang.domain.InstanceFactory;
 
+/**
+ * 获得请求所拥有的权限
+ * @author sunji
+ *
+ */
 public class SecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 	
 	@Inject
 	private AuthDataService authDataService;
 	
 	private Cache resourceCache;
-	
+	/**
+	 * 获得缓存对象
+	 * @return
+	 */
 	private Cache getResourceCache(){
 		if(null == resourceCache){
 			resourceCache = InstanceFactory.getInstance(Cache.class, "allResourceAndRoles");
 		}
 		return resourceCache;
 	}
-	
+	/**
+	 * 加载请求url与role对应关系
+	 */
 	private void loadResources(){
 		Map<String, List<String>> allResourceAndRoles = authDataService.getAllResourceAndRoles();
 		getResourceCache().put("allResourceAndRoles", allResourceAndRoles);
@@ -51,7 +61,7 @@ public class SecurityMetadataSource implements FilterInvocationSecurityMetadataS
 		}
 		
 		//url = url.substring(url.indexOf("/")+1);
-		System.out.println(url);
+		//获得资源对应的权限
 		List<String> roles = allResourceAndRoles.get(url);
 		if(null != roles){
 			Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>();
