@@ -6,13 +6,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <%@ include file="/pages/common/excel.jsp"%>
+
+
 <script type="text/javascript">
 	/**
 	资源类型管理界面
 	*/
 	var _dialog;
 	$(function(){
+		$('#fileupload').fileupload();
 		PageLoader.initGridPanel();//显示所有资源Grid
+		$('#fileUpload').live('change',function(){
+			uploadExcel(gridManager);
+		});
 	});
 	PageLoader = {
 			initGridPanel:function(){
@@ -31,7 +37,6 @@
 							name : "name",
 							width : 200,
 							type : "text",
-							align : "left",
 							totalSummary:
 		                    {
 		                        render: function (suminf, column, cell)
@@ -45,7 +50,7 @@
 							name : "name",
 							width : 200,
 							type : "text",
-							align : "left",
+							align : "center",
 							totalSummary:
 		                    {
 		                        render: function (suminf, column, cell)
@@ -84,15 +89,38 @@
           	        	line: true 
           	        },{ 
           	        	id:'excel',
-          	        	text: 'excel', 
+          	        	text: '通过html方式导出excel', 
           	        	click: itemclick, 
           	        	img : rootPath + "/images/icons/toolbar/page_delete.gif"
           	        },{ 
           	        	line: true 
           	        },{ 
           	        	id:'excelAll',
-          	        	text: 'excel all', 
+          	        	text: '通过html方式导出excel(全部)', 
           	        	click: itemclick, 
+          	        	img : rootPath + "/images/icons/toolbar/page_delete.gif"
+          	        },{ 
+          	        	line: true 
+          	        },{ 
+          	        	id:'excelModel',
+          	        	text: '下载grid excel模板', 
+          	        	click: itemclick, 
+          	        	img : rootPath + "/images/icons/toolbar/page_delete.gif"
+          	        },{ 
+          	        	line: true 
+          	        },{ 
+          	        	id:'excelData',
+          	        	text: '通过数据方式导出excel', 
+          	        	click: itemclick, 
+          	        	img : rootPath + "/images/icons/toolbar/page_delete.gif"
+          	        },{ 
+          	        	line: true 
+          	        },{ 
+          	        	id:'uploadExcel',
+          	        	text: '<span class="fileinput-button">' +
+          	        		'<span>导入excel</span>'+
+          	        		'<input type="file" id="fileUpload" name="file" class="input"/>'+
+          	        		'</span>', 
           	        	img : rootPath + "/images/icons/toolbar/page_delete.gif"
           	        }]}
 		        });
@@ -110,6 +138,10 @@
 			exportExcel("或32基本面.xls",gridManager);
 		} else if("excelAll" == item.id){
 			exportExcel("或32基本面.xls",gridManager,true);
+		} else if("excelModel" == item.id){
+			exportExcelHead("载基材.xls",gridManager);
+		} else if("excelData" == item.id){
+			exportExcelByData("载基材.xls",gridManager);
 		}
 	}
 	
@@ -178,11 +210,48 @@
 				});
 		
 	}
+	
+	
 </script>
 <title>Insert title here</title>
 </head>
 <body>
-<iframe name="excelFrame" style="display:none;"></iframe>
+<div class="row fileupload-buttonbar">
+            <div class="col-lg-7">
+                <!-- The fileinput-button span is used to style the file input field as button -->
+                <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>Add files...</span>
+                    <input type="file" name="files[]" multiple>
+                </span>
+                <button type="submit" class="btn btn-primary start">
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>Start upload</span>
+                </button>
+                <button type="reset" class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel upload</span>
+                </button>
+                <button type="button" class="btn btn-danger delete">
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <span>Delete</span>
+                </button>
+                <input type="checkbox" class="toggle">
+                <!-- The global file processing state -->
+                <span class="fileupload-process"></span>
+            </div>
+            <!-- The global progress state -->
+            <div class="col-lg-5 fileupload-progress fade">
+                <!-- The global progress bar -->
+                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                </div>
+                <!-- The extended global progress state -->
+                <div class="progress-extended">&nbsp;</div>
+            </div>
+        </div>
+
+
 <!-- 动作权限demo -->
 <ss3:authorize url="selectButton">
 selectButton动作权限

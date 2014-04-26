@@ -16,7 +16,7 @@ import org.yixun.platform.application.security.AuthDataService;
 /**
  * 获得用户的详细信息
  * @author sunji
- *
+ * 
  */
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -24,7 +24,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	private AuthDataService authDataService;
 	
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
-		org.yixun.platform.application.crud.dto.UserDetails user = authDataService.loadUserByUseraccount(username);
+		org.yixun.platform.application.crud.dto.UserDetails user;
+		try {
+			user = authDataService.loadUserByUseraccount(username);
+		} catch (Exception e) {
+			throw new UsernameNotFoundException("用户名没找到");
+		}
 		if(null == user){
 			throw new UsernameNotFoundException("用户名没找到");
 		}

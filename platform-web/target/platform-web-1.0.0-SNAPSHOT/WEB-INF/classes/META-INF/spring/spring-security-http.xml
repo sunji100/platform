@@ -24,6 +24,7 @@
 		<s:intercept-url pattern="/**/*.jpg" filters="none" />
 		<s:intercept-url pattern="/**/*.png" filters="none" />
 		<s:intercept-url pattern="/**/*.gif" filters="none" />
+		<s:intercept-url pattern="/webservice/**" filters="none" />
 		
 		
 		<s:form-login login-page="/login.do"

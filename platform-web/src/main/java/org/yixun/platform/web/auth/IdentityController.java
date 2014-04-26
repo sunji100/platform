@@ -109,7 +109,7 @@ public class IdentityController {
 		identityApplication.assignUserToRole(roleId, identityIdArr);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("result", "sucess");
+		result.put("result", "success");
 		return result;
 	}
 	/**
@@ -130,7 +130,7 @@ public class IdentityController {
 		identityApplication.removeUserForRole(roleId, identityIdArr);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("result", "sucess");
+		result.put("result", "success");
 		return result;
 	}
 	/**
@@ -146,7 +146,7 @@ public class IdentityController {
 		identityDTO = identityApplication.saveIdentity(identityDTO);
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("data", identityDTO);
-		result.put("result", "sucess");
+		result.put("result", "success");
 		return result;
 	}
 	/**
@@ -160,7 +160,7 @@ public class IdentityController {
 	public Map<String, Object> updateIdentity(IdentityDTO identityDTO) throws Exception{
 		identityApplication.updateIdentity(identityDTO);
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("result", "sucess");
+		result.put("result", "success");
 		return result;
 	}
 	/**
@@ -196,7 +196,7 @@ public class IdentityController {
 		identityApplication.removeIdentity(idArrs);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("result", "sucess");
+		result.put("result", "success");
 		return result;
 	}
 	

@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.jws.WebMethod;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,7 +28,7 @@ public class ProductApplicationImpl implements ProductApplication {
 	
 	@Inject
 	private QueryChannelService queryChannel;
-	
+	@WebMethod(exclude = true)
 	public ProductDTO saveProduct(ProductDTO productDTO) {
 		Product product = new Product();
 		try {

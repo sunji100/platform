@@ -1,12 +1,17 @@
 package org.yixun.test;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+
+
+
+
+import javax.mail.internet.MimeUtility;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.yixun.support.properties.util.RWProperties;
 
 @RunWith(JUnit4.class)
 public class PropertiesTest {
@@ -23,5 +28,11 @@ public class PropertiesTest {
 	public void write(){
 //		RWProperties properties = new RWProperties("test.properties");
 //		properties.setProperty("a", "1324");
+//		try {
+//			System.out.println(MimeUtility.encodeText("基团工asd12ads东奔西走.xls", "UTF-8", "B"));
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }

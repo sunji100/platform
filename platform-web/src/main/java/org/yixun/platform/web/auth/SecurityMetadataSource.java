@@ -41,7 +41,12 @@ public class SecurityMetadataSource implements FilterInvocationSecurityMetadataS
 	 * 加载请求url与role对应关系
 	 */
 	private void loadResources(){
-		Map<String, List<String>> allResourceAndRoles = authDataService.getAllResourceAndRoles();
+		Map<String, List<String>> allResourceAndRoles = null;
+		try {
+			allResourceAndRoles = authDataService.getAllResourceAndRoles();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		getResourceCache().put("allResourceAndRoles", allResourceAndRoles);
 	}
 	

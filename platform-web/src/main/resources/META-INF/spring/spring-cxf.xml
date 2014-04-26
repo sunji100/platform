@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:cxf="http://cxf.apache.org/core" xmlns:wsa="http://cxf.apache.org/ws/addressing"
+	xsi:schemaLocation="     
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.1.xsd  
+     http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd  
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd     
+    http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd 
+    http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<cxf:bus>
+		<cxf:features>
+			日志拦截功能，用于监控soap内容，开发后可以删除
+			<cxf:logging />
+			<wsa:addressing />
+		</cxf:features>
+	</cxf:bus>
+	<!--wss4j 服务端配置 -->
+
+	<bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key ="action" value="UsernameToken" />
+				<!--  -->
+				<entry key="passwordType" value="PasswordText" />
+				
+				<!--密码使用MD5密文发送
+				<entry key="passwordType" value="passwordDigest" />-->
+				<!--
+				<entrykey = passwordCallbackClass "
+					value="com.security.service.ServerPasswordCallbackHandler" />
+				-->
+				<entry key="passwordCallbackRef">
+					<ref bean="passwordCallbackHandler"/>
+				</entry>
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<jaxws:endpoint id="ProductApplicationService"
+		implementor="#productApplicationImpl" address="/v1/ProductApplication"
+		publish="true">
+		<jaxws:features>
+			<bean class="org.apache.cxf.transport.common.gzip.GZIPFeature">
+				<property name="threshold" value="1" />
+			</bean>
+		</jaxws:features>
+		<jaxws:inInterceptors>
+			 <bean class="org.apache.cxf.interceptor.LoggingInInterceptor" /> 
+			<ref bean="wss4jInInterceptor"/>
+		</jaxws:inInterceptors>
+	</jaxws:endpoint>
+
+</beans>

@@ -2,6 +2,9 @@ package org.yixun.platform.application.security.dto;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement()
 public class ResourceTypeDTO implements Serializable {
 	/**
 	 * 

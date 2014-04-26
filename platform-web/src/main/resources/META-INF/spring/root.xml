@@ -17,4 +17,5 @@
 	
 	<import resource="classpath*:META-INF/spring/spring-security.xml" />
 	<import resource="classpath:META-INF/spring/spring-security-http.xml" />
+	<import resource="classpath:META-INF/spring/spring-cxf.xml" />
 </beans>

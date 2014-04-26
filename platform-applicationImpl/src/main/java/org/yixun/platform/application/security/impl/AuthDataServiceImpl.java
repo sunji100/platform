@@ -28,7 +28,7 @@ public class AuthDataServiceImpl implements AuthDataService {
 	/**
 	 * 获得用户的详细信息
 	 */
-	public UserDetails loadUserByUseraccount(String useraccount) {
+	public UserDetails loadUserByUseraccount(String useraccount) throws Exception {
 		String jpql = "select _identity from Identity _identity where _identity.userAccount = ?";
 		List<Object> conditionVals = new ArrayList<Object>();
 		conditionVals.add(useraccount);
@@ -103,7 +103,7 @@ public class AuthDataServiceImpl implements AuthDataService {
 		}
 	}
 
-	public Map<String, List<String>> getAllResourceAndRoles() {
+	public Map<String, List<String>> getAllResourceAndRoles() throws Exception {
 		
 		List<Resource> resources = Resource.findAll(Resource.class);
 		

@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
-
 import javax.mail.internet.MimeUtility;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,9 +27,6 @@ public class ViewExcel extends AbstractExcelView {
         response.setContentType("application/octet-stream"); //   application/vnd.ms-excel 
         response.setHeader("Content-disposition", "attachment;filename=" + filename);     
         OutputStream ouputStream = response.getOutputStream();     
-//        workbook.write(ouputStream);  
-//        ExcelWriter excelWriter = new ExcelWriter(ouputStream);
-//		excelWriter .write("Company", 0, 0, createData());
 		
         String grid = String.valueOf(model.get("grid"));
         ouputStream.write(grid.getBytes());

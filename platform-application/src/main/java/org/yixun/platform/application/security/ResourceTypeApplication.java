@@ -1,5 +1,11 @@
 package org.yixun.platform.application.security;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
 import org.yixun.platform.application.security.dto.ResourceTypeDTO;
 
 import com.dayatang.querychannel.support.Page;
@@ -40,5 +46,8 @@ public interface ResourceTypeApplication {
 	 * @return
 	 * @throws Exception
 	 */
-	public ResourceTypeDTO findResourceTypeById(Long id) throws Exception;
+	@GET
+	@Path("findResourceTypeById/{id}")
+	@Produces({MediaType.APPLICATION_XML})
+	public ResourceTypeDTO findResourceTypeById(@PathParam("id")Long id) throws Exception;
 }

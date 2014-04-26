@@ -7,6 +7,6 @@ import org.yixun.platform.application.crud.dto.UserDetails;
 
 
 public interface AuthDataService {
-	public UserDetails loadUserByUseraccount(String useraccount);
-	public Map<String, List<String>> getAllResourceAndRoles();
+	public UserDetails loadUserByUseraccount(String useraccount) throws Exception;
+	public Map<String, List<String>> getAllResourceAndRoles() throws Exception;
 }

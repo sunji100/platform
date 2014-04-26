@@ -2,10 +2,13 @@ package org.yixun.platform.application.crud;
 
 import java.util.List;
 
+import javax.jws.WebService;
+
 import org.yixun.platform.application.crud.dto.ProductDTO;
 
 import com.dayatang.querychannel.support.Page;
 
+@WebService()
 public interface ProductApplication {
 	public ProductDTO saveProduct(ProductDTO productDTO);
 	public void updateProduct(ProductDTO productDTO); 

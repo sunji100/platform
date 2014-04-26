@@ -5,7 +5,6 @@ import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +21,13 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 import org.yixun.platform.web.vo.ExcelData;
+import org.yixun.support.excel.ExcelCellInfo;
+import org.yixun.support.excel.ExcelCellStyle;
+import org.yixun.support.excel.ExcelRowInfo;
+import org.yixun.support.excel.ExcelWriter;
 
-import com.dayatang.excel.ExcelWriter;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
 public class GridViewExcel extends AbstractExcelView {
@@ -36,42 +39,81 @@ public class GridViewExcel extends AbstractExcelView {
 		filename = encodeFilename(filename, request);//处理中文文件名  
         response.setContentType("application/octet-stream"); //   application/vnd.ms-excel 
         response.setHeader("Content-disposition", "attachment;filename=" + filename);
-        
-        int headRows = Integer.parseInt(String.valueOf(model.get("headRows")));
-        String headJson = String.valueOf(model.get("head"));
+       
+        String gridJson = String.valueOf(model.get("grid"));
         Gson gson = new Gson();
-        
-        Map<String, Map<String, Object>> headColMap = new HashMap<String, Map<String,Object>>();
-        LinkedHashMap<String,Object> headMap = gson.fromJson(headJson, LinkedHashMap.class);
-        Set<String> keySet = headMap.keySet();
-        for (String key : keySet) {
-			LinkedHashMap<String,Object> colMap = gson.fromJson(String.valueOf(headMap.get(key)), LinkedHashMap.class);
-			headColMap.put(key, colMap);
-		}
-        
-        List<Object[]> heads = new ArrayList<Object[]>();
-        for(int i=1;i<=headRows;i++){
-        	List<Object> headRow = new ArrayList<Object>();
-        	
-        	for(String colKey:headColMap.keySet()){
-        		Map<String, Object> headCol = headColMap.get(colKey);
-        		if(Double.valueOf(String.valueOf(headCol.get("__level"))).intValue() == i){
-        			headRow.add(headCol.get("display"));
-        		}
+        List<ExcelRow> grid = gson.fromJson(gridJson,new TypeToken<List<ExcelRow>>(){}.getType());
+//        List<Object[]> data = new ArrayList<Object[]>();
+//        for (ExcelRow row : grid) {
+//			List<ExcelCell> cellList = row.getCell();
+//			Object[] rowdata = new Object[cellList.size()];
+//			int cellIndex = 0;
+//			for (ExcelCell cell : cellList) {
+//				rowdata[cellIndex] = cell.getText();
+//				cellIndex++;
+//			}
+//			data.add(rowdata);
+//		}
+       
+        List<ExcelRowInfo> data = new ArrayList<ExcelRowInfo>();
+        //获得每行数据
+        for (ExcelRow row : grid) {
+        	//获得行中每个格
+        	List<ExcelCell> cellList = row.getCell();
+        	//创建传递的行对象
+        	ExcelRowInfo rowdata = new ExcelRowInfo();
+        	//设置行高
+        	if(!StringUtils.isEmpty(row.getHeight())){
+	        	String height = row.getHeight();
+	        	if(height.toLowerCase().endsWith("px")){
+	        		height = height.substring(0, height.length()-2);
+	        	}
+	        	rowdata.setHeight(Float.parseFloat(height));
         	}
-        	heads.add(headRow.toArray());
+        	//创建传递列集合
+        	List<ExcelCellInfo> celldataList = new ArrayList<>();
+        	//获得每个单元格
+        	for (ExcelCell cell : cellList) {
+        		//创建传递的单元格对象
+        		ExcelCellInfo celldata = new ExcelCellInfo();
+        		//单元格的值
+        		celldata.setContent(cell.getText());
+        		//创建传递的单元格样式对象
+        		ExcelCellStyle cellStyle = new ExcelCellStyle();
+        		//合并单元格（列）
+        		if(!StringUtils.isEmpty(cell.getColspan())){
+        			cellStyle.setColspan(Integer.parseInt(cell.getColspan()));
+        		}
+        		//单元格宽度
+        		if(!StringUtils.isEmpty(cell.getWidth())){
+        			String width = cell.getWidth();
+    	        	if(width.toLowerCase().endsWith("px")){
+    	        		width = width.substring(0, width.length()-2);
+    	        	}
+        			cellStyle.setWidth(Integer.parseInt(width));
+        		}
+        		//单元格水平对齐方式
+        		if(!StringUtils.isEmpty(cell.getAlign())){
+        			cellStyle.setAlign(cell.getAlign());
+        		} 
+        		//单元格垂直对齐方式
+        		if(!StringUtils.isEmpty(cell.getValign())){
+        			cellStyle.setValign(cell.getValign());
+        		}
+        		celldata.setCellStyle(cellStyle);
+        		
+        		celldataList.add(celldata);
+        	}
+        	rowdata.setCells(celldataList);
+        	
+        	data.add(rowdata);
         }
        
+
         
-         
-       
-//        String gridJson = String.valueOf(model.get("grid"));
-//        List<Object[]> results = buildExcelDataFromJson(gridJson);
-//        
-//        HSSFWorkbook wo
         OutputStream ouputStream = response.getOutputStream();     
         ExcelWriter excelWriter = new ExcelWriter(ouputStream);
-		excelWriter .write("Company", 0, 0, heads);
+		excelWriter.write("Company", 0, 0, data);
         
         ouputStream.flush();     
         ouputStream.close(); 
