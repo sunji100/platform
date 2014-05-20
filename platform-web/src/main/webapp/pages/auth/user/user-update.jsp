@@ -68,7 +68,6 @@
 				console.info(json);
 				if(json && json.data){
 					 json = json.data;
-					 console.info(JSON.stringify(json));
 					 var elm;
 					 for(var index in json){
 						 elm = document.getElementById(index + "ID");

@@ -44,7 +44,7 @@ public class Resource extends AbstractEntity {
 	@Column(name="SORT_ORDER")
 	private int sortOrder;
 	
-	@Column(name="ISVALID")
+	@Column(name="ISVALID",columnDefinition="char(1)")
 	private boolean isValid;
 	
 	@Column(name="DESCRIPTION")
@@ -53,7 +53,7 @@ public class Resource extends AbstractEntity {
 	@Column(name="IDENTIFIER")
 	private String identifier;
 	
-	@Column(name="LEVEL")
+	@Column(name="KS_LEVEL")
 	private String level;
 	
 	@Column(name="MENU_ICON")

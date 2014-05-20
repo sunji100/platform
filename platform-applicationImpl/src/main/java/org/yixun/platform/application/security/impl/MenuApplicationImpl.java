@@ -14,6 +14,7 @@ import org.yixun.platform.application.security.dto.MenuDTO;
 import org.yixun.platform.application.security.util.MenuBeanUtil;
 import org.yixun.platform.core.security.Resource;
 import org.yixun.platform.core.security.ResourceType;
+import org.yixun.support.log.annotation.MethodLog;
 
 @Named
 @Transactional
@@ -34,6 +35,7 @@ public class MenuApplicationImpl implements MenuApplication {
 	
 	@Override
 	@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+	@MethodLog(remark="查询用户权限树")
 	public List<MenuDTO> findMenuByUser(String userAccount) {
 		List<Resource> topMenuList = Resource.findTopLevelMenuByUser(userAccount);
 		

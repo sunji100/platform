@@ -9,8 +9,9 @@
 	/**
 	webservice用户管理界面
 	*/
+	var v;
 	$(function(){
-		PageLoader.initUserGrid();//获得组织机构树
+		PageLoader.initUserGrid();
 	});
 	PageLoader = {
 			initUserGrid:function(){
@@ -105,7 +106,7 @@
 			deleteUserAction();
 		} else if("role" == item.id){
 			if(selectRow()){
-				top.forwardTabEvent(selectedRow.name + "的角色管理","/pages/auth/role/roleListByUser.jsp?userId=" + selectedRow.id);
+				top.forwardTabEvent(selectedRow.name + "的角色管理","/pages/ws/roleListByUser.jsp?userId=" + selectedRow.id);
 			}
 		}
 	}
@@ -146,7 +147,7 @@
 		});
 		
 	}
-	 
+	
 	/*处理对话框事件*/
 	function dialogBtnClick(button) {
 		if("cancelAddUser" == button.id){
@@ -294,7 +295,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
     <div id="maingrid"></div>
     
     <div id="addUserDialog" style="display: none;">
@@ -304,7 +304,8 @@
 			
 			<tr>
 				<td class="label">用户名称:</td>
-				<td><input name="name" class="input-common" type="text"id="nameID" /></td>
+				<td><input name="name" class="input-common" type="text" id="nameID" validate="{required:true}"/></td>
+				<td></td>
 			</tr>
 			<tr>
 				<td class="label">用户账户:</td>
@@ -323,7 +324,7 @@
 				<td><input name="valid" class="input-common" type="checkbox" id="validID" checked="checked" /></td>
 			</tr>
 		</table>
-		</form>  
+		</form>
 	</div>
 	<div id="modifyUserDialog" style="display: none;">
 		<form id="modify_user_form">

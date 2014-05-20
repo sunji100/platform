@@ -26,6 +26,12 @@
 			<groupId>org.yixun</groupId>
 			<artifactId>platform-infra</artifactId>
 			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>asm</artifactId>
+					<groupId>asm</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.yixun</groupId>

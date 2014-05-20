@@ -6,6 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/pages/common/header.jsp"%>
 <%@ include file="/pages/common/excel.jsp"%>
+<link href="${pageContext.request.contextPath}/js/ligerUI/skins/Gray/css/all.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 	/**
 	grid编辑方式，做增删除改查
@@ -13,7 +14,7 @@
 	var gridManager;
 	var _dialog;
 	var gridData;
-	$(function(){
+	$(function(){        
 		PageLoader.initSerachPanel();
 		PageLoader.initGridData();
 		PageLoader.initGridPanel();
@@ -31,7 +32,6 @@
 			      success: function(json){
 			         if(json){
 			        	 gridData = json;
-			        	 console.info(gridData.Rows);
 			         }
 			      }
 			   }
@@ -107,7 +107,6 @@
      }
      
      function itemclick(item){
- 		console.info(item);
  		if("add" == item.id){
  			addNewRow();
  		} else if("modify" == item.id){
@@ -152,7 +151,7 @@
 	   					gridManager.getRow(rowid),
 	   					function(json) {
 	   						if(json && json.result){
-	   							MessageBox.sucess("pf00001");
+	   							$.ligerDialog.success(json.result);
 	   						}
 	   				});
 	   	 } else if("add" == gridManager.getRow(rowid)[gridManager.options.statusName]){
@@ -160,7 +159,7 @@
 	   				 	gridManager.getRow(rowid),
 	   					function(json) {
 	   						if(json && json.result){
-	   						 MessageBox.sucess("pf00001");
+	   						 $.ligerDialog.success(json.result);
 	   						 gridManager.getRow(rowid)["id"] = json.data.id;//获得该行主键值
 	   						}
 	   					});
@@ -173,8 +172,8 @@
 		var removeData = "";
 		if(undefined == rowid){
 			var newRow = gridManager.getSelected();
-			if (!newRow) { MessageBox.warn('请选择行'); return; }
-			MessageBox.confirm("确定删除?",function(flag){
+			if (!newRow) { $.ligerDialog.warn('请选择行'); return; }
+			$.ligerDialog.confirm("确定删除?",function(flag){
 				if(flag){
 					$.each(gridManager.getSelectedRows(), function(index, element) {
 						removeData = removeData + element.id + ","; 
@@ -184,7 +183,7 @@
 				}
 			});
 		} else {
-			MessageBox.confirm("确定删除?",function(flag){
+			$.ligerDialog.confirm("确定删除?",function(flag){
 				if(flag){
 					removeData = gridManager.getRow(rowid)["id"];
 					deletePostAction(removeData,rowid);
@@ -197,7 +196,7 @@
 				{'ids':removeData},
 				function(json) {
 					if(json && json.result){
-					 MessageBox.sucess("pf00001");
+						$.ligerDialog.success(json.result);
 					 //gridManager.loadData();
 					}
 				});
@@ -216,8 +215,6 @@
 		      data: param,
 		      async:false,
 		      success: function(json){
-		         console.info(json);
-		    	 
 		       	 gridData = json;
 		       	 
 		       	 gridManager.sortedData = gridData;//初始化排序数据

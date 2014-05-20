@@ -17,6 +17,7 @@ import org.yixun.platform.application.security.util.IdentityBeanUtil;
 import org.yixun.platform.core.security.Identity;
 import org.yixun.platform.core.security.Org;
 import org.yixun.platform.core.security.Role;
+import org.yixun.support.auth.util.SecurityMD5;
 import org.yixun.support.exception.BizException;
 
 import com.dayatang.querychannel.service.QueryChannelService;
@@ -263,6 +264,17 @@ public class IdentityApplicationImpl implements IdentityApplication {
 			identityDTOs.add(identityDTO);
 		}
 		return identityDTOs;
+	}
+
+	@Override
+	public void modifyPassword(Long userId, String newPassword, String oldPassword) throws Exception{
+		Identity identity = Identity.load(Identity.class, userId);
+		String userPassword = identity.getUserPassword();
+		String userAccount = identity.getUserAccount();
+		if(!SecurityMD5.isPasswordValid(userPassword,oldPassword, userAccount)){
+			throw new BizException("oldpassword.error", "旧密码不正确!!!");
+		}
+		identity.setUserPassword(SecurityMD5.encode(newPassword, userAccount));
 	}
 
 }

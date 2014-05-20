@@ -37,7 +37,7 @@ public class DateUtils {
 	/** 日期格式HH:mm:ss字符串常量 */
 	private static final String HOUR_FORMAT = "HH:mm:ss";
 	/** 日期格式yyyy-MM-dd HH:mm:ss字符串常量 */
-	private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+	public static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	/** 某天开始时分秒字符串常量 00:00:00 */
 	private static final String DAY_BEGIN_STRING_HHMMSS = " 00:00:00";
 	/** 某天结束时分秒字符串常量 23:59:59 */

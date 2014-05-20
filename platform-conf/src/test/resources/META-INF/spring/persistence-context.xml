@@ -41,7 +41,8 @@
 			</bean>
 		</property>
 	</bean>
-		
+	
+	
 	<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
 		<property name="driver" value="${db.jdbc.driver}" />
 		<property name="driverUrl" value="${db.jdbc.connection.url}" />
@@ -50,7 +51,18 @@
 		<property name="prototypeCount" value="5" />
 		<property name="maximumConnectionCount" value="${maximumConnectionCount}" />
 		<property name="minimumConnectionCount" value="${minimumConnectionCount}" />
+		<property name="houseKeepingTestSql" value="select sysdate from dual"/>
+		<property name="testBeforeUse" value="true"/>
 		<property name="alias" value="default"/>
 	</bean>
 	
+	<bean class="org.springframework.jdbc.core.JdbcTemplate" id="jdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="transactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="timeout" value="300" />
+		<property name="transactionManager" ref="transactionManager" />
+	</bean>
 </beans>

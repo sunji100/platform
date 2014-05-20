@@ -381,7 +381,7 @@
 							postData.push(nodes[i].data.id);
 							//获取上一级菜单
 							var parent = manager.getParent(nodes[i].data);
-							while(parent != null){
+							while(parent != null && 0 != parent){
 								postData.push(parent.id);
 								parent = manager.getParent(parent);
 							}

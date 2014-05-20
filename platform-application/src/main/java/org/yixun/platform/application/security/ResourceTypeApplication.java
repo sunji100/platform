@@ -46,8 +46,8 @@ public interface ResourceTypeApplication {
 	 * @return
 	 * @throws Exception
 	 */
-	@GET
+	/*@GET
 	@Path("findResourceTypeById/{id}")
-	@Produces({MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_XML})*/
 	public ResourceTypeDTO findResourceTypeById(@PathParam("id")Long id) throws Exception;
 }

@@ -2806,7 +2806,7 @@
             //自定义复选框支持
             if (p.isShowCheckBox && $.fn.ligerCheckBox)
             {
-                $("table input:checkbox", g.selectBox).ligerCheckBox();
+                //$("table input:checkbox", g.selectBox).ligerCheckBox();
             }
             $(".l-table-checkbox input:checkbox", g.selectBox).change(function ()
             {
@@ -2906,7 +2906,6 @@
         selectValueByTree: function (value)
         {
             var g = this, p = this.options;
-            console.info(value);
             if (value != null)
             {
                 var text = "";
@@ -2914,9 +2913,7 @@
                 $(valuelist).each(function (i, item)
                 {
                     g.treeManager.selectNode(item.toString());
-                    console.info(value);
                     text += g.treeManager.getTextByID(item);
-                    console.info(text);
                     if (i < valuelist.length - 1) text += p.split;
                 });
                 g._changeValue(value, text);
@@ -3092,7 +3089,6 @@
         },
         _dataInit: function ()
         {
-        	console.info("aaa");
             var g = this, p = this.options;
             var value = null; 
             if (p.initValue != null && p.initText != null)
@@ -3102,7 +3098,7 @@
             //根据值来初始化
             if (p.initValue != null)
             {
-            	console.info(p.initValue);
+            	
                 value = p.initValue;
                 if (p.tree)
                 {
@@ -6677,6 +6673,7 @@
         //预处理字段 , 排序和分组
         _preSetFields: function (fields)
         {
+        	
             var g = this, p = this.options, lastVisitedGroup = null, lastVisitedGroupIcon = null;
             //分组： 先填充没有设置分组的字段，然后按照分组排序
             $(p.fields).each(function (i, field)

@@ -46,6 +46,7 @@ import org.yixun.platform.core.workflow.BpmConfUser;
 import org.yixun.platform.core.workflow.BpmStarterConf;
 import org.yixun.platform.workflow.cmd.ProcessDefinitionDiagramCmd;
 import org.yixun.platform.workflow.listener.ConfUserTaskListener;
+import org.yixun.support.date.util.DateUtils;
 
 import com.dayatang.querychannel.service.QueryChannelService;
 import com.dayatang.querychannel.support.Page;
@@ -358,7 +359,7 @@ public class BpmAdminApplicationImpl implements BpmAdminApplication {
 			Map<String, Object> taskMap = new HashMap<String, Object>();
 			taskMap.put("id", task.getId());
 			taskMap.put("name", task.getName());
-			taskMap.put("createTime", task.getCreateTime());
+			taskMap.put("createTime", DateUtils.convertDateTimeToString(task.getCreateTime()));
 			taskMap.put("taskDefKey", task.getTaskDefinitionKey());
 			taskMap.put("taskAssignee", task.getAssignee());
 			String processInstanceId = task.getProcessInstanceId();
@@ -400,7 +401,7 @@ public class BpmAdminApplicationImpl implements BpmAdminApplication {
 			Map<String, Object> hiMap = new HashMap<String, Object>();
 			hiMap.put("procInsId", processInstance.getId());
 			HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstance.getId()).singleResult();
-			hiMap.put("procInsStartTime", historicProcessInstance.getStartTime());
+			hiMap.put("procInsStartTime", DateUtils.convertDateTimeToString(historicProcessInstance.getStartTime()));
 			hiMap.put("suspended", processInstance.isSuspended());
 			
 			Task currentTask = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();

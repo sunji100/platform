@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.yixun.platform.application.security.IdentityApplication;
 import org.yixun.platform.application.security.dto.IdentityDTO;
+import org.yixun.platform.web.auth.util.AuthDetailUtil;
 import org.yixun.support.auth.util.SecurityMD5;
 
 import com.dayatang.querychannel.support.Page;
@@ -194,6 +195,23 @@ public class IdentityController {
 		}
 		
 		identityApplication.removeIdentity(idArrs);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("result", "success");
+		return result;
+	}
+	/**
+	 * 修改密码
+	 * @param userId
+	 * @param newPassword
+	 * @param oldPassword
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/modifyPassword")
+	public Map<String, Object> modifyPassword(String newPassword, String oldPassword) throws Exception {
+		Long userId = AuthDetailUtil.getLoginUserId();
+		identityApplication.modifyPassword(userId, newPassword, oldPassword);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("result", "success");

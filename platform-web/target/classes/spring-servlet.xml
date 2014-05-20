@@ -27,7 +27,7 @@
 	<!-- SpringMVC上传文件时,需配置MultipartResolver处理器 -->  
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
         <!-- 指定所上传文件的总大小不能超过800KB......注意maxUploadSize属性的限制不是针对单个文件,而是所有文件的容量之和 -->  
-        <property name="maxUploadSize" value="800000"/>  
+        <property name="maxUploadSize" value="10000000"/>  
     </bean> 
     
 	<!-- 全局异常处理 -->
@@ -87,4 +87,12 @@
 		<property name="suffix" value=".jsp" />
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
 	</bean>
+	
+	<!-- jasper视图解析器  -->
+	<bean id="reportViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
+		<property name="order" value="1"/>
+		<property name="location" value="/WEB-INF/reports.xml"/>
+	</bean>
+	
+ 
 </beans>

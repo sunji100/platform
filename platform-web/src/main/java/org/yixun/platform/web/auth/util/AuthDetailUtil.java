@@ -11,7 +11,7 @@ public class AuthDetailUtil {
 			userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "user1";
+			return "";
 		} 
 		return userDetails.getUsername();
 	}

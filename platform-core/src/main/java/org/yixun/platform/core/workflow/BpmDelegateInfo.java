@@ -35,7 +35,7 @@ public class BpmDelegateInfo extends AbstractEntity {
 	@Column(name="proc_def_id")
 	private String procDefId;
 	
-	@Column(name="status")
+	@Column(name="status",columnDefinition="char(1)")
 	private boolean status;
 	
 

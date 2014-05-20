@@ -521,6 +521,7 @@
         {
             var g = this, p = this.options;
             var fields = g.get('fields');
+            console.info("fields==" + fields);
             g.data = data || {};
             (function ()
             {
@@ -528,9 +529,11 @@
                 {
                     var name = field.name, textField = field.textField, editor = g.editors[fieldIndex];
                     if (!editor) return;
+                    console.info("name--" + name);
                     if (name && (name in g.data))
                     {
                         var value = g._getValueByName(g.data, name);
+                        console.info("value--" + JSON.stringify(value));
                         editor.editor.setValue(editor.control, value);
                     }
                     if (textField && (textField in g.data))

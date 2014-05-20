@@ -34,8 +34,32 @@
 		<!--DB实现以及MVC模型的实现支持，不要修改这两个值 -->
 		<dbProtocol>JPA</dbProtocol>
 		<mvcProtocol>SpringMVC</mvcProtocol>
-
-		<!-- DB config -->
+		
+		<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
+		<hibernate.show_sql>true</hibernate.show_sql>
+		<hibernate.dialect>org.hibernate.dialect.OracleDialect</hibernate.dialect>
+		<db.jdbcDriver>oracle.jdbc.OracleDriver</db.jdbcDriver>
+		<db.connectionURL>jdbc:oracle:thin:@192.168.17.101:1521:orcl</db.connectionURL>
+		<db.username>platform</db.username>
+		<db.password>platform</db.password>
+		<db.Type>ORACLE</db.Type>
+		<db.generateDdl>false</db.generateDdl>
+		<db.groupId>com.oracle</db.groupId>
+		<db.artifactId>ojdbc14</db.artifactId>
+		
+		<!--test DB Config -->
+		<test.hibernate.hbm2ddl.auto>update</test.hibernate.hbm2ddl.auto>
+		<test.hibernate.show_sql>true</test.hibernate.show_sql>
+		<test.hibernate.dialect>org.hibernate.dialect.OracleDialect</test.hibernate.dialect>
+		<test.db.jdbcDriver>oracle.jdbc.OracleDriver</test.db.jdbcDriver>
+		<test.db.connectionURL>jdbc:oracle:thin:@192.168.17.101:1521:orcl</test.db.connectionURL>
+		<test.db.username>platform</test.db.username>
+		<test.db.password>platform</test.db.password>
+		<test.db.Type>ORACLE</test.db.Type>
+		<test.db.generateDdl>false</test.db.generateDdl>
+		<test.db.groupId>com.oracle</test.db.groupId>
+		<test.db.artifactId>ojdbc14</test.db.artifactId>
+		<!-- DB config 
 		<hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
 		<hibernate.show_sql>true</hibernate.show_sql>
 		<hibernate.dialect>org.hibernate.dialect.MySQLDialect</hibernate.dialect>
@@ -46,8 +70,8 @@
 		<db.Type>MYSQL</db.Type>
 		<db.generateDdl>true</db.generateDdl>
 		<db.groupId>mysql</db.groupId>
-		<db.artifactId>mysql-connector-java</db.artifactId>
-		<!--test DB Config -->
+		<db.artifactId>mysql-connector-java</db.artifactId>-->
+		<!--test DB Config 
 		<test.hibernate.hbm2ddl.auto>update</test.hibernate.hbm2ddl.auto>
 		<test.hibernate.show_sql>true</test.hibernate.show_sql>
 		<test.hibernate.dialect>org.hibernate.dialect.MySQLDialect</test.hibernate.dialect>
@@ -58,7 +82,7 @@
 		<test.db.Type>MYSQL</test.db.Type>
 		<test.db.generateDdl>true</test.db.generateDdl>
 		<test.db.groupId>mysql</test.db.groupId>
-		<test.db.artifactId>mysql-connector-java</test.db.artifactId>
+		<test.db.artifactId>mysql-connector-java</test.db.artifactId>-->
 	</properties>
 
 	<dependencyManagement>
@@ -326,12 +350,7 @@
 				<version>${koala.framework.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>commons-collections</groupId>
-				<artifactId>commons-collections</artifactId>
-				<version>3.2</version>
-				<scope>provided</scope>
-			</dependency>
+
 			<dependency>
 				<groupId>commons-lang</groupId>
 				<artifactId>commons-lang</artifactId>
@@ -651,49 +670,49 @@
 				<artifactId>xbean-spring</artifactId>
 				<version>3.13</version>
 			</dependency>
-			
+
 			<dependency>
-			    <groupId>net.sf.ehcache</groupId>
-			    <artifactId>ehcache</artifactId>
-			    <version>2.8.1</version>
+				<groupId>net.sf.ehcache</groupId>
+				<artifactId>ehcache</artifactId>
+				<version>2.8.1</version>
 			</dependency>
-			
-			<!--  activiti -->
+
+			<!-- activiti -->
 			<dependency>
-		      <groupId>org.activiti</groupId>
-		      <artifactId>activiti-engine</artifactId>
-		      <version>${activiti-version}</version>
-		    </dependency>
-		    <dependency>
-		      <groupId>org.activiti</groupId>
-		      <artifactId>activiti-spring</artifactId>
-		      <version>${activiti-version}</version>
-		    </dependency>
-		    <dependency>
-		      <groupId>org.activiti</groupId>
-		      <artifactId>activiti-json-converter</artifactId>
-		      <version>${activiti-version}</version>
-		    </dependency>
-		    <dependency>
-		      <groupId>org.codehaus.groovy</groupId>
-		      <artifactId>groovy-all</artifactId>
-		      <version>2.0.4</version>
-		    </dependency>
-		    
-		    
-		    <!-- cglib -->
-		    <dependency>
+				<groupId>org.activiti</groupId>
+				<artifactId>activiti-engine</artifactId>
+				<version>${activiti-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.activiti</groupId>
+				<artifactId>activiti-spring</artifactId>
+				<version>${activiti-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.activiti</groupId>
+				<artifactId>activiti-json-converter</artifactId>
+				<version>${activiti-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.groovy</groupId>
+				<artifactId>groovy-all</artifactId>
+				<version>2.0.4</version>
+			</dependency>
+
+
+			<!-- cglib -->
+			<dependency>
 				<groupId>cglib</groupId>
 				<artifactId>cglib</artifactId>
 				<version>3.1</version>
 			</dependency>
-			
-			
-			            
+
+
+
 			<dependency>
-			    <groupId>math.geom2d</groupId>
-			    <artifactId>javaGeom</artifactId>
-			    <version>0.11.1</version>
+				<groupId>math.geom2d</groupId>
+				<artifactId>javaGeom</artifactId>
+				<version>0.11.1</version>
 			</dependency>
 			<!-- gson -->
 			<dependency>
@@ -701,73 +720,82 @@
 				<artifactId>gson</artifactId>
 				<version>2.2.4</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
 				<version>2.4</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>javax.mail</groupId>
 				<artifactId>mail</artifactId>
 				<version>1.4.7</version>
 			</dependency>
-			
-			<!-- 文件上传 
-			 * commons-io-2.4.jar 
-			 * commons-fileupload-1.3.jar 
-			 * commons-logging-1.1.2.jar  -->
+
+			<!-- 文件上传 * commons-io-2.4.jar * commons-fileupload-1.3.jar * commons-logging-1.1.2.jar -->
 			<dependency>
 				<groupId>commons-fileupload</groupId>
 				<artifactId>commons-fileupload</artifactId>
 				<version>1.3.1</version>
 			</dependency>
-			
+
 			<!-- apche cxf -->
 			<dependency>
-			    <groupId>org.apache.cxf</groupId>
-			    <artifactId>cxf-api</artifactId>
-			    <version>${cxf.version}</version>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-api</artifactId>
+				<version>${cxf.version}</version>
 			</dependency>
 			<dependency>
-			    <groupId>org.apache.cxf</groupId>
-			    <artifactId>cxf-rt-transports-http</artifactId>
-			    <version>${cxf.version}</version>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>${cxf.version}</version>
 			</dependency>
 			<dependency>
-			    <groupId>org.apache.cxf</groupId>
-			    <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-			    <version>${cxf.version}</version>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+				<version>${cxf.version}</version>
 			</dependency>
 			<dependency>
-			     <groupId>org.apache.cxf</groupId>
-			     <artifactId>cxf-rt-frontend-jaxws</artifactId>
-			     <version>${cxf.version}</version>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>${cxf.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-ws-security</artifactId>
 				<version>${cxf.version}</version>
 			</dependency>
-			            
+
 			<dependency>
-			    <groupId>wsdl4j</groupId>
-			    <artifactId>wsdl4j</artifactId>
-			    <version>1.6.3</version>
+				<groupId>wsdl4j</groupId>
+				<artifactId>wsdl4j</artifactId>
+				<version>1.6.3</version>
 			</dependency>
-			
+
 			<!-- application层 ws -->
 			<dependency>
-			    <groupId>javax.ws.rs</groupId>
-			    <artifactId>jsr311-api</artifactId>
-			    <version>1.0</version>
+				<groupId>javax.ws.rs</groupId>
+				<artifactId>jsr311-api</artifactId>
+				<version>1.0</version>
 			</dependency>
 			<dependency>
-			    <groupId>javax.jws</groupId>
-			    <artifactId>jsr181-api</artifactId>
-			    <version>1.0-MR1</version>
+				<groupId>javax.jws</groupId>
+				<artifactId>jsr181-api</artifactId>
+				<version>1.0-MR1</version>
 			</dependency>
+			<!-- jasperreports -->
+			<dependency>
+				<groupId>net.sf.jasperreports</groupId>
+				<artifactId>jasperreports</artifactId>
+				<version>5.5.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.yixun.3rd</groupId>
+				<artifactId>iTextAsian</artifactId>
+				<version>1.0</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -795,16 +823,16 @@
 					<skipTests>true</skipTests>
 				</configuration>
 			</plugin>
-			
-			<plugin>  
-            <groupId>org.apache.maven.plugins</groupId>  
-            <artifactId>maven-compiler-plugin</artifactId> 
-            <version>3.1</version>  
-            <configuration>  
-                <source>1.7</source>  
-                <target>1.7</target>  
-            </configuration>  
-        </plugin> 
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -826,7 +854,7 @@
 	</build>
 
 	<repositories>
-
+		<!-- 
 		<repository>
 			<id>koala-snapshots</id>
 			<url>http://nexus.openkoala.org/nexus/content/groups/Koala-snapshots/</url>
@@ -837,7 +865,7 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-
+		 -->
 		<repository>
 			<id>koala-release</id>
 			<url>http://nexus.openkoala.org/nexus/content/groups/Koala-release/</url>

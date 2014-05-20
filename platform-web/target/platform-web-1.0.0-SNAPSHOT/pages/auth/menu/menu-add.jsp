@@ -37,7 +37,7 @@
             selectBoxWidth: 200,
             selectBoxHeight: 200, textField:'text',valueField: 'id', treeLeafOnly: false,
             tree: { url: "${pageContext.request.contextPath}/menu/findDiretoryTree.do?selfId=0",ajaxType:'get',single:true},
-            onSelected:parentIdChange,
+            onSelected:parentIdChange
         }); 
 	}
 	

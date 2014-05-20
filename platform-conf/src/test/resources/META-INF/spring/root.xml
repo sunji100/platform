@@ -10,6 +10,7 @@
 		
 			
 	<import resource="classpath:META-INF/spring/base-context.xml" />
-	
 	<import resource="classpath:META-INF/spring/db-context.xml" />
+	<import resource="classpath:META-INF/spring/ehcache.xml" />
+	<import resource="classpath:META-INF/spring/activiti.cfg.xml" />
 </beans>

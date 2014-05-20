@@ -37,7 +37,7 @@ public class Org extends AbstractEntity {
 	@Column(name="NAME")
 	private String name;
 	
-	@Column(name="LEVEL")
+	@Column(name="KS_LEVEL")
 	private int level;
 	
 	@Column(name="SERIAL_NUMBER")
@@ -49,7 +49,7 @@ public class Org extends AbstractEntity {
 	@Column(name="CREATE_OWNER")
 	private String createOwner;
 	
-	@Column(name="ISVALID")
+	@Column(name="ISVALID",columnDefinition="char(1)")
 	private boolean isValid;
 	
 	@Column(name="ORG_DESC")

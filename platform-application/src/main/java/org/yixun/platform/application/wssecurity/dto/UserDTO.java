@@ -1,6 +1,7 @@
 package org.yixun.platform.application.wssecurity.dto;
 
 import java.util.Date;
+import java.util.List;
 
 public class UserDTO {
 	private Long id;
@@ -14,6 +15,7 @@ public class UserDTO {
 	private String userPassword;
 	private Long orgId;
 	private String orgName;
+	private List<String> roles;
 	
 	
 	public String getOrgName() {
@@ -81,6 +83,12 @@ public class UserDTO {
 	}
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
+	}
+	public List<String> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 	@Override
 	public String toString() {

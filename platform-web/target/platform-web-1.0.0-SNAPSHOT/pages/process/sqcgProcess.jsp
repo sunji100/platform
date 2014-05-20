@@ -118,6 +118,7 @@
 		      data:data,
 		      type: "POST",
 		      success: function(json){
+		    	  console.info(json);
 		    	 if(json.error){
 					 alert(json.error);
 					 return;

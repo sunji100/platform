@@ -35,6 +35,7 @@ import org.yixun.platform.core.workflow.BpmFormConf;
 import org.yixun.platform.workflow.cmd.HistoryProcessInstanceDiagramCmd;
 import org.yixun.platform.workflow.cmd.RollbackTaskCmd;
 import org.yixun.platform.workflow.cmd.WithdrawTaskCmd;
+import org.yixun.support.date.util.DateUtils;
 
 import com.dayatang.querychannel.service.QueryChannelService;
 
@@ -204,7 +205,7 @@ public class BpmApplicationImpl implements BpmApplication {
 			Map<String, Object> taskMap = new HashMap<String, Object>();
 			taskMap.put("id", task.getId());
 			taskMap.put("name", task.getName());
-			taskMap.put("createTime", task.getCreateTime());
+			taskMap.put("createTime", DateUtils.convertDateTimeToString(task.getCreateTime()));
 			taskMap.put("taskDefKey", task.getTaskDefinitionKey());
 			String processInstanceId = task.getProcessInstanceId();
 			taskMap.put("processInstanceId", processInstanceId);
@@ -260,8 +261,8 @@ public class BpmApplicationImpl implements BpmApplication {
 			taskMap.put("taskId", historicTaskInstance.getId());
 			taskMap.put("taskName", historicTaskInstance.getName());
 			taskMap.put("taskAssignee", historicTaskInstance.getAssignee());
-			taskMap.put("startTime", historicTaskInstance.getStartTime());
-			taskMap.put("endTime", historicTaskInstance.getEndTime());
+			taskMap.put("startTime", DateUtils.convertDateTimeToString(historicTaskInstance.getStartTime()));
+			taskMap.put("endTime", DateUtils.convertDateTimeToString(historicTaskInstance.getEndTime()));
 			taskMap.put("taskReason", historicTaskInstance.getDeleteReason());
 			
 			List<HistoricVariableInstance> historicVariableInstances = historyService.createHistoricVariableInstanceQuery().taskId(historicTaskInstance.getId()).list();
@@ -300,15 +301,15 @@ public class BpmApplicationImpl implements BpmApplication {
 			Map<String, Object> taskMap = new HashMap<String, Object>();
 			taskMap.put("taskId", task.getId());
 			taskMap.put("taskName", task.getName());
-			taskMap.put("startTime", task.getStartTime());
-			taskMap.put("endTime", task.getEndTime());
+			taskMap.put("startTime", DateUtils.convertDateTimeToString(task.getStartTime()));
+			taskMap.put("endTime", DateUtils.convertDateTimeToString(task.getEndTime()));
 			taskMap.put("taskDefKey", task.getTaskDefinitionKey());
 			String processInstanceId = task.getProcessInstanceId();
 			taskMap.put("processInstanceId", processInstanceId);
 			HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
 			taskMap.put("started", historicProcessInstance.getStartUserId());
-			taskMap.put("procStartTime", historicProcessInstance.getStartTime());
-			taskMap.put("procEndTime", historicProcessInstance.getEndTime());
+			taskMap.put("procStartTime", DateUtils.convertDateTimeToString(historicProcessInstance.getStartTime()));
+			taskMap.put("procEndTime", DateUtils.convertDateTimeToString(historicProcessInstance.getEndTime()));
 			String currentTaskName = "";
 			if(null == historicProcessInstance.getEndTime()){
 				Task currentTask = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
@@ -335,7 +336,7 @@ public class BpmApplicationImpl implements BpmApplication {
 		for (HistoricProcessInstance historicProcessInstance : historicProcessInstances) {
 			Map<String, Object> hiMap = new HashMap<String, Object>();
 			hiMap.put("procInsId", historicProcessInstance.getId());
-			hiMap.put("procInsStartTime", historicProcessInstance.getStartTime());
+			hiMap.put("procInsStartTime", DateUtils.convertDateTimeToString(historicProcessInstance.getStartTime()));
 			
 			Task currentTask = taskService.createTaskQuery().processInstanceId(historicProcessInstance.getId()).singleResult();
 			hiMap.put("currentTaskName", currentTask.getName());
@@ -362,8 +363,8 @@ public class BpmApplicationImpl implements BpmApplication {
 		for (HistoricProcessInstance historicProcessInstance : historicProcessInstances) {
 			Map<String, Object> hiMap = new HashMap<String, Object>();
 			hiMap.put("procInsId", historicProcessInstance.getId());
-			hiMap.put("procInsStartTime", historicProcessInstance.getStartTime());
-			hiMap.put("procInsEndTime", historicProcessInstance.getEndTime());
+			hiMap.put("procInsStartTime", DateUtils.convertDateTimeToString(historicProcessInstance.getStartTime()));
+			hiMap.put("procInsEndTime", DateUtils.convertDateTimeToString(historicProcessInstance.getEndTime()));
 			
 			ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionId(historicProcessInstance.getProcessDefinitionId()).singleResult();
 			hiMap.put("procName", processDefinition.getName());
@@ -441,7 +442,7 @@ public class BpmApplicationImpl implements BpmApplication {
 			Map<String, Object> taskMap = new HashMap<String, Object>();
 			taskMap.put("taskId", task.getId());
 			taskMap.put("taskName", task.getName());
-			taskMap.put("taskCreateTime", task.getCreateTime());
+			taskMap.put("taskCreateTime", DateUtils.convertDateTimeToString(task.getCreateTime()));
 			taskMap.put("taskDefKey", task.getTaskDefinitionKey());
 			taskMap.put("taskDelegate", task.getAssignee());
 			String processInstanceId = task.getProcessInstanceId();
@@ -487,7 +488,7 @@ public class BpmApplicationImpl implements BpmApplication {
 			Map<String, Object> taskMap = new HashMap<String, Object>();
 			taskMap.put("id", task.getId());
 			taskMap.put("name", task.getName());
-			taskMap.put("createTime", task.getCreateTime());
+			taskMap.put("createTime", DateUtils.convertDateTimeToString(task.getCreateTime()));
 			taskMap.put("taskDefKey", task.getTaskDefinitionKey());
 			String processInstanceId = task.getProcessInstanceId();
 			taskMap.put("processInstanceId", processInstanceId);

@@ -19,7 +19,13 @@ public class ExceptionHandler extends SimpleMappingExceptionResolver {
 			HttpServletResponse response, Object handler, Exception ex) {
 		
 		String exceptionMsg = null;
-		exceptionMsg = ex.getMessage();
+		
+		if(ex instanceof BaseException){
+			exceptionMsg = ex.getMessage();
+		} else {
+			exceptionMsg = ex.toString();
+		} 
+		
 //		exceptionMsg = WebErrUtils.formatException(ex);
 //		if(ex instanceof BusinessException){
 //			exceptionMsg = ex.getMessage();

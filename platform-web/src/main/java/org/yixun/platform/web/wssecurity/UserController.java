@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.yixun.platform.application.wssecurity.UserApplication;
 import org.yixun.platform.application.wssecurity.dto.UserDTO;
+import org.yixun.support.auth.util.SecurityMD5;
 
 import com.dayatang.querychannel.support.Page;
 
@@ -51,6 +52,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/saveUser")
 	public Map<String, Object> saveUser(UserDTO userDTO) throws Exception {
+		userDTO.setUserPassword(SecurityMD5.encode(userDTO.getUserPassword(), userDTO.getName()));
 		userDTO = userApplication.saveUser(userDTO);
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("data", userDTO);
@@ -100,6 +102,79 @@ public class UserController {
 		UserDTO userDTO = userApplication.findUserById(id);
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("data", userDTO);
+		return result;
+	}
+	
+	/**
+	 * 获得已分配到角色上的用户
+	 * @param identityDTO
+	 * @param roleId 角色ID
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/pageQueryUserByRoleId")
+	public Map<String, Object> pageQueryUserByRoleId(UserDTO queryDTO,Long roleId,@RequestParam("page")int pageNo,@RequestParam("pagesize")int pagesize) throws Exception{
+		Page<UserDTO> page = userApplication.pageQueryUserByRoleId(queryDTO, roleId, pageNo, pagesize);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("Rows", page.getResult());
+		result.put("Total", page.getTotalCount());
+		
+		return result;
+	}
+	/**
+	 * 获得所有未分配到指定角色的用户
+	 * @param identityDTO
+	 * @param roleId 角色ID
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/findNotAssignUserByRole")
+	public Map<String, Object> findNotAssignUserByRole(UserDTO queryDTO,@RequestParam("roleId")Long roleId,@RequestParam("page")int pageNo,@RequestParam("pagesize")int pageSize) throws Exception{
+		Page<UserDTO> page = userApplication.findNotAssignUserByRole(queryDTO,roleId,pageNo,pageSize);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("Rows", page.getResult());
+		result.put("Total", page.getTotalCount());
+		
+		return result;
+	}
+	/**
+	 * 向指定角色分配用户
+	 * @param roleId 角色ID
+	 * @param identityIds 用户ID数组
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/assignUserToRole")
+	public Map<String, Object> assignUserToRole(Long roleId,Long[] userIds) throws Exception{
+
+		userApplication.assignUserToRole(roleId, userIds);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("result", "success");
+		return result;
+	}
+	/**
+	 * 删除指定角色已分配的用户
+	 * @param roleId 角色ID
+	 * @param identityIds 用户ID数组
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/removeUserForRole")
+	public Map<String, Object> removeUserForRole(Long roleId,Long[] userIds) throws Exception{
+		
+		userApplication.removeUserForRole(roleId, userIds);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("result", "success");
 		return result;
 	}
 }

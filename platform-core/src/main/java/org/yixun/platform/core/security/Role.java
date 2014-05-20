@@ -45,7 +45,7 @@ public class Role extends AbstractEntity {
 	@Column(name="CREATE_OWNER")
 	private String createOwner;
 	
-	@Column(name="ISVALID")
+	@Column(name="ISVALID",columnDefinition="char(1)")
 	private boolean isValid;
 	
 	@Column(name="ROLE_DESC")

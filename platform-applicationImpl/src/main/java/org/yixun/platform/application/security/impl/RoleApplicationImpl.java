@@ -189,7 +189,7 @@ public class RoleApplicationImpl implements RoleApplication {
 		for (Long menuId : menuIds) {
 			Resource resource = Resource.load(Resource.class, menuId);
 			role.getResources().remove(resource);
-		}
+		} 
 	}
 
 	@Override

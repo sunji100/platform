@@ -75,4 +75,11 @@ public interface IdentityApplication {
 	 */
 	public Page<IdentityDTO> pageQueryIdentityByOrgId(IdentityDTO queryDTO, int page, int pageSize,Long orgId) throws Exception;
 	public List<IdentityDTO> findIdentityByOrgId(Long orgId) throws Exception;
+	/**
+	 * 修改密码
+	 * @param userId
+	 * @param newPassword
+	 * @param oldPassword
+	 */
+	public void modifyPassword(Long userId,String newPassword,String oldPassword) throws Exception;
 }

@@ -42,6 +42,8 @@
 			</map>
 		</constructor-arg>
 	</bean>
+	
+	<bean id="authorizationInterceptor" class="org.yixun.platform.web.cxf.interceptor.AuthorizationInterceptor" />
 
 	<jaxws:endpoint id="ProductApplicationService"
 		implementor="#productApplicationImpl" address="/v1/ProductApplication"
@@ -52,8 +54,11 @@
 			</bean>
 		</jaxws:features>
 		<jaxws:inInterceptors>
-			 <bean class="org.apache.cxf.interceptor.LoggingInInterceptor" /> 
+			<!--  
+			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor" /> 
 			<ref bean="wss4jInInterceptor"/>
+			-->
+			<ref bean="authorizationInterceptor"/>
 		</jaxws:inInterceptors>
 	</jaxws:endpoint>
 

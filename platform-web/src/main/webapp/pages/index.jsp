@@ -15,6 +15,7 @@
 	var tabidcounter = 0;
 	var treeManager = [];
 	$(function(){
+		 $.metadata.setType("attr", "validate");
 		// 布局
 		$("#main-content").ligerLayout({
 			leftWidth : 190,
@@ -37,6 +38,7 @@
 			$(menu.data).each(function(i,menu){
 				$("#leftmenu").append('<div id="main_'+menu.id+'" title="' + menu.text + '" class="l-scroll"><ul id="sub_'+menu.id+'"></ul></div>');
 				var tree = $("#sub_"+menu.id).ligerTree({
+					nodeWidth : 130,
              		data:menu.children,
              		checkbox:false
              	});
@@ -134,6 +136,74 @@
 		}
 		//tree.cancelSelect(tree.getSelected());
 	}
+	
+	function clearModifyPasswordDialog(){
+		$(":input","#modify_password_form").each(function(idx,elem){
+			$(elem).val("");
+		});
+	}
+	
+	function changepassword(){
+		clearModifyPasswordDialog();
+		openModifyPasswordDialog();
+	}
+	
+	/*打开密码对话框*/
+	var modifyPasswordDialog;
+	var modify_password_form;
+	function openModifyPasswordDialog(){
+		//应用ligerForm
+ 		modify_password_form = $("#modify_password_form").ligerForm({
+ 			validate : true
+ 		});
+		modifyPasswordDialog = $.ligerDialog.open({
+			title : "修改密码",
+			isResize : true,
+			width : 550,
+			height : 300,
+			isHidden : true,
+			buttons : [ {
+				id : 'modifyPassword',
+				text : '保存',
+				onclick : dialogBtnClick
+			}, {
+				id : 'cancelModifyPassword',
+				text : '取消',
+				onclick : dialogBtnClick
+			} ],
+			target : $("#modifyPasswordDialog")
+		});
+		
+	}
+	
+	/*处理对话框事件*/
+	function dialogBtnClick(button) {
+		if("cancelModifyPassword" == button.id){
+			modifyPasswordDialog.hidden();
+		} else if("modifyPassword" == button.id){
+			if(modify_password_form.valid()){
+				modifyPasswordAction();
+			}
+		} 
+	}
+	
+	/*修改后台操作*/
+	function modifyPasswordAction(){
+		$.ajax({ 
+		    type:"POST", 
+		    url:"${pageContext.request.contextPath}/identity/modifyPassword.do", 
+		    data:$("#modify_password_form").serialize(),
+		    success:function(json){ 
+		    	if(json.error){
+		    		$.ligerDialog.error(json.error);
+				}
+				if(json && json.result){
+					$.ligerDialog.success(json.result);
+				}
+				modifyPasswordDialog.hidden();
+		    } 
+		 });
+	}
 </script>
 </head>
 <body style="padding:0px;background:#EAEEF5;">
@@ -142,12 +212,11 @@
         <div class="l-topmenu-logo">yixun</div>
         <div class="l-topmenu-welcome"> 
             <span class="l-topmenu-username">[<ss3:authentication property="principal.username" />]</span>欢迎您  &nbsp; 
-            [<a href="javascript:Koala.changepassword()">修改密码</a>] &nbsp; 
+            [<a href="javascript:changepassword()">修改密码</a>] &nbsp; 
             [<a href="${pageContext.request.contextPath}/j_spring_security_logout">切换用户</a>]
             [<a href="${pageContext.request.contextPath}/j_spring_security_logout">退出</a>]
         </div>
 	</div>
-  
 	<div id="main-content" style="width:99.2%; margin:0 auto; margin-top:4px; "> 
         <div position="left"  title="主要菜单" id="leftmenu">
         </div>
@@ -158,5 +227,26 @@
         </div> 
         
     </div>
+    
+    <div id="modifyPasswordDialog" style="display: none;">
+		<form id="modify_password_form">
+		<table id="form_table" border="0" cellpadding="0" cellspacing="0"
+			class="form2column">
+			
+			<tr>
+				<td class="label">旧密码:</td>
+				<td><input name="newPassword" class="input-common" type="password" id="newPasswordID"  validate="{required:true}"/></td>
+			</tr>
+			<tr>
+				<td class="label">新密码:</td>
+				<td><input name="oldPassword" class="input-common" type="password" id="oldPasswordID" validate="{required:true}"/></td>
+			</tr>
+			<tr>
+				<td class="label">确认新密码:</td>
+				<td><input name="confirmOldPassword" class="input-common" type="password" id="confirmOldPasswordID" validate="{required:true,equalTo:oldPasswordID,messages:{equalTo:'两次密码不一致'}}"/></td>
+			</tr>
+		</table>
+		</form>  
+	</div>
 </body>
 </html>

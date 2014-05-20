@@ -1,7 +1,7 @@
-ï»¿
+
 .l-hidden{ display:none;}
 /* -------------
-   * å¤šè¡Œæ–‡æœ¬æ¡†é¢œè‰² *
+   * ¶àĞĞÎÄ±¾¿òÑÕÉ« *
 * ------------- */  
 .l-textarea{border:1px solid #D0D0D0; margin-left:0px;outline:none; background:#FFFFFF url('../images/ui/input.gif') repeat-x top;}
  .l-textarea:hover{border-color:#777777;}
@@ -9,17 +9,17 @@
 .l-textarea-invalid{border-color:#FF7777; background:#FFEEEE url(../../Aqua/images/common/invalid-line.gif) repeat-x bottom;}
 .l-textarea-invalid:hover,.l-textarea-invalid:focus{border-color:#FF7777;}
 /* -------------
-   * æ–‡æœ¬æ¡†/ä¸‹æ‹‰æ¡†/æ—¥æœŸæ¡†/è°ƒæ•´å™¨ *
+   * ÎÄ±¾¿ò/ÏÂÀ­¿ò/ÈÕÆÚ¿ò/µ÷ÕûÆ÷ *
 * ------------- */
 
-/* æ–‡æœ¬æ¡†ã€ä¸‹æ¥æ¡†ã€æ—¥æœŸæ¡†ã€è°ƒæ•´å™¨éƒ½ä½¿ç”¨åˆ°è¿™ä¸ª */
+/* ÎÄ±¾¿ò¡¢ÏÂÀ´¿ò¡¢ÈÕÆÚ¿ò¡¢µ÷ÕûÆ÷¶¼Ê¹ÓÃµ½Õâ¸ö */
 .l-text
 {
     position:relative; background:#FFFFFF url('../images/ui/input.gif') repeat-x top;
     border:1px solid #D0D0D0; height:20px; line-height:20px;
     width:130px; 
 }
-/* æ–‡æœ¬æ¡†å¾—åˆ°ç„¦ç‚¹çš„æ ·å¼*/
+/* ÎÄ±¾¿òµÃµ½½¹µãµÄÑùÊ½*/
 .l-text-focus
 {
     border-color:#777777;
@@ -29,7 +29,7 @@
 background: #FEE url(../../Aqua/images/common/invalid-line.gif) repeat-x 50% 100%;
 border-color: #F77;
 }
-/*åªè¯»æ—¶æ–‡æœ¬æ¡†*/
+/*Ö»¶ÁÊ±ÎÄ±¾¿ò*/
 .l-text-disabled
 {
     border-color:#DADADA;
@@ -38,12 +38,12 @@ border-color: #F77;
 .l-text-disabled .l-text-field{
 	background:none; color:#E9E5ED;
 }
-/* ç¼–è¾‘çŠ¶æ€ */
+/* ±à¼­×´Ì¬ */
 .l-text-editing
 {
      
 } 
-/* åªè¯»çŠ¶æ€*/
+/* Ö»¶Á×´Ì¬*/
 .l-text-readonly {
 	background:none; border:0; margin:2px;
 	border-bottom:1px solid #b1b1b1;
@@ -54,32 +54,32 @@ border-color: #F77;
 .l-text-readonly .l-trigger,.l-text-readonly .l-trigger-icon {
 	display:none;
 } 
-/* è¡¨å•æ–‡æœ¬æ¡† input:text */
+/* ±íµ¥ÎÄ±¾¿ò input:text */
 .l-text-field
 {
     position:absolute; top:0px; left:0px; background:#FFFFFF url('../images/ui/input.gif') repeat-x top;
     width:110px; height:18px; line-height:18px;
     border:0; margin:0; outline:none; color:#333333; 
 }
-/* è¡¨å•æ–‡æœ¬æ¡† å†…å®¹ä¸ºç©ºæ—¶ */
+/* ±íµ¥ÎÄ±¾¿ò ÄÚÈİÎª¿ÕÊ± */
 .l-text-field-null
 { color:#C1C1C1;
 }
-/* ä¸‹æ‹‰æ¡†/æ—¥æœŸ/è°ƒæ•´å™¨ å³ä¾§é‚£ä¸ªå¯ç‚¹å‡»çš„åŒºåŸŸ åˆ†åˆ«æ˜¯æ™®é€šã€ç»è¿‡ã€æŒ‰ä½çŠ¶æ€ */
+/* ÏÂÀ­¿ò/ÈÕÆÚ/µ÷ÕûÆ÷ ÓÒ²àÄÇ¸ö¿Éµã»÷µÄÇøÓò ·Ö±ğÊÇÆÕÍ¨¡¢¾­¹ı¡¢°´×¡×´Ì¬ */
 .l-trigger,.l-trigger-hover,.l-trigger-pressed
 {
     top:0px;right:0px;
     width:16px;height:100%; border:0px; 
     background:none;
 }  
-/* ä¸‹æ‹‰æ¡†/æ—¥æœŸ å–æ¶ˆé€‰æ‹© */
+/* ÏÂÀ­¿ò/ÈÕÆÚ È¡ÏûÑ¡Ôñ */
 .l-trigger-cancel {
 	right:19px;border-left:none;  background:none; 
 }
 .l-trigger-cancel .l-trigger-icon { 
 	background:url('../images/ui/icon-unselect.gif') no-repeat 50% 50% transparent;
 }
-/* ä¸‹æ‹‰æ¡†/æ—¥æœŸ å³ä¾§é‚£ä¸ªå¯ç‚¹å‡»çš„åŒºåŸŸé‡Œé¢çš„å›¾æ ‡ */
+/* ÏÂÀ­¿ò/ÈÕÆÚ ÓÒ²àÄÇ¸ö¿Éµã»÷µÄÇøÓòÀïÃæµÄÍ¼±ê */
 .l-trigger-icon
 {	width:100%;
 	height:100%;
@@ -106,7 +106,7 @@ border-color: #F77;
 	background: url('../images/ui/icon-unselect.gif')  no-repeat 50% 53% transparent;
 }
 /* -------------
-  * è°ƒæ•´å™¨ *
+  * µ÷ÕûÆ÷ *
 * ------------- */
 .l-spinner-up .l-spinner-icon,.l-spinner-down .l-spinner-icon{overflow: hidden;position: absolute;left: 0px;top: 50%;margin-top: -3px;width: 100%;height: 6px;background: no-repeat center top;}
 .l-spinner-down-over,.l-spinner-up-over{background:#CCCCCC url('../images/ui/trigger.gif') repeat-x 0px -20px;}
@@ -117,12 +117,12 @@ border-color: #F77;
 .l-spinner-split{overflow: hidden;width: 13px;height: 1px;position: absolute;left: 1px;top: 50%;z-index: 10;background: #FFFFFF;   }
 
 /* -------------
-   * éªŒè¯ *
+   * ÑéÖ¤ *
 * ------------- */
 .l-verify-star { color:Red;}
 
 /* -------------
-  * ä¸‹æ‹‰æ¡† *
+  * ÏÂÀ­¿ò *
 * ------------- */
 .l-box-select-grid{border-bottom:1px solid #DBDBDB;border-right:1px solid #DBDBDB;}
 .l-box-select-grid thead td,.l-box-select-grid tr.l-table-headerow td{ 
@@ -178,17 +178,17 @@ background: #F0F0F0; border-top:none;
 .l-listbox .l-table-nocheckbox .l-checkboxrow { display:none;width:0px;}
 
 /* -------------
-    * å¤é€‰æ¡† *
+    * ¸´Ñ¡¿ò *
 * ------------- */
  
 /* -------------
-    * å•é€‰æ¡† *
+    * µ¥Ñ¡¿ò *
 * ------------- */
  
 
 
 /* -----------------------
-   *   æ—¥æœŸæ§ä»¶ *
+   *   ÈÕÆÚ¿Ø¼ş *
 * ----------------------- */
 .l-box-dateeditor {
 background: white;
@@ -258,6 +258,6 @@ width: 100%;
 }
  
 /* -----------------------
-   *   éªŒè¯ *
+   *   ÑéÖ¤ *
 * ----------------------- */
  

@@ -7,5 +7,6 @@
 
 <body style="text-align:center; background:#F0F0F0; overflow:hidden;">
 首页
+<jsp:forward page="/pages/login.jsp"></jsp:forward>
 </body>
 </html>
